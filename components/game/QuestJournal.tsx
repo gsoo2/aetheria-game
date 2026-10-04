@@ -1,4 +1,5 @@
 'use client';
+import {useFloatingWindow} from './useFloatingWindow';
 import { tr } from '../../shared/i18n';
 import { useEffect, useId, useState } from 'react';
 import { PROMOTION_TRIALS } from '../../shared/promotion';
@@ -6,7 +7,7 @@ import { QUESTS, MONSTERS, MAIN_QUESTS } from '../../shared/content';
 import type { Quest } from '../../shared/content';
 import type { Player } from '../../shared/types';
 import { questSlots, questKind, questAvailable } from '../../shared/quests';
-import { ScrollText, ChevronRight, ChevronDown, Check, Gift, X } from 'lucide-react';
+import { ScrollText, ChevronRight, ChevronDown, Check, Gift, X, GripHorizontal, LocateFixed } from 'lucide-react';
 function QuestCard({ q, p, onAction, compact = false }: {
     q: Quest;
     p: Player;
@@ -31,6 +32,7 @@ export function QuestTracker({ p, onAction, onJournal }: {
     onAction: (id: number) => void;
     onJournal: () => void;
 }) {
+    const floating = useFloatingWindow("quest-tracker");
     const { main, sides } = questSlots(p);
     const [expanded, setExpanded] = useState(false), contentId = useId();
     const preferenceKey = () => 'aetheria-quests-' + (window.matchMedia('(max-width:900px), (max-height:540px) and (pointer:coarse)').matches ? 'mobile' : 'desktop');
@@ -41,7 +43,8 @@ export function QuestTracker({ p, onAction, onJournal }: {
     }, []);
     const changeExpanded = (open: boolean) => { setExpanded(open); try { localStorage.setItem(preferenceKey(), open ? 'open' : 'closed'); } catch {} };
     const readyCount = [...(main ? [main] : []), ...sides].filter(q => p.quests[q.id] !== undefined && p.quests[q.id] >= q.count).length;
-    return <aside className={`quest-tracker glass ${expanded ? 'is-expanded' : ''}`} aria-label={tr("퀘스트")}>
+    return <aside ref={floating.attach} style={floating.style} className={`quest-tracker glass floating-window ${expanded ? 'is-expanded' : ''}`} aria-label={tr("퀘스트")}>
+  <div className="window-titlebar"><button type="button" className="window-drag-handle" aria-label={tr("창 이동")} title={tr("제목을 끌어서 이동 · 두 번 누르면 중앙으로")} {...floating.handle}><GripHorizontal size={16}/><span>{tr("퀘스트")}</span></button><button type="button" className="window-center-button" aria-label={tr("중앙으로 이동")} onClick={floating.reset}><LocateFixed size={16}/></button></div>
   <button className="quest-tracker-toggle" aria-expanded={expanded} aria-controls={contentId} aria-label={tr(expanded ? '퀘스트 접기' : '퀘스트 펼치기')} onClick={() => changeExpanded(!expanded)}><ScrollText size={15}/><span>{tr("퀘스트")}</span>{readyCount > 0 && <span className="quest-ready-count"><Gift size={12}/>{readyCount}</span>}<ChevronDown className="quest-toggle-chevron" size={15}/></button>
   <div className="quest-tracker-content" id={contentId} hidden={!expanded}><div className="quest-tracker-title"><ScrollText size={16}/><span>{tr("별빛의 여정")}</span><button aria-label={tr("퀘스트 이야기 보기")} onClick={onJournal}><ChevronRight size={16}/></button><button className="quest-tracker-close" aria-label={tr("퀘스트 접기")} onClick={() => changeExpanded(false)}><X size={16}/></button></div>
   {p.promotionQuest && <div className="promotion-tracker tracked-quest"><strong>{p.promotionQuest.tier}{tr("차 전직 시험")}</strong><span>{tr("일반 ")}{p.promotionQuest.kills}/{PROMOTION_TRIALS[p.promotionQuest.tier - 1].count}{tr(" · 파수꾼 ")}{p.promotionQuest.bosses}/{PROMOTION_TRIALS[p.promotionQuest.tier - 1].bossCount}</span></div>}

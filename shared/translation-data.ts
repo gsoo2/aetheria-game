@@ -1,5 +1,8 @@
 // Hand-translated English and Japanese game copy, keyed by the original Korean.
 export const TRANSLATIONS:Record<string,readonly [string,string]> = {
+ "창 이동": ["Move window", "ウィンドウを移動"],
+ "중앙으로 이동": ["Center window", "中央に戻す"],
+ "제목을 끌어서 이동 · 두 번 누르면 중앙으로": ["Drag to move · Double-click to center", "ドラッグで移動・ダブルクリックで中央へ"],
  "닫기": ["Close", "閉じる"],
  "NPC나 차원문에 가까이 다가가 E 키를 누르세요.": [
   "Approach an NPC or portal and press E.",
