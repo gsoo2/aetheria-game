@@ -1,0 +1,10 @@
+import {ownedPlayer} from '../shared/accounts';
+import {postChat} from './chat';
+import {gameInput} from './request';
+import {guestIdentity,identityStillValid} from './auth';
+import {mutate,readWorld} from './store';
+import type {Input} from '../shared/types';
+export async function gameSocket(request:Request){if(request.headers.get('Upgrade')?.toLowerCase()!=='websocket')return new Response('WebSocket upgrade required',{status:426});const origin=request.headers.get('Origin');if(origin&&new URL(origin).host!==new URL(request.url).host)return new Response('Forbidden',{status:403});const auth=await guestIdentity(request);if(!auth)return new Response('Character required',{status:401});const row=await readWorld();const characterId=new URL(request.url).searchParams.get('characterId');const player=row?ownedPlayer(row.world,auth.id,characterId):undefined;if(!player)return new Response('Character required',{status:401});const [client,server]=Object.values(new WebSocketPair());server.accept();let processing=false,last=0;
+ server.addEventListener('message',async e=>{if(typeof e.data!=='string'||e.data.length>4096){server.close(1009,'Message too large');return;}let body;try{body=JSON.parse(e.data);}catch{server.close(1007,'Invalid JSON');return;}if(!body||typeof body!=='object'||Array.isArray(body)){server.close(1007,'Invalid input');return;}if(body.kind==='chat'){try{if(!await identityStillValid(auth)){server.close(4001,'Login expired');return;}await postChat(auth.id,player.id,body.text);}catch{server.send(JSON.stringify({chatError:true}));}return;}if(processing||Date.now()-last<90){server.send(JSON.stringify({retry:true}));return;}last=Date.now();processing=true;try{if(!await identityStillValid(auth)){server.close(4001,'Login expired');return;}const input=gameInput(body);const result=await mutate(player.id,input,undefined,auth.id);server.send(JSON.stringify(result||{needsCharacter:true}));}catch(err){console.error('socket input failed',err);try{server.send(JSON.stringify({error:'다시 연결 중'}));}catch{}}finally{processing=false;}});
+ return new Response(null,{status:101,webSocket:client});
+}

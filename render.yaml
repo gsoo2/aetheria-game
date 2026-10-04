@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: aetheria-rpg
+    runtime: node
+    plan: free
+    region: singapore
+    buildCommand: npm ci --prefix hosting --omit=dev && node hosting/fetch-assets.mjs
+    startCommand: node hosting/gateway.mjs
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_VERSION
+        value: 22.16.0

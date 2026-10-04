@@ -1,0 +1,9 @@
+import {CLASSES,ITEMS,skillAvailable} from './content';
+import type {Player} from './types';
+export const needXp=(level:number)=>Math.floor(180*level**1.6);
+export function stats(p:Player){const c=CLASSES[p.classId],tier=p.promotionTier||0;const items=Object.values(p.equipment).filter((id):id is number=>id!==null&&!!ITEMS[id]).map(id=>ITEMS[id]);return {hp:c.hp+tier*35+(p.level-1)*20+items.reduce((n,i)=>n+i.hp+(p.enhancements?.[i.id]||0)*3,0),mp:c.mp+tier*20+(p.level-1)*8,atk:c.atk+tier*8+(p.level-1)*4+items.reduce((n,i)=>n+i.atk+(i.slot!=='armor'?(p.enhancements?.[i.id]||0)*2:0),0),def:c.def+tier*4+(p.level-1)*2+items.reduce((n,i)=>n+i.def+(p.enhancements?.[i.id]||0),0)};}
+export function addXp(p:Player,xp:number){p.xp+=xp;let leveled=false;while(p.xp>=needXp(p.level)&&p.level<50){p.xp-=needXp(p.level);p.level++;leveled=true;}if(leveled){autoTrain(p);const s=stats(p);p.hp=s.hp;p.mp=s.mp;}return leveled;}
+export const skillPoints=(p:Player)=>Math.max(0,p.level-1+(p.promotionTier||0)*2-(p.skillRanks||[]).reduce((a,b)=>a+b,0));
+
+// Only earned points are spent; unavailable skills keep their points for later.
+export function autoTrain(p:Player,mode=p.autoSkillMode||0){if(![1,2,3].includes(mode))return 0;p.skillRanks??=Array(12).fill(0);let used=0;while(skillPoints(p)>0&&used<36){const available=Array.from({length:12},(_,i)=>i).filter(i=>skillAvailable(p,i)&&(p.skillRanks![i]||0)<3);if(!available.length)break;const hotbar=p.loadout||[0,1,2,3];available.sort((a,b)=>{if(mode===2){const ah=hotbar.includes(a)?0:1,bh=hotbar.includes(b)?0:1;if(ah!==bh)return ah-bh;}if(mode===3){const at=a>=8?0:a>=4?1:2,bt=b>=8?0:b>=4?1:2;if(at!==bt)return at-bt;}return (p.skillRanks![a]||0)-(p.skillRanks![b]||0)||a-b;});const skill=available[0];p.skillRanks[skill]=(p.skillRanks[skill]||0)+1;used++;}return used;}

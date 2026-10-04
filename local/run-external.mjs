@@ -1,0 +1,15 @@
+import {gmLocalConfig} from './gm-config.mjs';
+import {networkInterfaces} from 'node:os';
+import {createRequire} from 'node:module';
+import {existsSync,realpathSync,mkdirSync,readFileSync} from 'node:fs';
+import {resolve,dirname} from 'node:path';
+import {fileURLToPath} from 'node:url';
+import assert from 'node:assert/strict';
+const base=resolve(dirname(fileURLToPath(import.meta.url)),'..');
+process.chdir(base);const gm=gmLocalConfig(base),lan=process.argv.includes('--lan');
+let Miniflare;try{({Miniflare}=await import('miniflare'));}catch{const req=createRequire(realpathSync(resolve(base,'node_modules/wrangler/package.json')));({Miniflare}=req('miniflare'));}
+const scriptPath=resolve(base,'dist/external/server/worker.js');if(!existsSync(scriptPath))throw new Error('Run npm run build:external and npm run export:external first.');
+const verify=process.argv.includes('--verify'),data=resolve(base,verify?'.sites-runtime/external-local-check':'saved-game');mkdirSync(data,{recursive:true});
+const options={rootPath:base,modules:true,scriptPath,compatibilityDate:'2026-05-15',compatibilityFlags:['nodejs_compat'],host:lan?'0.0.0.0':'127.0.0.1',bindings:{GM_TOKEN:process.env.AETHERIA_GM_TOKEN||gm.token},port:verify?0:8787,durableObjects:{REALM:{className:'AetheriaRealm',useSQLite:true}},durableObjectsPersist:resolve(data,'durable-world'),d1Databases:{DB:'aetheria-local'},d1Persist:data,assets:{directory:resolve(base,'dist/external/client'),binding:'ASSETS',routerConfig:{invoke_user_worker_ahead_of_assets:true,has_user_worker:true}}};
+async function boot(){const mf=new Miniflare(options);const db=await mf.getD1Database('DB');await db.exec('CREATE TABLE IF NOT EXISTS realms (id TEXT PRIMARY KEY, data TEXT NOT NULL, version INTEGER NOT NULL DEFAULT 0)');return mf;}
+let mf=await boot();if(verify){const origin='http://localhost';assert.equal((await mf.dispatchFetch(origin)).status,200);const r=await mf.dispatchFetch(origin+'/api/game',{method:'POST',headers:{'Content-Type':'application/json',Origin:origin},body:JSON.stringify({join:true,name:'로컬수호자',classId:0})});assert.equal(r.status,200);const cookie=r.headers.get('set-cookie').split(';')[0],id=(await r.json()).player.id;const socket=await mf.dispatchFetch(origin+'/api/socket?characterId='+id,{headers:{Cookie:cookie,Origin:origin,Upgrade:'websocket'}});assert.equal(socket.status,101);socket.webSocket.accept();socket.webSocket.close();await new Promise(r=>setTimeout(r,120));await mf.dispose();mf=await boot();const loaded=await mf.dispatchFetch(origin+'/api/account',{headers:{Cookie:cookie}});assert.ok((await loaded.json()).characters.some(p=>p.id===id));await mf.dispose();console.log('PASS: external backend runs locally; characters persist after restart');}else{await mf.ready;if(lan)for(const list of Object.values(networkInterfaces()))for(const entry of list||[])if(entry.family==='IPv4'&&!entry.internal)console.log('LAN game: http://'+entry.address+':8787');console.log('\nAetheria: http://127.0.0.1:8787\nSaved world: saved-game/\nPress Ctrl+C to stop.\n');const stop=async()=>{await mf.dispose();process.exit(0);};process.on('SIGINT',stop);process.on('SIGTERM',stop);}

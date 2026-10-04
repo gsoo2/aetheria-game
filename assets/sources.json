@@ -1,0 +1,165 @@
+[
+  {
+    "file": "public/art/forest.png",
+    "source": "Original generated artwork for Aetheria",
+    "author": "OpenAI image generation",
+    "license": "Generated original asset",
+    "original_url": null
+  },
+  {
+    "file": "public/art/atlas.png",
+    "source": "Original generated artwork for Aetheria",
+    "author": "OpenAI image generation",
+    "license": "Generated original asset",
+    "original_url": null
+  },
+  {
+    "file": "public/art/npc-sera.png",
+    "source": "Original individually generated NPC repair; transparent full-body asset",
+    "author": "OpenAI image generation",
+    "license": "Generated original asset",
+    "original_url": null
+  },
+  {
+    "file": "public/art/npc-roen.png",
+    "source": "Original individually generated NPC repair; transparent full-body asset",
+    "author": "OpenAI image generation",
+    "license": "Generated original asset",
+    "original_url": null
+  },
+  {
+    "file": "public/art/npc-elin.png",
+    "source": "Original individually generated NPC repair; transparent full-body asset",
+    "author": "OpenAI image generation",
+    "license": "Generated original asset",
+    "original_url": null
+  },
+  {
+    "file": "public/art/knight-motion.png",
+    "source": "Original generated animation or environment artwork for Aetheria v3",
+    "author": "OpenAI image generation",
+    "license": "Generated original asset",
+    "original_url": null
+  },
+  {
+    "file": "public/art/ranger-motion.png",
+    "source": "Original generated animation or environment artwork for Aetheria v3",
+    "author": "OpenAI image generation",
+    "license": "Generated original asset",
+    "original_url": null
+  },
+  {
+    "file": "public/art/mage-motion.png",
+    "source": "Original generated animation or environment artwork for Aetheria v3",
+    "author": "OpenAI image generation",
+    "license": "Generated original asset",
+    "original_url": null
+  },
+  {
+    "file": "public/art/snow.png",
+    "source": "Original generated animation or environment artwork for Aetheria v3",
+    "author": "OpenAI image generation",
+    "license": "Generated original asset",
+    "original_url": null
+  },
+  {
+    "file": "public/art/ember.png",
+    "source": "Original generated animation or environment artwork for Aetheria v3",
+    "author": "OpenAI image generation",
+    "license": "Generated original asset",
+    "original_url": null
+  },
+  {
+    "file": "public/audio/track-1.mp3",
+    "source": "User supplied track 1 in this conversation; transcoded to 128 kbps for streaming",
+    "author": "User supplied",
+    "license": "User supplied for this game; no third-party redistribution licence asserted",
+    "original_url": null
+  },
+  {
+    "file": "public/audio/track-2.mp3",
+    "source": "User supplied track 2 in this conversation; transcoded to 128 kbps for streaming",
+    "author": "User supplied",
+    "license": "User supplied for this game; no third-party redistribution licence asserted",
+    "original_url": null
+  },
+  {
+    "file": "public/audio/track-3.mp3",
+    "source": "User supplied track 3 in this conversation; transcoded to 128 kbps for streaming",
+    "author": "User supplied",
+    "license": "User supplied for this game; no third-party redistribution licence asserted",
+    "original_url": null
+  },
+  {
+    "file": "public/audio/track-4.mp3",
+    "source": "User supplied track 4 in this conversation; transcoded to 128 kbps for streaming",
+    "author": "User supplied",
+    "license": "User supplied for this game; no third-party redistribution licence asserted",
+    "original_url": null
+  },
+  {
+    "file": "public/audio/track-5.mp3",
+    "source": "User supplied track 5 in this conversation; transcoded to 128 kbps for streaming",
+    "author": "User supplied",
+    "license": "User supplied for this game; no third-party redistribution licence asserted",
+    "original_url": null
+  },
+  {
+    "file": "public/audio/track-6.mp3",
+    "source": "User supplied track 6 in this conversation; transcoded to 128 kbps for streaming",
+    "author": "User supplied",
+    "license": "User supplied for this game; no third-party redistribution licence asserted",
+    "original_url": null
+  },
+  {
+    "file": "public/audio/track-7.mp3",
+    "source": "User supplied track 7 in this conversation; transcoded to 128 kbps for streaming",
+    "author": "User supplied",
+    "license": "User supplied for this game; no third-party redistribution licence asserted",
+    "original_url": null
+  },
+  {
+    "file": "public/audio/track-8.mp3",
+    "source": "User supplied track 8 in this conversation; transcoded to 128 kbps for streaming",
+    "author": "User supplied",
+    "license": "User supplied for this game; no third-party redistribution licence asserted",
+    "original_url": null
+  },
+  {
+    "file": "public/art/world-atlas.png",
+    "source": "Original generated v4 world atlas or promotion skill icons",
+    "author": "OpenAI image generation",
+    "license": "Generated original asset",
+    "original_url": null
+  },
+  {
+    "file": "public/art/advanced-skills.png",
+    "source": "Original generated v4 world atlas or promotion skill icons",
+    "author": "OpenAI image generation",
+    "license": "Generated original asset",
+    "original_url": null
+  },
+  {
+    "file": "public/art/pet-motion.png",
+    "source": "Original generated 3-pet / 4-frame animation sheet",
+    "author": "OpenAI image generation",
+    "license": "Generated original asset",
+    "original_url": null,
+    "prompt": "Three rows: ivory star fox, lavender celestial owl, cream crystal kitten. Four isolated walking/flying poses per row, complete silhouettes, transparent canvas, painted fantasy style."
+  },
+  {
+    "file": "public/art/elite-monsters.png",
+    "source": "Generated replacement of clipped red crystal guardian and horned demon; reference public/art/atlas.png",
+    "author": "OpenAI image generation",
+    "license": "Generated original asset",
+    "original_url": null,
+    "prompt": "Re-create two full-body reference monsters including all wings, horns, crystals and feet. Separate side-by-side transparent cells with ample padding."
+  },
+  {
+    "file": "public/voices",
+    "source": "RPG Voice Starter Pack.zip uploaded by user",
+    "author": "Cici Fyre",
+    "license": "User-provided; original readme and credits included",
+    "original_url": "https://cicifyre.itch.io/"
+  }
+]
