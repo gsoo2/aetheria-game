@@ -11,7 +11,7 @@ const call=async(path,body,cookie)=>{const r=await fetch(app.url+path,{method:bo
 const waitFor=(predicate,timeout=4000)=>new Promise((resolve,reject)=>{const timer=setTimeout(()=>{socket.off('message',listener);reject(Error('Socket timeout'));},timeout);const listener=raw=>{const data=JSON.parse(raw);if(predicate(data)){clearTimeout(timer);socket.off('message',listener);resolve(data);}};socket.on('message',listener);});
 try{
  assert.equal((await call('/health')).data.backend,'realtime');
- for(const path of ['/','/art/knight-motion.png']){
+ for(const path of ['/','/art/knight-motion.png','/art/damage-digits.png']){
   const head=await fetch(app.url+path,{method:'HEAD'});assert.equal(head.status,200);assert.equal(await head.text(),'');
   const get=await fetch(app.url+path,{headers:{'Accept-Encoding':'gzip, br'}});assert.equal(get.status,200);assert.ok((await get.arrayBuffer()).byteLength>0);
  }
@@ -19,14 +19,16 @@ try{
  const stranger=await call('/api/account');assert.equal((await call('/api/game?characterId='+id,null,stranger.cookie)).data.needsCharacter,true);
  socket=new WebSocket(app.url.replace('http:','ws:')+'/api/socket?characterId='+id,{headers:{Cookie:cookie,Origin:app.url}});
  await new Promise((resolve,reject)=>{socket.once('open',resolve);socket.once('error',reject);});
- let seq=0;const input=async(body)=>{const n=++seq,pending=waitFor(d=>d.player?.lastSeq>=n);socket.send(JSON.stringify({...body,seq:n}));return pending;};
- await input({action:'quest',value:0});await new Promise(r=>setTimeout(r,100));await input({action:'travel',value:1});
+ let seq=0;const input=async(body)=>{await new Promise(r=>setTimeout(r,110));const n=++seq,pending=waitFor(d=>d.player?.lastSeq>=n);socket.send(JSON.stringify({...body,seq:n}));return pending;};
+ await input({action:'quest',value:0});await new Promise(r=>setTimeout(r,100));await input({action:'tutorialNext'});await new Promise(r=>setTimeout(r,120));await input({moveX:20,moveY:0});
+ const grant=await fetch(app.url+'/api/gm/action',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+options.token,Origin:app.url},body:JSON.stringify({playerId:id,revision:0,action:'set',gold:2000,cash:750,reason:'local purchase and restart test'})});assert.equal(grant.status,200);
+ await input({action:'damageBuy',value:1});const skin=await input({action:'cashBuy',value:7});assert.deepEqual(skin.player.damageSkins,[1,3]);assert.equal(skin.player.damageSkinId,3);await input({action:'travel',value:1});
  delay=1200;const times=[];const collect=raw=>{const d=JSON.parse(raw);if(d.now)times.push(d.now);};socket.on('message',collect);
  const chat=waitFor(d=>d.chat?.some(c=>c.text==='저장 지연 중 사냥 확인'));socket.send(JSON.stringify({kind:'chat',text:'저장 지연 중 사냥 확인'}));await chat;
  await new Promise(r=>setTimeout(r,2200));socket.off('message',collect);
  assert.ok(times.length>=15);const max=Math.max(...times.slice(1).map((t,i)=>t-times[i]));assert.ok(max<350,'slow durable writes must not block monster snapshots');
  console.log('PASS: real HTTP/WebSocket hosting; 1200ms storage latency, max snapshot gap',max,'ms, snapshots',times.length);
  delay=0;socket.close();socket=undefined;await app.close();app=await launch(options);
- const restored=await call('/api/game?characterId='+id,null,cookie);assert.equal(restored.data.player.id,id);assert.equal(restored.data.player.zone,1);assert.equal(restored.data.player.quests[0],0);assert.ok(writes>=3);
- console.log('PASS: original guest cookie, ownership checks, character/quest progress and chat survive full hosting restart');
+ const restored=await call('/api/game?characterId='+id,null,cookie);assert.equal(restored.data.player.id,id);assert.equal(restored.data.player.zone,1);assert.equal(restored.data.player.quests[0],0);assert.ok(writes>=3);assert.equal(restored.data.player.tutorial.stage,1);assert.ok(restored.data.player.tutorial.moved>0);assert.deepEqual(restored.data.player.damageSkins,[1,3]);assert.equal(restored.data.player.damageSkinId,3);assert.equal(restored.data.player.gold,1400);assert.equal(restored.data.player.cash,550);
+ console.log('PASS: original guest cookie, ownership checks, character/quest/tutorial progress, purchased skins, currency and chat survive full hosting restart');
 }finally{socket?.close();await app.close();}

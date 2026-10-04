@@ -1,0 +1,3 @@
+import {DAMAGE_SKINS} from '../shared/damage-skins';
+import type {Player,Input} from '../shared/types';
+export function damageSkinInput(p:Player,i:Input){const skin=DAMAGE_SKINS.find(s=>s.id===i.value);if(!skin)return;if(i.action==='damageBuy'&&skin.currency==='gold'){p.damageSkins??=[];if(p.damageSkins.includes(skin.id))return;if(p.gold<skin.price){p.notice='골드가 부족합니다.';return;}p.gold-=skin.price;p.damageSkins.push(skin.id);p.damageSkinId=skin.id;p.notice='데미지 스킨 구매 완료';}if(i.action==='damageEquip'&&(skin.id===0||p.damageSkins?.includes(skin.id))){p.damageSkinId=skin.id;p.notice='데미지 스킨 적용';}}

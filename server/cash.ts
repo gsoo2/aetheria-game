@@ -29,7 +29,7 @@ export function cashInput(w: World, p: Player, i: Input, now: number) {
         return;
     }
     if (i.action === 'cashBuy') {
-        const product = CASH_PRODUCTS[Number(i.value)];
+        const product = CASH_PRODUCTS.find(product=>product.id===i.value);
         if (!product)
             return;
         p.cashPurchases ??= [];
@@ -54,6 +54,7 @@ export function cashInput(w: World, p: Player, i: Input, now: number) {
                 p.bubbles.push(product.value);
             p.bubbleId = product.value;
         }
+        if(product.kind==='damageSkin'){p.damageSkins??=[];if(!p.damageSkins.includes(product.value))p.damageSkins.push(product.value);p.damageSkinId=product.value;}
         if (product.kind === 'title')
             p.cashTitle = product.name;
         if (product.kind === 'weapon')
@@ -62,10 +63,11 @@ export function cashInput(w: World, p: Player, i: Input, now: number) {
         return;
     }
     if (i.action === 'cashEquip') {
-        const product = CASH_PRODUCTS[Number(i.value)];
+        const product = CASH_PRODUCTS.find(product=>product.id===i.value);
         if (product && p.cashPurchases?.includes(product.id)) {
             if (product.kind === 'title')
                 p.cashTitle = product.name;
+            if(product.kind==='damageSkin'&&p.damageSkins?.includes(product.value))p.damageSkinId=product.value;
             if (product.kind === 'bubble')
                 p.bubbleId = product.value;
             p.notice = product.name + ' 적용';

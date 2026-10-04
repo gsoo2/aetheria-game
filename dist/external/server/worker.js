@@ -9,7 +9,10 @@ var CASH_PRODUCTS = [
   { id: 3, name: "\uC655\uC758 \uBCC4\uC790\uB9AC", description: "\uC655\uAD00\uACFC \uBCC4\uC774 \uC7A5\uC2DD\uB41C \uD6C4\uC6D0 \uC804\uC6A9 \uB9D0\uD48D\uC120", price: 350, kind: "bubble", value: 15, image: "/bubbles/15.svg" },
   { id: 4, name: "\uBCC4\uC758 \uD6C4\uC6D0\uC790", description: "\uCE90\uB9AD\uD130 \uC774\uB984 \uC606\uC5D0 \uD45C\uC2DC\uD558\uB294 \uC601\uAD6C \uCE6D\uD638", price: 300, kind: "title", value: 0, image: "" },
   { id: 5, name: "\uC0C8\uBCBD\uC758 \uC218\uD638\uC790", description: "\uC0C8\uB85C\uC6B4 \uC0C8\uBCBD\uC744 \uC5EC\uB294 \uD6C4\uC6D0\uC790 \uCE6D\uD638", price: 450, kind: "title", value: 1, image: "" },
-  { id: 6, name: "\uC804\uC124 \uBB34\uAE30 \uC0C1\uC790", description: "\uD604\uC7AC \uC9C1\uC5C5\uC5D0 \uB9DE\uB294 \uC804\uC124 \uBB34\uAE30 1\uAC1C", price: 500, kind: "weapon", value: 0, image: "" }
+  { id: 6, name: "\uC804\uC124 \uBB34\uAE30 \uC0C1\uC790", description: "\uD604\uC7AC \uC9C1\uC5C5\uC5D0 \uB9DE\uB294 \uC804\uC124 \uBB34\uAE30 1\uAC1C", price: 500, kind: "weapon", value: 0, image: "" },
+  { id: 7, name: "\uBCC4\uAC00\uB8E8 \uC624\uB85C\uB77C", description: "\uBCF4\uB78F\uBE5B \uBCC4\uAC00\uB8E8 \uC22B\uC790 \uB370\uBBF8\uC9C0 \uC2A4\uD0A8 \xB7 \uB2A5\uB825\uCE58 \uBCC0\uD654 \uC5C6\uC74C", price: 200, kind: "damageSkin", value: 3, image: "" },
+  { id: 8, name: "\uD0DC\uC591\uC758 \uBD88\uAF43", description: "\uBD89\uC740 \uBD88\uAF43 \uC22B\uC790 \uB370\uBBF8\uC9C0 \uC2A4\uD0A8 \xB7 \uB2A5\uB825\uCE58 \uBCC0\uD654 \uC5C6\uC74C", price: 250, kind: "damageSkin", value: 4, image: "" },
+  { id: 9, name: "\uCC9C\uC0C1\uC758 \uB9F9\uC138", description: "\uC740\uBE5B\uACFC \uAE08\uBE5B\uC758 \uC22B\uC790 \uB370\uBBF8\uC9C0 \uC2A4\uD0A8 \xB7 \uB2A5\uB825\uCE58 \uBCC0\uD654 \uC5C6\uC74C", price: 300, kind: "damageSkin", value: 5, image: "" }
 ];
 var DONATION_PACKS = [{ id: 0, won: 3e3, cash: 300 }, { id: 1, won: 5e3, cash: 500 }, { id: 2, won: 1e4, cash: 1e3 }];
 
@@ -46,7 +49,7 @@ function cashInput(w, p, i, now) {
     return;
   }
   if (i.action === "cashBuy") {
-    const product = CASH_PRODUCTS[Number(i.value)];
+    const product = CASH_PRODUCTS.find((product2) => product2.id === i.value);
     if (!product)
       return;
     p.cashPurchases ??= [];
@@ -71,6 +74,11 @@ function cashInput(w, p, i, now) {
         p.bubbles.push(product.value);
       p.bubbleId = product.value;
     }
+    if (product.kind === "damageSkin") {
+      p.damageSkins ??= [];
+      if (!p.damageSkins.includes(product.value)) p.damageSkins.push(product.value);
+      p.damageSkinId = product.value;
+    }
     if (product.kind === "title")
       p.cashTitle = product.name;
     if (product.kind === "weapon")
@@ -79,10 +87,11 @@ function cashInput(w, p, i, now) {
     return;
   }
   if (i.action === "cashEquip") {
-    const product = CASH_PRODUCTS[Number(i.value)];
+    const product = CASH_PRODUCTS.find((product2) => product2.id === i.value);
     if (product && p.cashPurchases?.includes(product.id)) {
       if (product.kind === "title")
         p.cashTitle = product.name;
+      if (product.kind === "damageSkin" && p.damageSkins?.includes(product.value)) p.damageSkinId = product.value;
       if (product.kind === "bubble")
         p.bubbleId = product.value;
       p.notice = product.name + " \uC801\uC6A9";
@@ -697,6 +706,89 @@ function workshopInput(w, p, input) {
 }
 __name(workshopInput, "workshopInput");
 
+// ../shared/beginner.ts
+var beginnerProtected = /* @__PURE__ */ __name((p) => p.level <= 20 && !(p.promotionTier || 0) && !ZONES[p.zone]?.raid, "beginnerProtected");
+
+// ../shared/tutorial.ts
+var tutorialKills = /* @__PURE__ */ __name((p) => Object.values(p.kills).reduce((n, k) => n + k, 0), "tutorialKills");
+var tutorialState = /* @__PURE__ */ __name((p) => ({ stage: 0, moved: 0, usedSkill: false, killStart: tutorialKills(p), completed: false }), "tutorialState");
+function tutorialReady(p) {
+  const t = p.tutorial;
+  if (!t || t.completed) return false;
+  switch (t.stage) {
+    case 0:
+      return true;
+    case 1:
+      return t.moved >= 120;
+    case 2:
+      return t.usedSkill;
+    case 3:
+      return Object.keys(p.quests).length > 0 || p.done.length > 0;
+    case 4:
+      return tutorialKills(p) - t.killStart >= 3;
+    case 5:
+      return p.level >= 2;
+    case 6:
+      return true;
+    default:
+      return false;
+  }
+}
+__name(tutorialReady, "tutorialReady");
+
+// ../server/tutorial.ts
+function tutorialInput(w, p, i, now) {
+  if (i.action === "tutorialStart" && !p.tutorial) p.tutorial = tutorialState(p);
+  if (i.action !== "tutorialNext" || !tutorialReady(p)) return;
+  const t = p.tutorial;
+  if (t.stage === 6) {
+    p.pets ??= [];
+    if (!p.pets.includes(0)) p.pets.push(0);
+    p.petId = 0;
+    p.petAutoLoot = true;
+    t.completed = true;
+    p.notice = "\uD29C\uD1A0\uB9AC\uC5BC \uC644\uB8CC! \uBCC4\uBE5B \uC5EC\uC6B0\uAC00 \uD568\uAED8\uD569\uB2C8\uB2E4.";
+    return;
+  }
+  if (t.stage === 3) t.killStart = tutorialKills(p);
+  if (t.stage === 4 && addXp(p, 180)) w.events.push({ id: crypto.randomUUID(), time: now, zone: p.zone, x: p.x, y: p.y, kind: "level", value: p.level, color: "#ffe8a3", source: p.id });
+  t.stage++;
+}
+__name(tutorialInput, "tutorialInput");
+
+// ../shared/damage-skins.ts
+var DAMAGE_SKINS = [
+  { id: 0, name: "\uAE30\uBCF8", currency: "free", price: 0 },
+  { id: 1, name: "\uD669\uAE08 \uBCC4\uBE5B", currency: "gold", price: 600 },
+  { id: 2, name: "\uBE59\uACB0 \uC218\uC815", currency: "gold", price: 1200 },
+  { id: 3, name: "\uBCC4\uAC00\uB8E8 \uC624\uB85C\uB77C", currency: "cash", price: 200 },
+  { id: 4, name: "\uD0DC\uC591\uC758 \uBD88\uAF43", currency: "cash", price: 250 },
+  { id: 5, name: "\uCC9C\uC0C1\uC758 \uB9F9\uC138", currency: "cash", price: 300 }
+];
+
+// ../server/damage-skins.ts
+function damageSkinInput(p, i) {
+  const skin = DAMAGE_SKINS.find((s) => s.id === i.value);
+  if (!skin) return;
+  if (i.action === "damageBuy" && skin.currency === "gold") {
+    p.damageSkins ??= [];
+    if (p.damageSkins.includes(skin.id)) return;
+    if (p.gold < skin.price) {
+      p.notice = "\uACE8\uB4DC\uAC00 \uBD80\uC871\uD569\uB2C8\uB2E4.";
+      return;
+    }
+    p.gold -= skin.price;
+    p.damageSkins.push(skin.id);
+    p.damageSkinId = skin.id;
+    p.notice = "\uB370\uBBF8\uC9C0 \uC2A4\uD0A8 \uAD6C\uB9E4 \uC644\uB8CC";
+  }
+  if (i.action === "damageEquip" && (skin.id === 0 || p.damageSkins?.includes(skin.id))) {
+    p.damageSkinId = skin.id;
+    p.notice = "\uB370\uBBF8\uC9C0 \uC2A4\uD0A8 \uC801\uC6A9";
+  }
+}
+__name(damageSkinInput, "damageSkinInput");
+
 // ../shared/physics.ts
 var distance = /* @__PURE__ */ __name((a, b) => Math.hypot(a.x - b.x, a.y - b.y), "distance");
 function movable(x, y, zone = 0) {
@@ -963,7 +1055,7 @@ __name(collectLoot, "collectLoot");
 // ../shared/promotion.ts
 var PROMOTION_NAMES = [["\uD0DC\uC591\uC758 \uC218\uD638\uAE30\uC0AC", "\uCC9C\uC0C1\uC758 \uC131\uAE30\uC0AC"], ["\uD3ED\uD48D\uC758 \uCD94\uC801\uC790", "\uCC9C\uAD81\uC758 \uC21C\uCC30\uC790"], ["\uB2EC\uC758 \uD604\uC790", "\uBCC4\uC790\uB9AC \uB300\uB9C8\uB3C4\uC0AC"]];
 var PROMOTION_TRIALS = [
-  { tier: 1, level: 10, name: "\uCCAB \uBC88\uC9F8 \uBCC4\uC758 \uB9F9\uC138", zone: 2, monster: 4, count: 10, bossZone: 3, boss: 8, bossCount: 1, story: "\uBCC4\uBE5B\uC740 \uD798\uB9CC\uC73C\uB85C \uAE68\uC5B4\uB098\uC9C0 \uC54A\uC544\uC694. \uC232\uAE38\uC758 \uACE0\uBE14\uB9B0\uC744 \uBB3C\uB9AC\uCE58\uACE0 \uC720\uC801\uC758 \uBD89\uC740 \uD30C\uC218\uAFBC\uC744 \uB118\uC5B4, \uC218\uD638\uC790\uC758 \uB9F9\uC138\uB97C \uC99D\uBA85\uD574 \uC8FC\uC138\uC694." },
+  { tier: 1, level: 20, name: "\uCCAB \uBC88\uC9F8 \uBCC4\uC758 \uB9F9\uC138", zone: 2, monster: 4, count: 10, bossZone: 3, boss: 8, bossCount: 1, story: "\uBCC4\uBE5B\uC740 \uD798\uB9CC\uC73C\uB85C \uAE68\uC5B4\uB098\uC9C0 \uC54A\uC544\uC694. \uC232\uAE38\uC758 \uACE0\uBE14\uB9B0\uC744 \uBB3C\uB9AC\uCE58\uACE0 \uC720\uC801\uC758 \uBD89\uC740 \uD30C\uC218\uAFBC\uC744 \uB118\uC5B4, \uC218\uD638\uC790\uC758 \uB9F9\uC138\uB97C \uC99D\uBA85\uD574 \uC8FC\uC138\uC694." },
   { tier: 2, level: 30, name: "\uCC9C\uC0C1\uC758 \uBCC4\uC744 \uACC4\uC2B9\uD558\uB2E4", zone: 16, monster: 6, count: 15, bossZone: 16, boss: 8, bossCount: 2, story: "\uBD88\uC528 \uD611\uACE1\uC758 \uACE0\uB300 \uACE8\uB818\uACFC \uBD89\uC740 \uD30C\uC218\uAFBC\uC744 \uB118\uC5B4\uC57C \uB9C8\uC9C0\uB9C9 \uBCC4\uC758 \uD798\uC744 \uC774\uC5B4\uBC1B\uC744 \uC218 \uC788\uC5B4\uC694. \uCC9C\uC0C1\uC758 \uAE38\uC740 \uC900\uBE44\uB41C \uC218\uD638\uC790\uC5D0\uAC8C\uB9CC \uC5F4\uB9AC\uC9C0\uC694." }
 ];
 
@@ -1054,7 +1146,7 @@ function killMonster(w, m, p, now) {
     for (const q of QUESTS) {
       if ((q.zone === void 0 || q.zone === m.zone) && q.monster === m.type && a.quests[q.id] !== void 0) a.quests[q.id] = Math.min(q.count, a.quests[q.id] + 1);
     }
-    if (addXp(a, Math.round(md.xp * zoneScale(m.zone)))) emit(w, a, now, "level", a.level, "#ffe8a3", { source: a.id });
+    if (addXp(a, Math.round(md.xp * zoneScale(m.zone) * (beginnerProtected(a) ? 2 : 1)))) emit(w, a, now, "level", a.level, "#ffe8a3", { source: a.id });
   }
   const rarity = isBoss(m.type) ? 2 : m.zone >= 2 ? 1 : 0;
   const pool = ITEMS.filter((i) => i.id >= 21 && (i.minLevel || 1) <= ZONES[m.zone].minLevel && i.rarity <= rarity + 1);
@@ -1065,20 +1157,26 @@ function killMonster(w, m, p, now) {
 __name(killMonster, "killMonster");
 function damageMonster(w, m, p, damage, now, critical = false, effect) {
   if (m.hp <= 0) return;
-  damage = Math.max(1, Math.round(damage));
+  damage = Math.max(1, Math.round(damage * (beginnerProtected(p) ? 1.6 : 1)));
   if (ZONES[m.zone]?.raid) {
     m.raidDamage ??= {};
     m.raidDamage[p.id] = (m.raidDamage[p.id] || 0) + Math.min(m.hp, damage);
   }
   m.hp = Math.max(0, m.hp - damage);
   m.lastHit = now;
-  emit(w, m, now, "hit", damage, critical ? "#ffe7a4" : effect === "burn" ? "#ffb072" : "#fff5e0", { critical, effect, source: p.id });
+  emit(w, m, now, "hit", damage, critical ? "#ffe7a4" : effect === "burn" ? "#ffb072" : "#fff5e0", { critical, effect, source: p.id, damageSkinId: p.damageSkinId || 0 });
   if (m.hp <= 0) killMonster(w, m, p, now);
 }
 __name(damageMonster, "damageMonster");
 function hurtPlayer(w, p, damage, now) {
   if (p.hp <= 0 || (p.dodgeUntil || 0) > now) return;
-  const value = Math.max(2, Math.round(damage - stats(p).def * 0.6));
+  const maxHp = stats(p).hp;
+  let value = Math.max(2, Math.round(damage - stats(p).def * 0.6));
+  if (beginnerProtected(p)) {
+    const recent = w.events.filter((e) => e.effect === "player-hurt" && e.source === p.id && now - e.time < 1e3).reduce((sum, e) => sum + e.value, 0);
+    value = Math.min(Math.max(1, Math.round(value * 0.25)), Math.max(1, Math.floor(maxHp * 0.018)), Math.max(0, Math.floor(maxHp * 0.065) - recent));
+    if (value <= 0) return;
+  }
   p.hp = Math.max(0, p.hp - value);
   emit(w, p, now, "hit", value, "#ff8e87", { source: p.id, effect: "player-hurt" });
   if (p.hp <= 0) p.notice = "\uC4F0\uB7EC\uC84C\uC2B5\uB2C8\uB2E4. \uBCC4\uC0D8 \uB9C8\uC744\uC5D0\uC11C \uB2E4\uC2DC \uC77C\uC5B4\uB0A0 \uC218 \uC788\uC2B5\uB2C8\uB2E4.";
@@ -1235,7 +1333,7 @@ __name(tickCombat, "tickCombat");
 // ../server/engine.ts
 function newPlayer(id, name, classId, now) {
   const c = CLASSES[classId];
-  return { id, name, classId, zone: 0, x: 900, y: 740, face: 1, hp: c.hp + 15, mp: c.mp, level: 1, xp: 0, gold: 80, inventory: [classId, 3], equipment: { weapon: classId, armor: 3, ring: null }, potions: 8, manaPotions: 5, quests: {}, done: [], kills: {}, cd: [0, 0, 0, 0], last: now, seen: now, attackAt: 0, attackSkill: 0, target: { x: 0, y: 0 }, lastSeq: 0, loadout: [0, 1, 2, 3], skillRanks: Array(12).fill(0), dodgeCd: 0, dodgeUntil: 0, potionCd: 0, manaPotionCd: 0, notice: "\uD018\uC2A4\uD2B8 \uCE74\uB4DC \uD074\uB9AD\uC73C\uB85C \uC989\uC2DC \uC218\uB77D \xB7 \uBAA9\uD45C \uB2EC\uC131 \uD6C4 \uB2E4\uC2DC \uD074\uB9AD\uD558\uBA74 \uBCF4\uC0C1\uC744 \uBC1B\uC2B5\uB2C8\uB2E4." };
+  return { id, name, classId, zone: 0, x: 900, y: 740, face: 1, hp: c.hp + 15, mp: c.mp, level: 1, xp: 0, gold: 80, inventory: [classId, 3], equipment: { weapon: classId, armor: 3, ring: null }, potions: 8, manaPotions: 5, quests: {}, done: [], kills: {}, cd: [0, 0, 0, 0], last: now, seen: now, attackAt: 0, attackSkill: 0, target: { x: 0, y: 0 }, lastSeq: 0, loadout: [0, 1, 2, 3], skillRanks: Array(12).fill(0), dodgeCd: 0, dodgeUntil: 0, potionCd: 0, manaPotionCd: 0, tutorial: { stage: 0, moved: 0, usedSkill: false, killStart: 0, completed: false }, damageSkins: [], damageSkinId: 0, notice: "\uD018\uC2A4\uD2B8 \uCE74\uB4DC \uD074\uB9AD\uC73C\uB85C \uC989\uC2DC \uC218\uB77D \xB7 \uBAA9\uD45C \uB2EC\uC131 \uD6C4 \uB2E4\uC2DC \uD074\uB9AD\uD558\uBA74 \uBCF4\uC0C1\uC744 \uBC1B\uC2B5\uB2C8\uB2E4." };
 }
 __name(newPlayer, "newPlayer");
 function createWorld(now) {
@@ -1276,6 +1374,10 @@ function tickWorld(w, now) {
     const s = stats(p);
     p.mp = Math.min(s.mp, p.mp + dt * 2.8);
     if (ZONES[p.zone]?.safe) p.hp = Math.min(s.hp, p.hp + dt * 5);
+    else if (beginnerProtected(p)) {
+      p.hp = Math.min(s.hp, p.hp + dt * s.hp * 0.025);
+      p.mp = Math.min(s.mp, p.mp + dt * 5);
+    }
     if (p.petAutoLoot !== false && p.petId !== void 0 && p.petId !== null && p.pets?.includes(p.petId) && now - (p.petPickupAt || 0) >= 450) {
       p.petPickupAt = now;
       const collected = collectLoot(w, p, now, PET_PICKUP_RADIUS);
@@ -1366,6 +1468,7 @@ function applyInput(w, p, input, now) {
       p.y = 740;
     }
   }
+  const beforeMove = { x: p.x, y: p.y };
   const dx = Math.max(-1, Math.min(1, Number(input.dx) || 0)), dy = Math.max(-1, Math.min(1, Number(input.dy) || 0)), len = Math.max(1, Math.hypot(dx, dy));
   const nx = p.x + dx / len * WORLD.speed * Math.min(0.5, elapsed), ny = p.y + dy / len * WORLD.speed * Math.min(0.5, elapsed);
   if (Number.isFinite(input.moveX) && Number.isFinite(input.moveY)) {
@@ -1373,8 +1476,12 @@ function applyInput(w, p, input, now) {
     sweepMove(p, mx * scale, my * scale);
   } else sweepMove(p, nx - p.x, ny - p.y);
   if (dx) p.face = dx > 0 ? 1 : -1;
+  if (p.tutorial?.stage === 1) p.tutorial.moved = Math.min(120, p.tutorial.moved + Math.hypot(p.x - beforeMove.x, p.y - beforeMove.y));
+  tutorialInput(w, p, input, now);
+  damageSkinInput(p, input);
   if (input.action === "dodge") dodge(w, p, input, now);
   castSkill(w, p, input, now);
+  if (p.tutorial?.stage === 2 && p.attackAt === now && Number.isInteger(input.skill)) p.tutorial.usedSkill = true;
   socialInput(w, p, input, now);
   cashInput(w, p, input, now);
   workshopInput(w, p, input);

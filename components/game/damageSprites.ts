@@ -1,0 +1,4 @@
+import {DAMAGE_ATLAS} from '../../shared/damage-skins';
+let atlas:HTMLImageElement|null=null,pending:Promise<HTMLImageElement|null>|null=null;
+export function loadDamageAtlas(){if(!pending)pending=new Promise<HTMLImageElement|null>(resolve=>{const image=new Image();image.onload=()=>{atlas=image;resolve(image);};image.onerror=()=>{pending=null;resolve(null);};image.src=DAMAGE_ATLAS;});return pending;}
+export function drawDamageDigits(ctx:CanvasRenderingContext2D,value:number,skin:number,x:number,y:number,height:number){if(!atlas||skin<1||skin>5)return false;const digits=String(Math.max(0,Math.round(value))),cellW=atlas.width/10,cellH=atlas.height/5,width=height*.87,gap=height*.03,start=x-digits.length*(width+gap)/2;for(let i=0;i<digits.length;i++)ctx.drawImage(atlas,Number(digits[i])*cellW,(skin-1)*cellH,cellW,cellH,start+i*(width+gap),y-height/2,width,height);return true;}
