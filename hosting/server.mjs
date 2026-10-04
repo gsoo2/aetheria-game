@@ -30,7 +30,7 @@ export async function launch({store,token,port=Number(process.env.PORT||10000),h
  wss.on('connection',client=>{client.isAlive=true;client.on('pong',()=>{client.isAlive=true;});});
  await new Promise(r=>server.listen(port,host,r));
  const app={server,mf,url:'http://127.0.0.1:'+server.address().port,async close(){if(closing)return;closing=true;clearInterval(timer);clearInterval(pings);for(const client of wss.clients)client.close(1012,'Server restarting');await new Promise(resolve=>setTimeout(resolve,100));await persist();await store.close?.();await new Promise(r=>server.close(r));await mf.dispose();}};
- onHandoff=()=>{void app.close().then(()=>{console.log('World handed over safely');if(process.env.RENDER)process.exit(0);}).catch(()=>{console.error('World handoff failed');process.exitCode=1;});};
+ onHandoff=()=>{void app.close().then(()=>{console.log('World handed over safely');if(process.env.RENDER)setInterval(()=>{},30000); /* Wait for Render SIGTERM without restarting a retired instance. */}).catch(()=>{console.error('World handoff failed');process.exitCode=1;});};
  return app;
 }
 export async function postgresStore(url){
