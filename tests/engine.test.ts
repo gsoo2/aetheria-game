@@ -5,6 +5,15 @@ import {newPlayer,createWorld,applyInput,tickWorld,needXp,stats,addXp,movable,sn
 import {NPCS,ITEMS,QUESTS,MONSTERS,WORLD} from '../shared/content';
 const initial=1_800_000_000_000;
 const setup=()=>{const w=createWorld(initial),p=newPlayer('test','테스터',0,initial);w.players[p.id]=p;return {w,p};};
+test('network retries cannot shorten the movement allowed for the next fresh input',()=>{
+ const a=setup(),b=setup();
+ for(const state of [a,b])applyInput(state.w,state.p,{seq:1,dx:1,moveX:10,moveY:0},initial+100);
+ const before=a.p.x;
+ applyInput(a.w,a.p,{seq:1,dx:1,moveX:10,moveY:0},initial+190);
+ assert.equal(a.p.x,before,'duplicate input cannot move the character twice');
+ for(const state of [a,b])applyInput(state.w,state.p,{seq:2,dx:1,moveX:WORLD.speed*.2,moveY:0},initial+300);
+ assert.equal(a.p.x,b.p.x,'retried and clean connections retain the same allowed movement');
+});
 test('equipment modifies stats; unowned equipment cannot be equipped',()=>{const {w,p}=setup();const base=stats(p);applyInput(w,p,{seq:1,action:'equip',value:14},initial+1000);assert.equal(p.equipment.weapon,0);p.inventory.push(14);applyInput(w,p,{seq:2,action:'equip',value:14},initial+1200);assert.equal(p.equipment.weapon,14);assert.ok(stats(p).atk>base.atk);});
 test('movement normalized, bounded and never trusts absolute coordinates',()=>{const {w,p}=setup();const x=p.x,y=p.y;applyInput(w,p,{seq:1,dx:10000,dy:10000},initial+1000);assert.ok(Math.hypot(p.x-x,p.y-y)<=WORLD.speed*.5+.001);p.x=180;p.y=700;applyInput(w,p,{seq:2,dx:-1},initial+1500);assert.ok(p.x>180);assert.ok(movable(p.x,p.y));assert.equal(movable(1150,250),false);});
 test('server calculates damage, awards XP, creates loot; cooldown and duplicates enforced',()=>{const {w,p}=setup();p.zone=1;p.x=510;p.y=410;const m=w.monsters.find(m=>m.zone===1)!;m.hp=1;const input={seq:1,skill:0,tx:m.x,ty:m.y};applyInput(w,p,input,initial+1000);assert.equal(m.hp,0);assert.ok(p.xp>0);assert.equal(w.loot.length,1);const kills={...p.kills};applyInput(w,p,input,initial+1100);assert.deepEqual(p.kills,kills);assert.equal(w.loot.length,1);const next=w.monsters.find(m=>m.zone===1&&m.hp>0)!;next.x=p.x+20;next.y=p.y;const hp=next.hp;applyInput(w,p,{seq:2,skill:0,tx:next.x,ty:next.y},initial+1200);assert.equal(next.hp,hp);});

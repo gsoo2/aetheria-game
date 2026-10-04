@@ -1333,9 +1333,9 @@ __name(tickWorld, "tickWorld");
 function applyInput(w, p, input, now) {
   const elapsed = Math.max(0, Math.min(2, (now - p.last) / 1e3));
   p.seen = now;
-  p.last = now;
   const fresh = typeof input.seq === "number" && input.seq > p.lastSeq;
   if (!fresh) return;
+  p.last = now;
   p.lastSeq = input.seq;
   p.notice = "";
   if (p.hp <= 0) {
