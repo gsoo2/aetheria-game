@@ -511,7 +511,7 @@ export default function Game() {
         setJoining(true);
         setError('');
         try {
-            const r = await fetch('/api/account', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'create', name, classId }) }), data = await r.json() as Roster & {
+            const r = await fetch('/api/account', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'create', name: name.trim(), classId }) }), data = await r.json() as Roster & {
                 error?: string;
             };
             if (!r.ok)
@@ -650,14 +650,11 @@ export default function Game() {
   {!snap && <div className="entry-screen">
    <header className="entry-top"><Link className="wordmark" href="/"> <Sparkles size={20}/> AETHERIA</Link><span>{tr("별빛의 수호자")}</span><LanguagePicker /><button className="icon-button" aria-label={tr("게임 안내")} onClick={() => open('guide')}><ScrollText size={20}/></button></header>
    <div className="entry-content"><div className="entry-heading"><span className="eyebrow">A NEW JOURNEY AWAITS</span><h1>{tr("당신의 별이")}<br />{tr("깨어나는 곳.")}</h1><p>{tr("별샘의 수호자가 되어, 잊힌 세계를 탐험하세요.")}</p></div>
-   <AccountLogin />
-   {!creating && roster ? <CharacterLobby roster={roster} sprites={spriteUrls} busy={joining} onCreate={() => { setName(''); setCreating(true); }} onSelect={id => void selectCharacter(id)} onChange={changeRoster}/> : <section className="character-select"><button className="outline-button" onClick={() => setCreating(false)}>{tr("← 수호자 목록")}</button><div className="section-caption"><span>01 <i />{tr(" 수호자 선택")}</span><span>{tr("세 가지 길, 하나의 모험")}</span></div>
+   {!creating && roster && <AccountLogin />}
+   {!creating && roster ? <CharacterLobby roster={roster} sprites={spriteUrls} busy={joining} onCreate={() => { setName(''); setCreating(true); }} onSelect={id => void selectCharacter(id)} onChange={changeRoster}/> : <section className="character-select creation-card"><button className="outline-button" onClick={() => setCreating(false)}>{tr("← 수호자 목록")}</button><div className="section-caption"><span>01 <i />{tr(" 수호자 선택")}</span><span>{tr("세 가지 길, 하나의 모험")}</span></div>
     <RadioGroup value={String(classId)} onValueChange={v => setClassId(Number(v))} className="class-grid" aria-label={tr("직업 선택")}>{CLASSES.map((cls, i) => { const Icon = icons[i]; return <label htmlFor={`class-${i}`} className={'class-card ' + (classId === i ? 'selected' : '')} key={cls.id}><div className="class-card-top"><span>{tr(cls.en)}</span><RadioGroupItem value={String(i)} id={`class-${i}`} aria-label={tr(cls.name)}/></div><Portrait index={i} className="entry-portrait"/><div className="class-copy"><Icon size={18}/><h2>{tr(cls.name)}</h2><p>{tr(cls.role)}</p></div></label>; })}</RadioGroup>
     <div className="class-description"><span className="small-diamond">✦</span> {tr(CLASSES[classId].description)}</div>
-    <div className="entry-form"><label htmlFor="nickname"><span>02 <i />{tr(" 수호자의 이름")}</span><input id="nickname" maxLength={14} placeholder={tr("이름을 입력하세요 (2~14글자)")} value={name} onChange={e => setName(e.target.value)} onKeyDown={e => {
-                    if (e.key === 'Enter' && name.trim().length >= 2)
-                        void join();
-                }} autoComplete="off"/></label><button className="gold-button enter-button" disabled={boot || joining || !artReady || name.trim().length < 2} onClick={() => void join()}>{tr(boot ? '진행 정보 확인 중' : joining ? '세계에 연결 중' : !artReady ? '게임 아트 불러오는 중' : '모험 시작')}<Sparkles size={18}/></button></div>
+    <form className="entry-form" aria-label={tr("캐릭터 만들기")} onSubmit={e => { e.preventDefault(); if (!boot && artReady && !joining && name.trim().length >= 2) void join(); }}><label htmlFor="nickname"><span>02 <i />{tr(" 수호자의 이름")}</span><input id="nickname" maxLength={14} placeholder={tr("이름을 입력하세요 (2~14글자)")} value={name} onChange={e => setName(e.target.value)} onKeyDown={e => { if (e.key === 'Enter' && e.nativeEvent.isComposing) e.preventDefault(); }} autoComplete="off"/></label><button type="submit" className="gold-button enter-button" disabled={boot || joining || !artReady || name.trim().length < 2}>{tr(boot ? '진행 정보 확인 중' : joining ? '세계에 연결 중' : !artReady ? '게임 아트 불러오는 중' : '모험 시작')}<Sparkles size={18}/></button></form>
     {tr(error && <p className="error-line" role="alert">{tr(error)} <button onClick={() => location.reload()}>{tr("다시 시도")}</button></p>)}
    </section>}{tr(error && !creating && <p className="error-line" role="alert">{tr(error)}</p>)}{boot && <p>{tr("수호자를 불러오는 중…")}</p>}</div>
    <footer className="entry-bottom"><span><kbd>W A S D</kbd>{tr(" 이동 ")}<b /> <kbd>1 – 4</kbd>{tr(" 스킬 ")}<b /> <kbd>E</kbd>{tr(" 대화")}</span><span>{tr("오리지널 온라인 판타지 RPG")}</span></footer>
