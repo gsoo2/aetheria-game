@@ -11,6 +11,10 @@ const call=async(path,body,cookie)=>{const r=await fetch(app.url+path,{method:bo
 const waitFor=(predicate,timeout=4000)=>new Promise((resolve,reject)=>{const timer=setTimeout(()=>{socket.off('message',listener);reject(Error('Socket timeout'));},timeout);const listener=raw=>{const data=JSON.parse(raw);if(predicate(data)){clearTimeout(timer);socket.off('message',listener);resolve(data);}};socket.on('message',listener);});
 try{
  assert.equal((await call('/health')).data.backend,'realtime');
+ for(const path of ['/','/art/knight-motion.png']){
+  const head=await fetch(app.url+path,{method:'HEAD'});assert.equal(head.status,200);assert.equal(await head.text(),'');
+  const get=await fetch(app.url+path,{headers:{'Accept-Encoding':'gzip, br'}});assert.equal(get.status,200);assert.ok((await get.arrayBuffer()).byteLength>0);
+ }
  const create=await call('/api/account',{action:'create',name:'실시간서버검증',classId:0}),id=create.data.active,cookie=create.cookie;assert.ok(id);
  const stranger=await call('/api/account');assert.equal((await call('/api/game?characterId='+id,null,stranger.cookie)).data.needsCharacter,true);
  socket=new WebSocket(app.url.replace('http:','ws:')+'/api/socket?characterId='+id,{headers:{Cookie:cookie,Origin:app.url}});

@@ -2,6 +2,7 @@ import {createServer} from 'node:http';
 import {readFile,stat} from 'node:fs/promises';
 import {resolve,extname} from 'node:path';
 import {WebSocketServer,WebSocket} from 'ws';
+import {writeResponse,writeFailure} from './http-response.mjs';
 // Keep the existing Render start command while switching to the real game server.
 if(process.env.REALTIME_STORE_URL){await import('./server.mjs').then(async({launch})=>{const {remoteStore}=await import('./remote-store.mjs');const app=await launch({store:remoteStore(process.env.REALTIME_STORE_URL,process.env.REALTIME_STORE_TOKEN),token:process.env.GM_TOKEN});console.log('Aetheria realtime server ready');let stopped=false;const stop=async()=>{if(stopped)return;stopped=true;try{await app.close();process.exit(0);}catch{console.error('Final checkpoint failed');process.exit(1);}};process.on('SIGTERM',stop);process.on('SIGINT',stop);});}
 const upstream=new URL('https://aetheria-rpg.lemainwang.chatgpt.site');
@@ -19,13 +20,13 @@ export function start(port=Number(process.env.PORT||10000),host='0.0.0.0'){
    const out={'Content-Type':response.headers.get('content-type')||'application/json','Cache-Control':'no-store'};
    const cookies=response.headers.getSetCookie();if(cookies.length)out['Set-Cookie']=cookies;
    const location=response.headers.get('location');if(location){const target=new URL(location,upstream);out.Location=target.origin===upstream.origin?target.pathname+target.search:target.href;}
-   res.writeHead(response.status,out);res.end(Buffer.from(await response.arrayBuffer()));return;
+   await writeResponse(req,res,response,out);return;
   }
   if(!['GET','HEAD'].includes(req.method)){res.writeHead(405);res.end();return;}
   let path=resolve(root,'.'+decodeURIComponent(url.pathname));if(!path.startsWith(root+'/')&&path!==root){res.writeHead(403);res.end();return;}
   try{if(!(await stat(path)).isFile())path=resolve(root,'index.html');}catch{if(extname(path)){res.writeHead(404);res.end();return;}path=resolve(root,'index.html');}
   const data=await readFile(path);res.writeHead(200,{'Content-Type':types[extname(path)]||'application/octet-stream','Content-Length':data.length,'Cache-Control':path.endsWith('index.html')?'no-cache':'public,max-age=3600','X-Content-Type-Options':'nosniff'});res.end(req.method==='HEAD'?undefined:data);
- }catch(error){console.error('Gateway request failed:',error.message);if(!res.headersSent)res.writeHead(502);res.end('Game server temporarily unavailable');}});
+ }catch(error){console.error('Gateway request failed:',error.message);writeFailure(res,502,'Game server temporarily unavailable');}});
  const sockets=new WebSocketServer({noServer:true,maxPayload:4096});
  server.on('upgrade',(req,socket,head)=>{
   const url=new URL(req.url,'http://localhost');const origin=req.headers.origin;
