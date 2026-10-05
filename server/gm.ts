@@ -42,7 +42,7 @@ export function gmMutate(w: World, body: GmAction, now: number) {
     const next = structuredClone(p);
     let affected: string;
     switch (body.action) {
-        case 'setSkin': { const id=integer(body.cosmeticId,'스킨',-1,GM_SKINS.length-1);if(id===-1)delete next.gmSkin;else {next.gmSkin=id;next.animalSkins??=[];if(!next.animalSkins.includes(id))next.animalSkins.push(id);}affected=id===-1?'GM 스킨 해제':GM_SKINS[id].name+' 적용';break; }
+        case 'setSkin': { const id=integer(body.cosmeticId,'스킨',-1,8),skin=GM_SKINS.find(s=>s.id===id);if(id!==-1&&!skin)throw new Error('GM 전용 스킨을 선택하세요.');delete next.animalSkinId;if(id===-1)delete next.gmSkin;else {next.gmSkin=id;next.animalSkins??=[];if(!next.animalSkins.includes(id))next.animalSkins.push(id);}affected=id===-1?'GM 스킨 해제':skin!.name+' 적용';break; }
         case 'setTitle': { const id=integer(body.cosmeticId,'칭호',-1,GM_TITLES.length-1);if(id===-1)delete next.gmTitle;else next.gmTitle=GM_TITLES[id];affected=id===-1?'GM 칭호 해제':GM_TITLES[id]+' 적용';break; }
         case 'set': {
             const level = body.level === undefined ? next.level : integer(body.level, '레벨', 1, 50);
@@ -133,6 +133,7 @@ export function gmMutate(w: World, body: GmAction, now: number) {
     next.notice = 'GM: ' + affected;
     // Validate a clone first; commit one complete change and cancel stale trade proposals.
     if(next.gmSkin===undefined)delete p.gmSkin;
+    if(next.animalSkinId===undefined)delete p.animalSkinId;
     if(next.gmTitle===undefined)delete p.gmTitle;
     Object.assign(p, next);
     for (const trade of w.trades || [])

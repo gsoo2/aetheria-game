@@ -11,14 +11,14 @@ import {CASH_PRODUCTS,cashProductOwned} from '../shared/cash';
 import {ITEMS,MONSTERS,NPCS,ZONES,zoneScale} from '../shared/content';
 const now=1800000000000;
 function setup(){const w=createWorld(now),p=newPlayer('p','확인',0,now);w.players.p=p;p.cash=5000;return {w,p};}
-test('two gold skins and six cash skins enforce their purchase channels; legacy owners keep access',()=>{
- const {w,p}=setup();assert.equal(ANIMAL_SKINS.filter(s=>s.currency==='gold').length,2);assert.equal(ANIMAL_SKINS.filter(s=>s.currency==='cash').length,6);
+test('two gold skins and four cash skins enforce their purchase channels; legacy owners keep access',()=>{
+ const {w,p}=setup();assert.equal(ANIMAL_SKINS.filter(s=>s.currency==='gold').length,2);assert.equal(ANIMAL_SKINS.filter(s=>s.currency==='cash').length,4);
  p.gold=100000;applyInput(w,p,{seq:1,action:'animalBuy',value:2},now);assert.equal(p.animalSkinId,undefined);assert.equal(p.gold,100000);
- p.animalSkins=[2];cashInput(w,p,{action:'cashBuy',value:11},now);assert.equal(p.cash,5000);cashInput(w,p,{action:'cashEquip',value:11},now);assert.equal(p.animalSkinId,2);
+ p.animalSkins=[3];cashInput(w,p,{action:'cashBuy',value:12},now);assert.equal(p.cash,5000);cashInput(w,p,{action:'cashEquip',value:12},now);assert.equal(p.animalSkinId,3);
 });
 test('cash animal, wings, image titles and pets charge once, re-equip and appear in remote snapshots',()=>{
  const {w,p}=setup(),base=stats(p);const q=newPlayer('q','동료',1,now);w.players.q=q;
- for(const id of [10,16,19,22]){const product=CASH_PRODUCTS.find(x=>x.id===id)!;const before=p.cash!;cashInput(w,p,{action:'cashBuy',value:id},now);assert.equal(p.cash,before-product.price);assert.ok(cashProductOwned(p,product));cashInput(w,p,{action:'cashBuy',value:id},now);assert.equal(p.cash,before-product.price);cashInput(w,p,{action:'cashEquip',value:id},now);}
+ for(const id of [12,16,19,22]){const product=CASH_PRODUCTS.find(x=>x.id===id)!;const before=p.cash!;cashInput(w,p,{action:'cashBuy',value:id},now);assert.equal(p.cash,before-product.price);assert.ok(cashProductOwned(p,product));cashInput(w,p,{action:'cashBuy',value:id},now);assert.equal(p.cash,before-product.price);cashInput(w,p,{action:'cashEquip',value:id},now);}
  assert.deepEqual(stats(p),base);assert.equal(p.petId,3);assert.equal(p.wingId,0);assert.equal(p.titleBadgeId,0);assert.equal(snapshot(w,q,now).players[0].wingId,0);
  cashInput(w,p,{action:'wingUnequip'},now);assert.equal(p.wingId,undefined);cashInput(w,p,{action:'cashEquip',value:16},now);assert.equal(p.wingId,0);
  cashInput(w,p,{action:'cashEquip',value:-1},now);assert.equal(p.titleBadgeId,undefined);

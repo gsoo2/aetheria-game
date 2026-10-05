@@ -12,7 +12,7 @@ export const CASH_PRODUCTS = [
     { id: 7, name: '별가루 오로라', description: '보랏빛 별가루 숫자 데미지 스킨 · 능력치 변화 없음', price: 200, kind: 'damageSkin', value: 3, image: '' },
     { id: 8, name: '태양의 불꽃', description: '붉은 불꽃 숫자 데미지 스킨 · 능력치 변화 없음', price: 250, kind: 'damageSkin', value: 4, image: '' },
     { id: 9, name: '천상의 맹세', description: '은빛과 금빛의 숫자 데미지 스킨 · 능력치 변화 없음', price: 300, kind: 'damageSkin', value: 5, image: '' },
-    ...ANIMAL_SKINS.filter(s=>s.currency==='cash').map((s,i)=>({id:10+i,name:s.name,description:'영구 소장 · 동물 전신 변신과 걷기·공격·쓰러짐 모션',price:s.price,kind:'animalSkin' as const,value:s.id,image:''})),
+    ...ANIMAL_SKINS.filter(s=>[0,2,3,4,6,7].includes(s.id)).map((s,i)=>({id:10+i,name:s.name,description:'영구 소장 · 동물 전신 변신과 걷기·공격·쓰러짐 모션',price:s.price,kind:'animalSkin' as const,value:s.id,image:''})).filter(product=>!ANIMAL_SKINS.find(s=>s.id===product.value)?.gmOnly),
     ...WINGS.map((w,i)=>({id:16+i,name:w.name,description:'등에서 반짝이며 움직이는 영구 날개 · 능력치 변화 없음',price:w.price,kind:'wings' as const,value:w.id,image:''})),
     ...TITLE_BADGES.map((t,i)=>({id:19+i,name:t.name,description:'이름 위에 반짝이는 이미지 배지를 표시하는 영구 칭호',price:t.price,kind:'titleBadge' as const,value:t.id,image:''})),
     {id:22,name:'꿀빛 코기',description:'영구 동행 펫 · 전리품 줍기와 맡긴 포션 자동 회복',price:180,kind:'pet',value:3,image:''},

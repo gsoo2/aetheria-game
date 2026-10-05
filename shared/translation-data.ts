@@ -1,6 +1,6 @@
 // Hand-translated English and Japanese game copy, keyed by the original Korean.
 export const TRANSLATIONS:Record<string,readonly [string,string]> = {
- "레벨마다 숙련 포인트를 1 얻습니다. 스킬을 강화하면 피해가 12%씩 증가합니다. 레벨 5·10·20·35에 성장 스킬을 배울 수 있고, 20·30레벨 전직 시험을 완료하면 전직 스킬이 열립니다. 슬롯을 고른 후 원하는 스킬을 넣으세요.": ["Gain 1 mastery point per level. Each upgrade adds 12% damage. Growth skills unlock at levels 5, 10, 20 and 35. Complete promotion trials at levels 20 and 30 to unlock promotion skills. Choose a slot, then assign a skill.", "レベルごとに熟練ポイントを1獲得。強化ごとにダメージが12%増加します。成長スキルはレベル5・10・20・35、転職スキルはレベル20・30の試験後に解放されます。スロットを選んでスキルを設定してください。"],
+ "레벨마다 숙련 포인트를 1 얻습니다. 스킬을 강화하면 피해가 12%씩 증가합니다. 레벨 5·10·20·35에 성장 스킬을 배울 수 있고, 20·30레벨에 버튼을 눌러 전직하면 전직 스킬이 열립니다. 슬롯을 고른 후 원하는 스킬을 넣으세요.": ["Gain 1 mastery point per level. Each upgrade adds 12% damage. Growth skills unlock at levels 5, 10, 20 and 35. Click to promote at levels 20 and 30 to unlock promotion skills. Choose a slot, then assign a skill.", "レベルごとに熟練ポイントを1獲得。強化ごとにダメージが12%増加します。成長スキルはレベル5・10・20・35、転職スキルはレベル20・30で転職ボタンを押すと解放されます。スロットを選んでスキルを設定してください。"],
  "별빛이 부른 수호자": ["A guardian called by starlight", "星光に呼ばれた守護者"],
  "저는 별샘의 안내자 세라예요. 숲에서 별빛이 사라지고 있어요. 작은 한 걸음부터 함께 배워 볼까요?": ["I am Sera, your guide in Starspring. Starlight is fading from the forest. Shall we start with a small step?", "私は星泉の案内人セラです。森の星光が消えかけています。小さな一歩から、一緒に学びましょう。"],
  "튜토리얼을 마치면 별빛 여우가 모험에 함께해요.": ["Finish the tutorial to receive a Starlight Fox companion.", "チュートリアルを終えると星光キツネが仲間になります。"],

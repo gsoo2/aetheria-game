@@ -82,7 +82,7 @@ export function cashInput(w: World, p: Player, i: Input, now: number) {
             p.notice = product.name + ' 적용';
         }
         if (i.value === -1) {
-            delete p.cashTitle;delete p.titleBadgeId;
+            delete p.cashTitle;delete p.titleBadgeId;delete p.gmTitle;
             p.notice = '칭호 표시를 해제했습니다.';
         }
     }
