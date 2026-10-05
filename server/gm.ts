@@ -1,10 +1,12 @@
+import {GM_SKINS,GM_TITLES} from '../shared/gm-content';
 import { ITEMS } from '../shared/content';
 import { addXp, needXp, stats } from '../shared/progression';
 import type { Player, World } from '../shared/types';
 export type GmAction = {
     playerId: string;
     revision: number;
-    action: 'set' | 'addXp' | 'addGold' | 'addCash' | 'giveItem' | 'removeItem' | 'heal' | 'town' | 'kick' | 'ban' | 'unban';
+    cosmeticId?:number;
+    action: 'setSkin' | 'setTitle' | 'set' | 'addXp' | 'addGold' | 'addCash' | 'giveItem' | 'removeItem' | 'heal' | 'town' | 'kick' | 'ban' | 'unban';
     level?: number;
     xp?: number;
     gold?: number;
@@ -29,7 +31,7 @@ export type GmAudit = {
 export function integer(value: unknown, label: string, min: number, max: number): number { if (!Number.isSafeInteger(value) || Number(value) < min || Number(value) > max)
     throw new Error(label + ' 범위: ' + min + ' ~ ' + max); return Number(value); }
 export function gmSummary(p: Player, now: number) { return { id: p.id, name: p.name, classId: p.classId, level: p.level, xp: p.xp, gold: p.gold, cash: p.cash || 0, zone: p.zone, hp: p.hp, mp: p.mp, online: now - p.seen < 10000 && !p.gmBanned, seen: p.seen, revision: p.gmRevision || 0, banned: !!p.gmBanned, blockedUntil: p.gmBlockedUntil || 0 }; }
-export function gmDetail(p: Player, now: number) { return { ...gmSummary(p, now), inventory: p.inventory, equipment: p.equipment, potions: p.potions, manaPotions: p.manaPotions, promotionTier: p.promotionTier || 0, stats: stats(p), needXp: needXp(p.level), pets: p.pets || [], bubbleId: p.bubbleId || 0 }; }
+export function gmDetail(p: Player, now: number) { return { ...gmSummary(p, now), inventory: p.inventory, equipment: p.equipment, potions: p.potions, manaPotions: p.manaPotions, promotionTier: p.promotionTier || 0, stats: stats(p), needXp: needXp(p.level), pets: p.pets || [], gmSkin:p.gmSkin??-1,gmTitle:p.gmTitle||'', bubbleId: p.bubbleId || 0 }; }
 export function gmMutate(w: World, body: GmAction, now: number) {
     const p = w.players[body.playerId];
     if (!p)
@@ -40,6 +42,8 @@ export function gmMutate(w: World, body: GmAction, now: number) {
     const next = structuredClone(p);
     let affected: string;
     switch (body.action) {
+        case 'setSkin': { const id=integer(body.cosmeticId,'스킨',-1,GM_SKINS.length-1);if(id===-1)delete next.gmSkin;else next.gmSkin=id;affected=id===-1?'GM 스킨 해제':GM_SKINS[id].name+' 적용';break; }
+        case 'setTitle': { const id=integer(body.cosmeticId,'칭호',-1,GM_TITLES.length-1);if(id===-1)delete next.gmTitle;else next.gmTitle=GM_TITLES[id];affected=id===-1?'GM 칭호 해제':GM_TITLES[id]+' 적용';break; }
         case 'set': {
             const level = body.level === undefined ? next.level : integer(body.level, '레벨', 1, 50);
             if (body.xp !== undefined)
@@ -128,6 +132,8 @@ export function gmMutate(w: World, body: GmAction, now: number) {
     next.gmRevision = (p.gmRevision || 0) + 1;
     next.notice = 'GM: ' + affected;
     // Validate a clone first; commit one complete change and cancel stale trade proposals.
+    if(next.gmSkin===undefined)delete p.gmSkin;
+    if(next.gmTitle===undefined)delete p.gmTitle;
     Object.assign(p, next);
     for (const trade of w.trades || [])
         if (trade.a === p.id || trade.b === p.id) {

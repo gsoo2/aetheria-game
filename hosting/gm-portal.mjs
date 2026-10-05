@@ -4,8 +4,8 @@ import {writeResponse} from './http-response.mjs';
 const files={'/gm/':['index.html','text/html; charset=utf-8'],'/gm/gm.css':['gm.css','text/css; charset=utf-8'],'/gm/gm.js':['gm.js','text/javascript; charset=utf-8']};
 const routes={players:'GET',player:'GET',audit:'GET',backup:'GET',donations:'GET',settings:'POST',donation:'POST',action:'POST'};
 const digest=value=>createHash('sha256').update(value).digest();
-export function createGmPortal({mf,token,persist,clock=Date.now}){
- const sessions=new Map(),attempts=new Map(),expected=digest(token),age=8*60*60*1000;
+export function createGmPortal({mf,token,persist,clock=Date.now,loginCode=process.env.GM_LOGIN_CODE||token}){
+ const sessions=new Map(),attempts=new Map(),expected=digest(loginCode),age=8*60*60*1000;
  const json=(res,status,body,headers={})=>{res.writeHead(status,{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store',...headers});res.end(JSON.stringify(body));};
  async function body(req){let bytes=0,chunks=[];for await(const chunk of req){bytes+=chunk.length;if(bytes>4096)throw Error('요청이 너무 큽니다.');chunks.push(chunk);}return Buffer.concat(chunks);}
  return async(req,res,url)=>{

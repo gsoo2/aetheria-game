@@ -1,7 +1,4 @@
-var __defProp = Object.defineProperty;
-var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
-
-// ../shared/cash.ts
+// shared/cash.ts
 var CASH_PRODUCTS = [
   { id: 0, name: "\uCC9C\uACF5\uC758 \uC57D\uC18D", description: "\uAE08\uBE5B \uBCC4 \uBB38\uC591\uC758 \uD6C4\uC6D0 \uC804\uC6A9 \uB9D0\uD48D\uC120", price: 200, kind: "bubble", value: 12, image: "/bubbles/12.svg" },
   { id: 1, name: "\uBD89\uC740 \uC6D4\uC2DD", description: "\uBD89\uC740 \uBCF4\uC11D\uC744 \uD488\uC740 \uD6C4\uC6D0 \uC804\uC6A9 \uB9D0\uD48D\uC120", price: 250, kind: "bubble", value: 13, image: "/bubbles/13.svg" },
@@ -16,11 +13,10 @@ var CASH_PRODUCTS = [
 ];
 var DONATION_PACKS = [{ id: 0, won: 3e3, cash: 300 }, { id: 1, won: 5e3, cash: 500 }, { id: 2, won: 1e4, cash: 1e3 }];
 
-// ../server/cash.ts
+// server/cash.ts
 function cashSettings(w) {
   return w.shopSettings || { donationGuide: "", donationUrl: "" };
 }
-__name(cashSettings, "cashSettings");
 function cashInput(w, p, i, now) {
   if (i.action === "donationRequest") {
     const pack = DONATION_PACKS[Number(i.value)];
@@ -102,7 +98,6 @@ function cashInput(w, p, i, now) {
     }
   }
 }
-__name(cashInput, "cashInput");
 function configureCash(w, body) {
   if (typeof body.donationGuide !== "string" || typeof body.donationUrl !== "string")
     throw new Error("\uD6C4\uC6D0 \uC548\uB0B4\uB97C \uC785\uB825\uD558\uC138\uC694.");
@@ -115,7 +110,6 @@ function configureCash(w, body) {
   w.shopSettings = { donationGuide: guide, donationUrl: value };
   return w.shopSettings;
 }
-__name(configureCash, "configureCash");
 function approveDonation(w, body, now) {
   const d = w.donations?.find((d2) => d2.id === body.id);
   if (!d)
@@ -144,9 +138,16 @@ function approveDonation(w, body, now) {
   w.gmAudit = w.gmAudit.slice(-500);
   return d;
 }
-__name(approveDonation, "approveDonation");
 
-// ../shared/social.ts
+// shared/gm-content.ts
+var GM_SKINS = [
+  { id: 0, name: "\uBCC4\uBE5B \uD1A0\uB07C", color: "#f6c5ff", decoration: "rabbit" },
+  { id: 1, name: "\uC544\uAE30 \uACE0\uC591\uC774", color: "#ffe5b2", decoration: "cat" },
+  { id: 2, name: "\uAF2C\uB9C8 \uC655\uAD00", color: "#a6f4ec", decoration: "crown" }
+];
+var GM_TITLES = ["\uB9D0\uB791\uB9D0\uB791 \uC218\uD638\uC790", "\uBCC4\uC0D8\uC758 \uC544\uAE30 \uACE0\uC591\uC774", "\uD1A0\uB07C \uC655\uAD6D\uC758 \uCE5C\uAD6C", "\uAD6C\uB984 \uC704\uC758 \uB0AE\uC7A0", "\uBC18\uC9DD\uBC18\uC9DD \uC6B4\uC601\uC790", "\uC5D0\uD14C\uB9AC\uC544\uC758 \uC218\uD638 GM"];
+
+// shared/social.ts
 var BUBBLES = [
   ["\uBCC4\uC0D8", "\u2726", "#fff8e6", "#bfa578", 0],
   ["\uB2EC\uBE5B", "\u263E", "#eee9ff", "#a995dc", 120],
@@ -164,7 +165,7 @@ var BUBBLES = [
 var RAIDS = [{ zone: 25, name: "\uBCC4\uC758 \uD30C\uC218\uAFBC", level: 10, hp: 6500, atk: 18, xp: 500, gold: 350, sprite: 12, minutes: 8 }, { zone: 26, name: "\uC6D4\uC2DD\uC758 \uC2EC\uD310\uC790", level: 20, hp: 16e3, atk: 27, xp: 1400, gold: 800, sprite: 13, minutes: 10 }, { zone: 27, name: "\uCC9C\uACF5\uC758 \uAC70\uC2E0", level: 30, hp: 32e3, atk: 38, xp: 2600, gold: 1400, sprite: 10, minutes: 12 }];
 for (const [i, name, fill, border, glyph] of [[12, "\uCC9C\uACF5\uC758 \uC57D\uC18D", "#fff6de", "#b89655", "\u2726"], [13, "\uBD89\uC740 \uC6D4\uC2DD", "#391e31", "#e18a9d", "\u263E"], [14, "\uC624\uB85C\uB77C\uC758 \uD3B8\uC9C0", "#defafa", "#61b8b1", "\u2727"], [15, "\uC655\uC758 \uBCC4\uC790\uB9AC", "#2b2d48", "#e3c98b", "\u265B"]]) BUBBLES.push({ id: i, name, fill, border, glyph, price: 0, cashOnly: true });
 
-// ../shared/quest-story.ts
+// shared/quest-story.ts
 var CHAPTER_STORIES = [
   ["\uAEBC\uC838 \uAC00\uB294 \uBCC4\uC0D8", "\uC138\uB77C\uB294 \uBC24\uB9C8\uB2E4 \uB0AE\uC544\uC9C0\uB294 \uBCC4\uC0D8\uC758 \uC218\uC704\uB97C \uBCF4\uC5EC \uC8FC\uC5C8\uB2E4. \uCD08\uC6D0\uC758 \uC2AC\uB77C\uC784\uC774 \uC0BC\uD0A8 \uBE5B\uC744 \uB418\uCC3E\uC544 \uCCAB \uBD09\uC778\uC744 \uBC1D\uD600\uC57C \uD55C\uB2E4.", "\uC2AC\uB77C\uC784\uC5D0\uAC8C\uC11C \uB098\uC628 \uBE5B\uC774 \uC0D8\uC73C\uB85C \uB3CC\uC544\uC654\uB2E4. \uBB3C \uC704\uC5D0 \uC624\uB798\uB41C \uC232\uC758 \uBB38\uC591\uC774 \uB5A0\uC62C\uB790\uB2E4."],
   ["\uC232\uC774 \uC804\uD558\uB294 \uAE30\uC5B5", "\uBB38\uC591\uC744 \uB530\uB77C \uC232\uC5D0 \uB4E4\uC5B4\uC11C\uC790 \uBC84\uC12F\uB4E4\uC774 \uD478\uB978 \uD3EC\uC790\uB97C \uBFDC\uC5C8\uB2E4. \uD3EC\uC790\uC5D0 \uAC07\uD78C \uC218\uD638\uC790\uC758 \uAE30\uC5B5\uC744 \uD574\uBC29\uD558\uBA74 \uBD09\uC778\uC758 \uD589\uBC29\uC744 \uC54C \uC218 \uC788\uB2E4.", "\uC232\uC740 \uCCAB \uBCC4\uC870\uAC01\uC774 \uC720\uC801\uC758 \uBD89\uC740 \uB3CC \uC544\uB798 \uC7A0\uB4E4\uC5C8\uB2E4\uACE0 \uC18D\uC0AD\uC600\uB2E4. \uADF8\uB7EC\uB098 \uADF8 \uAE38\uC744 \uACE0\uBE14\uB9B0\uB4E4\uC774 \uB9C9\uACE0 \uC788\uB2E4."],
@@ -193,7 +194,7 @@ var CHAPTER_STORIES = [
   ["\uC5D0\uD14C\uB9AC\uC544\uC758 \uC0C8\uBCBD", "\uC2EC\uC7A5\uC5D0 \uAE43\uB4E0 \uC6D4\uC2DD\uC758 \uAD70\uC8FC\uB97C \uC4F0\uB7EC\uB728\uB9AC\uC790. \uBCC4\uC758 \uD798\uC740 \uD640\uB85C \uC9C0\uD0A4\uB294 \uD798\uC774 \uC544\uB2C8\uB77C \uD568\uAED8 \uC0B4\uC544\uAC08 \uB0B4\uC77C\uC744 \uB418\uCC3E\uB294 \uD798\uC774\uB2E4.", "\uC138 \uBCC4\uC870\uAC01\uC774 \uC5D0\uD14C\uB9AC\uC544\uC758 \uC2EC\uC7A5\uC73C\uB85C \uB3CC\uC544\uAC14\uB2E4. \uC232\uC5D0\uB294 \uC0C8\uC78E\uC774, \uBD81\uBC29\uC5D0\uB294 \uB530\uB73B\uD55C \uD587\uC0B4\uC774, \uBD88\uC758 \uB300\uB959\uC5D0\uB294 \uB9D1\uC740 \uBC14\uB78C\uC774 \uCC3E\uC544\uC654\uB2E4. \uC138\uB77C\uB294 \uC0C8\uB85C\uC6B4 \uC0C8\uBCBD\uC758 \uC218\uD638\uC790\uC778 \uB2F9\uC2E0\uC744 \uB9DE\uC558\uB2E4."]
 ];
 
-// ../shared/content.ts
+// shared/content.ts
 var WORLD = { w: 1800, h: 1200, speed: 210 };
 var CLASSES = [
   { id: 0, name: "\uBCC4\uBE5B \uAE30\uC0AC", en: "KNIGHT", role: "\uAC80\uACFC \uC218\uD638\uC758 \uD798", description: "\uB2E8\uB2E8\uD55C \uBC29\uC5B4\uC640 \uB113\uC740 \uAC80\uACA9\uC73C\uB85C \uC804\uC120\uC744 \uC9C0\uD0B5\uB2C8\uB2E4.", hp: 160, mp: 80, atk: 22, def: 7, color: "#92caff", skills: ["\uBE5B\uC758 \uAC80\uACA9", "\uD30C\uC1C4 \uC77C\uACA9", "\uBCC4\uBE5B \uD68C\uC624\uB9AC", "\uB3CC\uC9C4 \uBCA0\uAE30"], range: [135, 165, 220, 320], power: [1, 1.9, 1.5, 2.2], cost: [0, 12, 20, 25], cd: [650, 2500, 5e3, 6500] },
@@ -228,7 +229,7 @@ var regions = [
   ["\uC5D0\uD14C\uB9AC\uC544\uC758 \uC2EC\uC7A5", "\uC0C8\uB85C\uC6B4 \uC0C8\uBCBD\uC744 \uB418\uCC3E\uB294 \uCD5C\uC885 \uC131\uC18C", 49, 1, 7]
 ];
 var ZONES = regions.map(([name, sub, minLevel, biome, music], id) => ({ id, name, sub, minLevel, biome, music, level: id === 0 ? "SAFE" : `LV. ${minLevel}+`, filter: id === 0 ? "none" : biome === 1 ? "saturate(.85)" : biome === 2 ? "saturate(1.08)" : `hue-rotate(${id * 7 % 30}deg) brightness(${id === 4 ? 0.58 : id % 3 === 0 ? 0.8 : 1})`, types: id === 0 ? [] : id === 1 ? [0, 0, 1, 2, 3] : id === 2 ? [3, 4, 7, 8] : id === 3 ? [4, 5, 6, 8] : id >= 4 ? [5, 6, 7, 8, 9] : [0, 1, 2], color: biome === 1 ? "#b8e4ff" : biome === 2 ? "#f6b282" : "#a9dfbd", mapX: 12 + id % 5 * 18, mapY: 12 + Math.floor(id / 5) * 18 }));
-var portalsFor = /* @__PURE__ */ __name((zone) => {
+var portalsFor = (zone) => {
   if (ZONES[zone]?.raid) return [{ x: 900, y: 925, name: "\uBCC4\uC0D8 \uB9C8\uC744\uB85C", next: 0, target: 0 }];
   const exits = zone === 28 ? [{ x: 1450, y: 680, name: "\uB208\uAF43 \uD3C9\uC6D0", next: 1, target: 11 }, { x: 350, y: 680, name: "\uBCC4\uC0D8 \uB9C8\uC744", next: -1, target: 0 }] : zone === 29 ? [{ x: 1450, y: 680, name: "\uBD88\uC528 \uD611\uACE1", next: 1, target: 16 }, { x: 350, y: 680, name: "\uBCC4\uC0D8 \uB9C8\uC744", next: -1, target: 0 }] : [
     ...zone < 24 ? [{ x: 1530, y: 680, name: ZONES[zone + 1].name, next: 1, target: zone + 1 }] : [],
@@ -236,9 +237,9 @@ var portalsFor = /* @__PURE__ */ __name((zone) => {
     ...zone === 11 ? [{ x: 1100, y: 925, name: "\uC124\uC6D0 \uAD11\uC7A5", next: 0, target: 28 }] : zone === 16 ? [{ x: 1100, y: 925, name: "\uBD88\uC528 \uAD11\uC7A5", next: 0, target: 29 }] : []
   ];
   return [...exits, { x: 900, y: 925, name: "\uBCC4\uAE38 \uC774\uB3D9 \uAD6C\uC2AC", next: 0, target: -1 }];
-}, "portalsFor");
-var zoneScale = /* @__PURE__ */ __name((zone) => 1 + Math.max(0, ZONES[zone].minLevel - 7) * 0.16, "zoneScale");
-var isBoss = /* @__PURE__ */ __name((type) => type === 8 || type === 9, "isBoss");
+};
+var zoneScale = (zone) => 1 + Math.max(0, ZONES[zone].minLevel - 7) * 0.16;
+var isBoss = (type) => type === 8 || type === 9;
 var MONSTERS = [
   { name: "\uC774\uC2AC \uC2AC\uB77C\uC784", sprite: 4, hp: 48, atk: 5, xp: 22, gold: 9, speed: 58 },
   { name: "\uBB3C\uBC29\uC6B8 \uC2AC\uB77C\uC784", sprite: 5, hp: 65, atk: 7, xp: 28, gold: 12, speed: 65 },
@@ -252,7 +253,13 @@ var MONSTERS = [
   { name: "\uC6D4\uC2DD\uC758 \uAD70\uC8FC", sprite: 13, hp: 1800, atk: 42, xp: 700, gold: 350, speed: 48 },
   { name: "\uC774\uB07C \uAC11\uCDA9", sprite: 22, hp: 95, atk: 9, xp: 38, gold: 15, speed: 65 },
   { name: "\uC11C\uB9AC \uC815\uB839", sprite: 23, hp: 160, atk: 18, xp: 75, gold: 28, speed: 80 },
-  { name: "\uBD88\uC528 \uC5EC\uC6B0", sprite: 24, hp: 155, atk: 17, xp: 72, gold: 27, speed: 118 }
+  { name: "\uBD88\uC528 \uC5EC\uC6B0", sprite: 24, hp: 155, atk: 17, xp: 72, gold: 27, speed: 118 },
+  { name: "\uAF43\uC78E \uBC84\uC12F", sprite: 25, hp: 90, atk: 9, xp: 40, gold: 16, speed: 55 },
+  { name: "\uC218\uC815 \uAC8C", sprite: 26, hp: 200, atk: 20, xp: 95, gold: 35, speed: 62 },
+  { name: "\uB208\uAD6C\uB984 \uD1A0\uB07C", sprite: 27, hp: 135, atk: 14, xp: 68, gold: 25, speed: 110 },
+  { name: "\uC6A9\uC554 \uB2EC\uD33D\uC774", sprite: 28, hp: 240, atk: 23, xp: 105, gold: 42, speed: 42 },
+  { name: "\uBCC4\uBE5B \uD574\uD30C\uB9AC", sprite: 29, hp: 180, atk: 19, xp: 90, gold: 33, speed: 78 },
+  { name: "\uAC00\uC2DC \uC120\uC778\uC7A5", sprite: 30, hp: 210, atk: 22, xp: 98, gold: 38, speed: 48 }
 ];
 var ITEMS = Array.from({ length: 21 }, (_, i) => ({ id: i, name: [["\uC5EC\uD589\uC790\uC758 \uAC80", "\uBC14\uB78C\uC758 \uD65C", "\uC0C8\uBCBD\uC758 \uC9C0\uD321\uC774", "\uAC00\uC8FD \uAC11\uC637", "\uBCC4\uC870\uAC01 \uBC18\uC9C0", "\uC740\uBE5B \uC7A5\uAC80", "\uC232\uC758 \uC7A5\uAD81"], ["\uBE5B\uC744 \uD488\uC740 \uAC80", "\uC9C8\uD48D\uC758 \uD65C", "\uB2EC\uBE5B \uC9C0\uD321\uC774", "\uC218\uD638\uC790\uC758 \uAC11\uC637", "\uC774\uC2AC\uBE5B \uBC18\uC9C0", "\uC720\uC801\uC758 \uAC80", "\uC815\uB839\uC758 \uD65C"], ["\uC6D4\uC2DD\uC758 \uC131\uAC80", "\uBCC4\uC790\uB9AC \uD65C", "\uC2EC\uC5F0\uC758 \uC9C0\uD321\uC774", "\uCC9C\uC0C1\uC758 \uAC11\uC637", "\uC601\uC6D0\uC758 \uBC18\uC9C0", "\uD30C\uC218\uAFBC\uC758 \uAC80", "\uB2EC\uC758 \uD65C"]][Math.floor(i / 7)][i % 7], slot: i % 7 === 3 ? "armor" : i % 7 === 4 ? "ring" : "weapon", atk: i % 7 === 3 ? 0 : 3 + Math.floor(i / 7) * 8, def: i % 7 === 3 ? 4 + Math.floor(i / 7) * 5 : i % 7 === 4 ? 2 : 0, hp: i % 7 === 3 ? 15 + Math.floor(i / 7) * 20 : 0, rarity: Math.floor(i / 7), price: 40 + Math.floor(i / 7) * 110 }));
 for (let tier = 0; tier < 3; tier++) {
@@ -262,6 +269,7 @@ for (let tier = 0; tier < 3; tier++) {
     ITEMS.push({ id: ITEMS.length, name: prefix + " " + ["\uC7A5\uAC80", "\uC7A5\uAD81", "\uB9C8\uBC95\uBD09", "\uD749\uAC11", "\uC218\uD638 \uBC18\uC9C0", "\uC9D1\uC911 \uBC18\uC9C0"][kind], slot, classId: kind < 3 ? kind : void 0, minLevel: level, atk: kind < 3 ? 9 + tier * 9 : kind === 5 ? 5 + tier * 5 : 0, def: kind === 3 ? 7 + tier * 6 : kind === 4 ? 4 + tier * 3 : 0, hp: kind === 3 ? 35 + tier * 30 : kind === 4 ? 20 + tier * 20 : 0, rarity, price: 250 + tier * 650 + (kind === 3 ? 100 : 0) });
   }
 }
+for (const [kind, name] of ["\uBCC4\uBE5B \uD1A0\uB07C \uAC80", "\uACE0\uC591\uC774 \uBC1C\uBC14\uB2E5 \uD65C", "\uAD6C\uB984 \uC0AC\uD0D5 \uC9C0\uD321\uC774", "\uB9D0\uB791 \uAD6C\uB984 \uAC11\uC637", "\uAF2C\uB9C8 \uBCC4 \uBC18\uC9C0"].entries()) ITEMS.push({ id: ITEMS.length, name, slot: kind < 3 ? "weapon" : kind === 3 ? "armor" : "ring", classId: kind < 3 ? kind : void 0, atk: kind < 3 ? 35 : 0, def: kind === 3 ? 25 : kind === 4 ? 8 : 0, hp: kind === 3 ? 120 : kind === 4 ? 50 : 0, rarity: 2, price: 0, gmOnly: true });
 var QUESTS = [
   { id: 0, name: "\uCD08\uC6D0\uC758 \uC791\uC740 \uC18C\uB3D9", description: "\uC774\uC2AC\uBE5B \uCD08\uC6D0\uC5D0\uC11C \uC774\uC2AC \uC2AC\uB77C\uC784 5\uB9C8\uB9AC\uB97C \uCC98\uCE58\uD558\uC138\uC694.", monster: 0, count: 5, xp: 90, gold: 65 },
   { id: 1, name: "\uBC84\uC12F\uC758 \uC232", description: "\uC232 \uBC84\uC12F 4\uB9C8\uB9AC\uB97C \uCC98\uCE58\uD558\uC138\uC694.", monster: 2, count: 4, xp: 130, gold: 90 },
@@ -285,7 +293,7 @@ var NPCS = [
 ];
 var BLOCKS = [{ x: 80, y: 0, w: 1640, h: 110 }, { x: 0, y: 0, w: 160, h: 1200 }, { x: 1640, y: 0, w: 160, h: 1200 }, { x: 0, y: 1040, w: 1800, h: 160 }, { x: 1080, y: 215, w: 250, h: 140 }];
 var biomeBlocks = [[...BLOCKS, { x: 300, y: 255, w: 90, h: 65 }, { x: 1370, y: 330, w: 80, h: 95 }, { x: 290, y: 850, w: 80, h: 95 }], [{ x: 0, y: 0, w: 1800, h: 180 }, { x: 0, y: 0, w: 230, h: 1200 }, { x: 1570, y: 0, w: 230, h: 1200 }, { x: 0, y: 1010, w: 1800, h: 190 }], [{ x: 0, y: 0, w: 1800, h: 180 }, { x: 0, y: 0, w: 230, h: 1200 }, { x: 1570, y: 0, w: 230, h: 1200 }, { x: 0, y: 1010, w: 1800, h: 190 }]];
-var blocksFor = /* @__PURE__ */ __name((zone = 0) => ZONES[zone]?.raid || zone === 28 || zone === 29 ? [] : biomeBlocks[ZONES[zone]?.biome || 0], "blocksFor");
+var blocksFor = (zone = 0) => ZONES[zone]?.raid || zone === 28 || zone === 29 ? [] : biomeBlocks[ZONES[zone]?.biome || 0];
 var advanced = [
   { skills: ["\uBE5B\uC758 \uC131\uC5ED", "\uC720\uC131 \uB3CC\uACA9", "\uC218\uD638\uC790\uC758 \uC2EC\uD310", "\uCC9C\uC0C1\uC758 \uAC80\uBB34"], range: [260, 400, 500, 360], power: [2, 2.7, 3.5, 4.5], cost: [28, 32, 40, 50], cd: [8500, 1e4, 13e3, 18e3] },
   { skills: ["\uD3ED\uD48D\uC758 \uAE43", "\uC11C\uB9AC \uD654\uC0B4", "\uBCC4\uBE5B \uD3ED\uC6B0", "\uD3ED\uD48D\uC758 \uC2EC\uC7A5"], range: [460, 540, 550, 600], power: [2, 2.5, 3.4, 4.4], cost: [25, 30, 40, 48], cd: [8e3, 1e4, 13500, 18e3] },
@@ -311,8 +319,8 @@ CLASSES.forEach((c, i) => {
   c.cd.push(...promoted[i].cd);
 });
 var SKILL_LEVELS = [1, 1, 1, 1, 5, 10, 20, 35, 10, 10, 30, 30];
-var skillAvailable = /* @__PURE__ */ __name((p, i) => p.level >= SKILL_LEVELS[i] && (i < 8 || (p.promotionTier || 0) >= (i < 10 ? 1 : 2)), "skillAvailable");
-var skillUnlocked = /* @__PURE__ */ __name((p, i) => i < 4 || skillAvailable(p, i) && (p.skillRanks?.[i] || 0) > 0, "skillUnlocked");
+var skillAvailable = (p, i) => p.level >= SKILL_LEVELS[i] && (i < 8 || (p.promotionTier || 0) >= (i < 10 ? 1 : 2));
+var skillUnlocked = (p, i) => i < 4 || skillAvailable(p, i) && (p.skillRanks?.[i] || 0) > 0;
 ZONES.slice(5).forEach((z) => QUESTS.push({ id: QUESTS.length, name: `${z.name}\uC758 \uBCC4\uBE5B`, description: `${z.name}\uC5D0\uC11C ${MONSTERS[z.id % 5 === 4 ? 9 : 8].name} ${z.id % 5 === 4 ? 1 : 3}\uB9C8\uB9AC\uB97C \uCC98\uCE58\uD558\uACE0 \uC138\uB77C\uC5D0\uAC8C \uB3CC\uC544\uAC00\uC138\uC694.`, monster: z.id % 5 === 4 ? 9 : 8, count: z.id % 5 === 4 ? 1 : 3, xp: Math.round(70 * z.minLevel ** 1.45 * 0.55), gold: 100 + z.minLevel * 35, zone: z.id, minLevel: z.minLevel }));
 var groundContours = [
   [[225, 340], [260, 280], [310, 230], [480, 160], [655, 140], [830, 145], [940, 220], [1060, 220], [1095, 315], [1190, 380], [1290, 410], [1285, 500], [1360, 560], [1380, 650], [1280, 740], [1180, 805], [1040, 835], [930, 860], [830, 810], [735, 820], [615, 835], [520, 810], [475, 780], [365, 745], [315, 655], [245, 600], [195, 490]],
@@ -320,7 +328,7 @@ var groundContours = [
   [[180, 270], [420, 185], [650, 190], [900, 170], [1130, 210], [1370, 300], [1460, 420], [1490, 600], [1410, 750], [1220, 840], [1e3, 900], [760, 935], [510, 890], [335, 800], [200, 675], [155, 490]]
 ];
 var grounds = groundContours.map((points) => points.map(([x, y]) => ({ x: x * 1800 / 1536, y: y * 1200 / 1024 })));
-var groundFor = /* @__PURE__ */ __name((zone = 0) => ZONES[zone]?.raid || zone === 28 || zone === 29 ? [[340, 330], [650, 215], [1e3, 215], [1420, 330], [1550, 500], [1510, 780], [1280, 950], [1050, 1e3], [750, 1e3], [490, 940], [275, 760], [235, 520]].map(([x, y]) => ({ x, y })) : grounds[ZONES[zone]?.biome || 0], "groundFor");
+var groundFor = (zone = 0) => ZONES[zone]?.raid || zone === 28 || zone === 29 ? [[340, 330], [650, 215], [1e3, 215], [1420, 330], [1550, 500], [1510, 780], [1280, 950], [1050, 1e3], [750, 1e3], [490, 940], [275, 760], [235, 520]].map(([x, y]) => ({ x, y })) : grounds[ZONES[zone]?.biome || 0];
 var atlasLocations = [[18, 61], [23, 67], [20, 48], [30, 54], [36, 45], [31, 71], [28, 39], [36, 63], [41, 54], [40, 32], [43, 24], [52, 16], [60, 22], [55, 32], [66, 14], [70, 40], [76, 51], [84, 37], [87, 57], [79, 67], [51, 65], [48, 78], [61, 77], [60, 88], [49, 90]];
 ZONES.forEach((z, i) => {
   z.mapX = atlasLocations[i][0];
@@ -342,6 +350,10 @@ for (const zone of [17, 19, 22, 23]) ZONES[zone].music = 11;
 for (const z of ZONES) {
   if (z.safe || z.raid || z.id === 0) continue;
   z.types.push(z.biome === 1 ? 11 : z.biome === 2 ? 12 : 10);
+}
+for (const z of ZONES) {
+  if (z.safe || z.raid || z.id === 0) continue;
+  z.types.push(...z.biome === 1 ? [15, 17] : z.biome === 2 ? [16, 18] : [13, 14]);
 }
 if (!ZONES[2].types.includes(2)) ZONES[2].types.push(2);
 var mainZones = [1, 2, 3, 3, 4];
@@ -382,14 +394,13 @@ for (let level = 1; level <= 50; level++) {
   }
 }
 
-// ../shared/progression.ts
-var needXp = /* @__PURE__ */ __name((level) => Math.floor(180 * level ** 1.6), "needXp");
+// shared/progression.ts
+var needXp = (level) => Math.floor(180 * level ** 1.6);
 function stats(p) {
   const c = CLASSES[p.classId], tier = p.promotionTier || 0;
   const items = Object.values(p.equipment).filter((id) => id !== null && !!ITEMS[id]).map((id) => ITEMS[id]);
   return { hp: c.hp + tier * 35 + (p.level - 1) * 20 + items.reduce((n, i) => n + i.hp + (p.enhancements?.[i.id] || 0) * 3, 0), mp: c.mp + tier * 20 + (p.level - 1) * 8, atk: c.atk + tier * 8 + (p.level - 1) * 4 + items.reduce((n, i) => n + i.atk + (i.slot !== "armor" ? (p.enhancements?.[i.id] || 0) * 2 : 0), 0), def: c.def + tier * 4 + (p.level - 1) * 2 + items.reduce((n, i) => n + i.def + (p.enhancements?.[i.id] || 0), 0) };
 }
-__name(stats, "stats");
 function addXp(p, xp) {
   p.xp += xp;
   let leveled = false;
@@ -406,8 +417,7 @@ function addXp(p, xp) {
   }
   return leveled;
 }
-__name(addXp, "addXp");
-var skillPoints = /* @__PURE__ */ __name((p) => Math.max(0, p.level - 1 + (p.promotionTier || 0) * 2 - (p.skillRanks || []).reduce((a, b) => a + b, 0)), "skillPoints");
+var skillPoints = (p) => Math.max(0, p.level - 1 + (p.promotionTier || 0) * 2 - (p.skillRanks || []).reduce((a, b) => a + b, 0));
 function autoTrain(p, mode = p.autoSkillMode || 0) {
   if (![1, 2, 3].includes(mode)) return 0;
   p.skillRanks ??= Array(12).fill(0);
@@ -433,23 +443,19 @@ function autoTrain(p, mode = p.autoSkillMode || 0) {
   }
   return used;
 }
-__name(autoTrain, "autoTrain");
 
-// ../server/gm.ts
+// server/gm.ts
 function integer(value, label, min, max) {
   if (!Number.isSafeInteger(value) || Number(value) < min || Number(value) > max)
     throw new Error(label + " \uBC94\uC704: " + min + " ~ " + max);
   return Number(value);
 }
-__name(integer, "integer");
 function gmSummary(p, now) {
   return { id: p.id, name: p.name, classId: p.classId, level: p.level, xp: p.xp, gold: p.gold, cash: p.cash || 0, zone: p.zone, hp: p.hp, mp: p.mp, online: now - p.seen < 1e4 && !p.gmBanned, seen: p.seen, revision: p.gmRevision || 0, banned: !!p.gmBanned, blockedUntil: p.gmBlockedUntil || 0 };
 }
-__name(gmSummary, "gmSummary");
 function gmDetail(p, now) {
-  return { ...gmSummary(p, now), inventory: p.inventory, equipment: p.equipment, potions: p.potions, manaPotions: p.manaPotions, promotionTier: p.promotionTier || 0, stats: stats(p), needXp: needXp(p.level), pets: p.pets || [], bubbleId: p.bubbleId || 0 };
+  return { ...gmSummary(p, now), inventory: p.inventory, equipment: p.equipment, potions: p.potions, manaPotions: p.manaPotions, promotionTier: p.promotionTier || 0, stats: stats(p), needXp: needXp(p.level), pets: p.pets || [], gmSkin: p.gmSkin ?? -1, gmTitle: p.gmTitle || "", bubbleId: p.bubbleId || 0 };
 }
-__name(gmDetail, "gmDetail");
 function gmMutate(w, body, now) {
   const p = w.players[body.playerId];
   if (!p)
@@ -460,6 +466,20 @@ function gmMutate(w, body, now) {
   const next = structuredClone(p);
   let affected;
   switch (body.action) {
+    case "setSkin": {
+      const id = integer(body.cosmeticId, "\uC2A4\uD0A8", -1, GM_SKINS.length - 1);
+      if (id === -1) delete next.gmSkin;
+      else next.gmSkin = id;
+      affected = id === -1 ? "GM \uC2A4\uD0A8 \uD574\uC81C" : GM_SKINS[id].name + " \uC801\uC6A9";
+      break;
+    }
+    case "setTitle": {
+      const id = integer(body.cosmeticId, "\uCE6D\uD638", -1, GM_TITLES.length - 1);
+      if (id === -1) delete next.gmTitle;
+      else next.gmTitle = GM_TITLES[id];
+      affected = id === -1 ? "GM \uCE6D\uD638 \uD574\uC81C" : GM_TITLES[id] + " \uC801\uC6A9";
+      break;
+    }
     case "set": {
       const level = body.level === void 0 ? next.level : integer(body.level, "\uB808\uBCA8", 1, 50);
       if (body.xp !== void 0)
@@ -549,6 +569,8 @@ function gmMutate(w, body, now) {
   next.mp = Math.max(0, Math.min(next.mp, s.mp));
   next.gmRevision = (p.gmRevision || 0) + 1;
   next.notice = "GM: " + affected;
+  if (next.gmSkin === void 0) delete p.gmSkin;
+  if (next.gmTitle === void 0) delete p.gmTitle;
   Object.assign(p, next);
   for (const trade of w.trades || [])
     if (trade.a === p.id || trade.b === p.id) {
@@ -562,7 +584,6 @@ function gmMutate(w, body, now) {
   w.gmAudit = w.gmAudit.slice(-500);
   return gmDetail(p, now);
 }
-__name(gmMutate, "gmMutate");
 async function gmAuthorized(header, secret) {
   if (!secret || secret.length < 32 || !header?.startsWith("Bearer "))
     return false;
@@ -576,23 +597,20 @@ async function gmAuthorized(header, secret) {
     diff |= aa[i] ^ bb[i];
   return diff === 0;
 }
-__name(gmAuthorized, "gmAuthorized");
 
-// ../shared/quests.ts
-var questKind = /* @__PURE__ */ __name((q) => q.kind || "main", "questKind");
+// shared/quests.ts
+var questKind = (q) => q.kind || "main";
 function questAvailable(p, q) {
   return !p.done.includes(q.id) && p.level >= (q.minLevel || 1) && (p.quests[q.id] !== void 0 || q.previous === void 0 || p.done.includes(q.previous));
 }
-__name(questAvailable, "questAvailable");
 function canAcceptQuest(p, q) {
   if (!questAvailable(p, q)) return false;
   if (p.quests[q.id] !== void 0) return true;
   const kind = questKind(q), active = QUESTS.filter((x) => questKind(x) === kind && p.quests[x.id] !== void 0).length;
   return active < (kind === "main" ? 1 : 2);
 }
-__name(canAcceptQuest, "canAcceptQuest");
 
-// ../shared/workshop.ts
+// shared/workshop.ts
 var RECIPES = [
   { name: "\uC0DD\uBA85 \uBB3C\uC57D \xD75", gold: 25, cost: [0, 0, 3], kind: "hp" },
   { name: "\uB9C8\uB098 \uBB3C\uC57D \xD75", gold: 25, cost: [0, 2, 2], kind: "mp" },
@@ -600,7 +618,7 @@ var RECIPES = [
   { name: "\uC9C1\uC5C5\uBCC4 \uD76C\uADC0 \uBB34\uAE30", gold: 180, cost: [12, 8, 0], kind: "weapon" }
 ];
 
-// ../server/workshop.ts
+// server/workshop.ts
 function workshopInput(w, p, input) {
   const service = { enhance: "forge", salvage: "materials", craft: "alchemy", materialBuy: "materials", store: "storage", withdraw: "storage" }[input.action || ""];
   if (!service) return;
@@ -674,6 +692,10 @@ function workshopInput(w, p, input) {
     p.notice = "\uC544\uC774\uD15C\uC744 \uB2E4\uC2DC \uC120\uD0DD\uD558\uC138\uC694.";
     return;
   }
+  if (ITEMS[id]?.gmOnly && input.action === "salvage") {
+    p.notice = "GM \uC804\uC6A9 \uC7A5\uBE44\uB294 \uBD84\uD574\uD560 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4.";
+    return;
+  }
   if (input.action === "withdraw") {
     if (p.inventory.length >= 60) {
       p.notice = "\uAC00\uBC29\uC774 \uAC00\uB4DD \uCC3C\uC2B5\uB2C8\uB2E4.";
@@ -704,14 +726,13 @@ function workshopInput(w, p, input) {
   }
   p.notice = input.action === "salvage" ? "\uC7A5\uBE44\uB97C \uBD84\uD574\uD574 \uC7AC\uB8CC\uB97C \uC5BB\uC5C8\uC2B5\uB2C8\uB2E4." : "\uCC3D\uACE0 \uC774\uB3D9 \uC644\uB8CC";
 }
-__name(workshopInput, "workshopInput");
 
-// ../shared/beginner.ts
-var beginnerProtected = /* @__PURE__ */ __name((p) => p.level <= 20 && !(p.promotionTier || 0) && !ZONES[p.zone]?.raid, "beginnerProtected");
+// shared/beginner.ts
+var beginnerProtected = (p) => p.level <= 20 && !(p.promotionTier || 0) && !ZONES[p.zone]?.raid;
 
-// ../shared/tutorial.ts
-var tutorialKills = /* @__PURE__ */ __name((p) => Object.values(p.kills).reduce((n, k) => n + k, 0), "tutorialKills");
-var tutorialState = /* @__PURE__ */ __name((p) => ({ stage: 0, moved: 0, usedSkill: false, killStart: tutorialKills(p), completed: false }), "tutorialState");
+// shared/tutorial.ts
+var tutorialKills = (p) => Object.values(p.kills).reduce((n, k) => n + k, 0);
+var tutorialState = (p) => ({ stage: 0, moved: 0, usedSkill: false, killStart: tutorialKills(p), completed: false });
 function tutorialReady(p) {
   const t = p.tutorial;
   if (!t || t.completed) return false;
@@ -734,9 +755,8 @@ function tutorialReady(p) {
       return false;
   }
 }
-__name(tutorialReady, "tutorialReady");
 
-// ../server/tutorial.ts
+// server/tutorial.ts
 function tutorialInput(w, p, i, now) {
   if (i.action === "tutorialStart" && !p.tutorial) p.tutorial = tutorialState(p);
   if (i.action !== "tutorialNext" || !tutorialReady(p)) return;
@@ -754,9 +774,8 @@ function tutorialInput(w, p, i, now) {
   if (t.stage === 4 && addXp(p, 180)) w.events.push({ id: crypto.randomUUID(), time: now, zone: p.zone, x: p.x, y: p.y, kind: "level", value: p.level, color: "#ffe8a3", source: p.id });
   t.stage++;
 }
-__name(tutorialInput, "tutorialInput");
 
-// ../shared/damage-skins.ts
+// shared/damage-skins.ts
 var DAMAGE_SKINS = [
   { id: 0, name: "\uAE30\uBCF8", currency: "free", price: 0 },
   { id: 1, name: "\uD669\uAE08 \uBCC4\uBE5B", currency: "gold", price: 600 },
@@ -766,7 +785,7 @@ var DAMAGE_SKINS = [
   { id: 5, name: "\uCC9C\uC0C1\uC758 \uB9F9\uC138", currency: "cash", price: 300 }
 ];
 
-// ../server/damage-skins.ts
+// server/damage-skins.ts
 function damageSkinInput(p, i) {
   const skin = DAMAGE_SKINS.find((s) => s.id === i.value);
   if (!skin) return;
@@ -787,14 +806,12 @@ function damageSkinInput(p, i) {
     p.notice = "\uB370\uBBF8\uC9C0 \uC2A4\uD0A8 \uC801\uC6A9";
   }
 }
-__name(damageSkinInput, "damageSkinInput");
 
-// ../shared/physics.ts
-var distance = /* @__PURE__ */ __name((a, b) => Math.hypot(a.x - b.x, a.y - b.y), "distance");
+// shared/physics.ts
+var distance = (a, b) => Math.hypot(a.x - b.x, a.y - b.y);
 function movable(x, y, zone = 0) {
   return x > 180 && x < 1620 && y > 140 && y < 1020 && onGround(x, y, zone) && !blocksFor(zone).some((b) => x > b.x - 15 && x < b.x + b.w + 15 && y > b.y - 15 && y < b.y + b.h + 15);
 }
-__name(movable, "movable");
 function clearSight(a, b) {
   const steps = Math.ceil(distance(a, b) / 12);
   for (let i = 1; i <= steps; i++) {
@@ -803,7 +820,6 @@ function clearSight(a, b) {
   }
   return true;
 }
-__name(clearSight, "clearSight");
 function sweepMove(a, dx, dy) {
   const steps = Math.max(1, Math.ceil(Math.hypot(dx, dy) / 10));
   for (let i = 0; i < steps; i++) {
@@ -812,22 +828,18 @@ function sweepMove(a, dx, dy) {
     if (movable(a.x, y, a.zone || 0)) a.y = y;
   }
 }
-__name(sweepMove, "sweepMove");
 function aimDirection(p, aim) {
   const d = distance(p, aim);
   return d > 0.1 ? { x: (aim.x - p.x) / d, y: (aim.y - p.y) / d } : { x: p.face || 1, y: 0 };
 }
-__name(aimDirection, "aimDirection");
 function inCone(p, target, aim, cosine = -0.2) {
   const dir = aimDirection(p, aim), d = distance(p, target);
   return d < 1 || ((target.x - p.x) * dir.x + (target.y - p.y) * dir.y) / d >= cosine;
 }
-__name(inCone, "inCone");
 function lineDistance(p, target, aim) {
   const dir = aimDirection(p, aim);
   return { along: (target.x - p.x) * dir.x + (target.y - p.y) * dir.y, across: Math.abs((target.x - p.x) * dir.y - (target.y - p.y) * dir.x) };
 }
-__name(lineDistance, "lineDistance");
 function onGround(x, y, zone) {
   const points = groundFor(zone);
   let inside = false;
@@ -839,13 +851,11 @@ function onGround(x, y, zone) {
   }
   return inside;
 }
-__name(onGround, "onGround");
 
-// ../server/social.ts
+// server/social.ts
 function tradeFor(w, id) {
   return w.trades?.find((t) => t.a === id || t.b === id);
 }
-__name(tradeFor, "tradeFor");
 function expireTrades(w, now) {
   w.trades = (w.trades || []).filter((t) => {
     const a = w.players[t.a], b = w.players[t.b];
@@ -859,7 +869,6 @@ function expireTrades(w, now) {
     return valid;
   });
 }
-__name(expireTrades, "expireTrades");
 function socialInput(w, p, i, now) {
   if (i.action === "bubbleBuy" || i.action === "bubbleEquip") {
     const b2 = BUBBLES[Number(i.value)];
@@ -905,9 +914,9 @@ function socialInput(w, p, i, now) {
   const t = tradeFor(w, p.id);
   if (!t || t.id !== i.tradeId)
     return;
-  const cancel = /* @__PURE__ */ __name(() => {
+  const cancel = () => {
     w.trades = w.trades.filter((a2) => a2.id !== t.id);
-  }, "cancel");
+  };
   if (i.action === "tradeCancel") {
     cancel();
     return;
@@ -921,7 +930,7 @@ function socialInput(w, p, i, now) {
     return;
   if (i.action === "tradeOffer") {
     const indices = i.indices || [], gold = i.gold ?? 0;
-    if (!Array.isArray(indices) || indices.length > 12 || new Set(indices).size !== indices.length || !Number.isSafeInteger(gold) || gold < 0 || gold > p.gold || indices.some((n) => !Number.isSafeInteger(n) || n < 0 || n >= p.inventory.length || Object.values(p.equipment).includes(p.inventory[n]))) {
+    if (!Array.isArray(indices) || indices.length > 12 || new Set(indices).size !== indices.length || !Number.isSafeInteger(gold) || gold < 0 || gold > p.gold || indices.some((n) => !Number.isSafeInteger(n) || n < 0 || n >= p.inventory.length || Object.values(p.equipment).includes(p.inventory[n]) || ITEMS[p.inventory[n]]?.gmOnly)) {
       p.notice = "\uC81C\uC548\uD560 \uC544\uC774\uD15C\uACFC \uACE8\uB4DC\uB97C \uD655\uC778\uD558\uC138\uC694. \uC7A5\uCC29\uD55C \uC7A5\uBE44\uB294 \uAC70\uB798\uD560 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4.";
       return;
     }
@@ -935,7 +944,7 @@ function socialInput(w, p, i, now) {
   if (i.action !== "tradeConfirm" || i.revision !== t.revision)
     return;
   const a = w.players[t.a], b = w.players[t.b], ao = t.offers[t.a], bo = t.offers[t.b];
-  const valid = /* @__PURE__ */ __name((player, o) => player.gold >= o.gold && o.indices.every((index, n) => player.inventory[index] === o.items[n] && !Object.values(player.equipment).includes(o.items[n])), "valid");
+  const valid = (player, o) => player.gold >= o.gold && o.indices.every((index, n) => player.inventory[index] === o.items[n] && !Object.values(player.equipment).includes(o.items[n]));
   if (!valid(a, ao) || !valid(b, bo) || a.inventory.length - ao.items.length + bo.items.length > 60 || b.inventory.length - bo.items.length + ao.items.length > 60) {
     for (const o of Object.values(t.offers))
       o.confirmed = false;
@@ -953,9 +962,8 @@ function socialInput(w, p, i, now) {
   a.notice = b.notice = "\uAC70\uB798\uAC00 \uC644\uB8CC\uB418\uC5C8\uC2B5\uB2C8\uB2E4.";
   cancel();
 }
-__name(socialInput, "socialInput");
 
-// ../server/raids.ts
+// server/raids.ts
 function enterRaid(w, p, value, now) {
   const r = RAIDS[value];
   if (!r || p.level < r.level) {
@@ -996,7 +1004,6 @@ function enterRaid(w, p, value, now) {
   p.mp = s.mp;
   p.notice = r.name + " \uB808\uC774\uB4DC \uC2DC\uC791! \uBD89\uC740 \uACBD\uACE0 \uBC94\uC704\uB97C \uD53C\uD558\uC138\uC694.";
 }
-__name(enterRaid, "enterRaid");
 function tickRaids(w, now) {
   for (const b of w.raids || []) {
     if (b.status !== "fight")
@@ -1015,13 +1022,12 @@ function tickRaids(w, now) {
     }
   }
 }
-__name(tickRaids, "tickRaids");
 
-// ../shared/pets.ts
+// shared/pets.ts
 var PETS = [{ id: 0, name: "\uBCC4\uBE5B \uC5EC\uC6B0", description: "\uC791\uC740 \uBC1C\uAC78\uC74C\uC73C\uB85C \uBAA8\uD5D8\uC744 \uD568\uAED8\uD558\uB294 \uC5EC\uC6B0", price: 500 }, { id: 1, name: "\uB2EC\uBE5B \uBD80\uC5C9\uC774", description: "\uBCC4\uAC00\uB8E8 \uB0A0\uAC1C\uB85C \uACC1\uC744 \uC9C0\uD0A4\uB294 \uBD80\uC5C9\uC774", price: 800 }, { id: 2, name: "\uAD6C\uB984 \uACE0\uC591\uC774", description: "\uBC18\uC9DD\uC774\uB294 \uBAA9\uAC78\uC774\uB97C \uB2E8 \uD638\uAE30\uC2EC \uB9CE\uC740 \uACE0\uC591\uC774", price: 1200 }];
 var PET_PICKUP_RADIUS = 180;
 
-// ../server/loot.ts
+// server/loot.ts
 function collectLoot(w, p, now, radius) {
   let count = 0;
   const picked = /* @__PURE__ */ new Set();
@@ -1050,16 +1056,15 @@ function collectLoot(w, p, now, radius) {
   w.loot = w.loot.filter((l) => !picked.has(l.id));
   return count;
 }
-__name(collectLoot, "collectLoot");
 
-// ../shared/promotion.ts
+// shared/promotion.ts
 var PROMOTION_NAMES = [["\uD0DC\uC591\uC758 \uC218\uD638\uAE30\uC0AC", "\uCC9C\uC0C1\uC758 \uC131\uAE30\uC0AC"], ["\uD3ED\uD48D\uC758 \uCD94\uC801\uC790", "\uCC9C\uAD81\uC758 \uC21C\uCC30\uC790"], ["\uB2EC\uC758 \uD604\uC790", "\uBCC4\uC790\uB9AC \uB300\uB9C8\uB3C4\uC0AC"]];
 var PROMOTION_TRIALS = [
   { tier: 1, level: 20, name: "\uCCAB \uBC88\uC9F8 \uBCC4\uC758 \uB9F9\uC138", zone: 2, monster: 4, count: 10, bossZone: 3, boss: 8, bossCount: 1, story: "\uBCC4\uBE5B\uC740 \uD798\uB9CC\uC73C\uB85C \uAE68\uC5B4\uB098\uC9C0 \uC54A\uC544\uC694. \uC232\uAE38\uC758 \uACE0\uBE14\uB9B0\uC744 \uBB3C\uB9AC\uCE58\uACE0 \uC720\uC801\uC758 \uBD89\uC740 \uD30C\uC218\uAFBC\uC744 \uB118\uC5B4, \uC218\uD638\uC790\uC758 \uB9F9\uC138\uB97C \uC99D\uBA85\uD574 \uC8FC\uC138\uC694." },
   { tier: 2, level: 30, name: "\uCC9C\uC0C1\uC758 \uBCC4\uC744 \uACC4\uC2B9\uD558\uB2E4", zone: 16, monster: 6, count: 15, bossZone: 16, boss: 8, bossCount: 2, story: "\uBD88\uC528 \uD611\uACE1\uC758 \uACE0\uB300 \uACE8\uB818\uACFC \uBD89\uC740 \uD30C\uC218\uAFBC\uC744 \uB118\uC5B4\uC57C \uB9C8\uC9C0\uB9C9 \uBCC4\uC758 \uD798\uC744 \uC774\uC5B4\uBC1B\uC744 \uC218 \uC788\uC5B4\uC694. \uCC9C\uC0C1\uC758 \uAE38\uC740 \uC900\uBE44\uB41C \uC218\uD638\uC790\uC5D0\uAC8C\uB9CC \uC5F4\uB9AC\uC9C0\uC694." }
 ];
 
-// ../shared/skills.ts
+// shared/skills.ts
 var SKILL_SPECS = [
   [
     { shape: "cone", description: "\uC804\uBC29\uC744 \uBCA0\uB294 3\uC5F0\uC18D \uAC80\uACA9. \uC138 \uBC88\uC9F8 \uAC80\uACA9\uC740 \uB354 \uAC15\uD55C \uD53C\uD574\uB97C \uC90D\uB2C8\uB2E4.", effect: "3\uD0C0 \uCF64\uBCF4 \xB7 \uC804\uBC29 \uAC80\uACA9" },
@@ -1103,11 +1108,10 @@ SKILL_SPECS[0].push({ shape: "circle", effect: "\uD0DC\uC591 \uBC29\uBCBD \xB7 \
 SKILL_SPECS[1].push({ shape: "cone", effect: "\uD3ED\uD48D \xB7 \uD68C\uD53C", description: "\uD3ED\uD48D \uC0AC\uACA9\uACFC \uD568\uAED8 0.7\uCD08\uAC04 \uBB34\uC801\uC744 \uC5BB\uC2B5\uB2C8\uB2E4.", invulnerable: 700 }, { shape: "line", effect: "\uBD88\uC0AC\uC870 \xB7 \uD654\uC0C1", description: "\uBD88\uC0AC\uC870 \uD654\uC0B4\uC774 \uC9C1\uC120\uC0C1\uC758 \uC801\uC744 \uAD00\uD1B5\uD558\uACE0 4\uCD08\uAC04 \uBD88\uD0DC\uC6C1\uB2C8\uB2E4.", burn: 4e3 }, { shape: "cone", effect: "\uCC9C\uAD81 \xB7 \uB2E4\uC911 \uD45C\uC801", description: "\uC804\uBC29\uC5D0 \uAC15\uB825\uD55C \uCC9C\uC0C1\uC758 \uD654\uC0B4\uC744 \uD37C\uBD93\uC2B5\uB2C8\uB2E4." }, { shape: "meteor", effect: "\uBCC4\uBE5B \uC0AC\uB0E5 \xB7 \uBE59\uACB0", description: "\uBCC4\uBE5B \uD654\uC0B4\uBE44\uAC00 \uB113\uC740 \uBC94\uC704\uC5D0 \uB5A8\uC5B4\uC838 \uC801\uC744 \uC5BC\uB9BD\uB2C8\uB2E4.", radius: 215, freeze: 1800 });
 SKILL_SPECS[2].push({ shape: "circle", effect: "\uB2EC\uC758 \uAC00\uD638 \xB7 \uD761\uD608", description: "\uB2EC\uBE5B \uD30C\uB3D9\uC73C\uB85C \uC0DD\uBA85\uB825\uC744 \uD761\uC218\uD558\uACE0 0.6\uCD08\uAC04 \uBB34\uC801\uC744 \uC5BB\uC2B5\uB2C8\uB2E4.", lifeSteal: 0.3, invulnerable: 600 }, { shape: "meteor", effect: "\uC740\uD558 \uD61C\uC131 \xB7 \uD654\uC0C1", description: "\uC740\uD558\uC758 \uD61C\uC131\uC73C\uB85C \uB113\uC740 \uBC94\uC704\uB97C \uD0DC\uC6C1\uB2C8\uB2E4.", radius: 195, burn: 4e3 }, { shape: "circle", effect: "\uC2DC\uAC04\uC758 \uC11C\uB9AC \xB7 \uBE59\uACB0", description: "\uC8FC\uBCC0 \uC801\uC758 \uC2DC\uAC04\uC744 \uBA48\uCD94\uB4EF 2.5\uCD08\uAC04 \uC5BC\uB9BD\uB2C8\uB2E4.", freeze: 2500 }, { shape: "meteor", effect: "\uC6B0\uC8FC\uC758 \uD0C4\uC0DD", description: "\uAC70\uB300\uD55C \uBCC4\uC758 \uD3ED\uBC1C\uB85C \uB113\uC740 \uBC94\uC704\uC5D0 \uD53C\uD574\uC640 \uAE30\uC808\uC744 \uC90D\uB2C8\uB2E4.", radius: 245, stun: 1800 });
 
-// ../server/combat.ts
+// server/combat.ts
 function emit(w, p, now, kind, value, color, extra = {}) {
   w.events.push({ id: crypto.randomUUID(), time: now, zone: p.zone, x: p.x, y: p.y, kind, value, color, ...extra });
 }
-__name(emit, "emit");
 function killMonster(w, m, p, now) {
   if (ZONES[m.zone]?.raid) {
     const b = w.raids?.find((b2) => b2.zone === m.zone), r = RAIDS[m.zone - 25];
@@ -1154,7 +1158,6 @@ function killMonster(w, m, p, now) {
   w.loot.push({ id: crypto.randomUUID(), owner: p.id, zone: m.zone, x: m.x, y: m.y, gold: Math.round(md.gold * zoneScale(m.zone)), item, potion: Math.random() < 0.35, expires: now + 6e4 });
   emit(w, m, now, "death", 0, "#b7ecd9");
 }
-__name(killMonster, "killMonster");
 function damageMonster(w, m, p, damage, now, critical = false, effect) {
   if (m.hp <= 0) return;
   damage = Math.max(1, Math.round(damage * (beginnerProtected(p) ? 1.6 : 1)));
@@ -1167,7 +1170,6 @@ function damageMonster(w, m, p, damage, now, critical = false, effect) {
   emit(w, m, now, "hit", damage, critical ? "#ffe7a4" : effect === "burn" ? "#ffb072" : "#fff5e0", { critical, effect, source: p.id, damageSkinId: p.damageSkinId || 0 });
   if (m.hp <= 0) killMonster(w, m, p, now);
 }
-__name(damageMonster, "damageMonster");
 function hurtPlayer(w, p, damage, now) {
   if (p.hp <= 0 || (p.dodgeUntil || 0) > now) return;
   const maxHp = stats(p).hp;
@@ -1181,7 +1183,6 @@ function hurtPlayer(w, p, damage, now) {
   emit(w, p, now, "hit", value, "#ff8e87", { source: p.id, effect: "player-hurt" });
   if (p.hp <= 0) p.notice = "\uC4F0\uB7EC\uC84C\uC2B5\uB2C8\uB2E4. \uBCC4\uC0D8 \uB9C8\uC744\uC5D0\uC11C \uB2E4\uC2DC \uC77C\uC5B4\uB0A0 \uC218 \uC788\uC2B5\uB2C8\uB2E4.";
 }
-__name(hurtPlayer, "hurtPlayer");
 function applyStatus(m, p, skill, now) {
   const spec = SKILL_SPECS[p.classId][skill], rank = p.skillRanks?.[skill] || 0;
   if (spec.burn) {
@@ -1195,7 +1196,6 @@ function applyStatus(m, p, skill, now) {
   }
   if (spec.stun && m.type !== 9) m.stunUntil = now + spec.stun + rank * 80;
 }
-__name(applyStatus, "applyStatus");
 function castSkill(w, p, input, now) {
   const skill = input.skill;
   if (!Number.isInteger(skill) || skill < 0 || skill > 11) return;
@@ -1279,7 +1279,6 @@ function castSkill(w, p, input, now) {
     emit(w, p, now, "heal", amount, "#a0f4ae", { source: p.id });
   }
 }
-__name(castSkill, "castSkill");
 function dodge(w, p, input, now) {
   if (now < (p.dodgeCd || 0)) {
     p.notice = "\uD68C\uD53C\uAC00 \uC544\uC9C1 \uC900\uBE44\uB418\uC9C0 \uC54A\uC558\uC2B5\uB2C8\uB2E4.";
@@ -1294,7 +1293,6 @@ function dodge(w, p, input, now) {
   p.dodgeCd = now + DODGE.cooldown;
   emit(w, origin, now, "dodge", 0, "#c2e8de", { source: p.id, tx: p.x, ty: p.y, classId: p.classId });
 }
-__name(dodge, "dodge");
 function tickCombat(w, now) {
   for (const cast of w.casts || []) {
     if (now < cast.resolveAt) continue;
@@ -1328,14 +1326,12 @@ function tickCombat(w, now) {
     }
   }
 }
-__name(tickCombat, "tickCombat");
 
-// ../server/engine.ts
+// server/engine.ts
 function newPlayer(id, name, classId, now) {
   const c = CLASSES[classId];
   return { id, name, classId, zone: 0, x: 900, y: 740, face: 1, hp: c.hp + 15, mp: c.mp, level: 1, xp: 0, gold: 80, inventory: [classId, 3], equipment: { weapon: classId, armor: 3, ring: null }, potions: 8, manaPotions: 5, quests: {}, done: [], kills: {}, cd: [0, 0, 0, 0], last: now, seen: now, attackAt: 0, attackSkill: 0, target: { x: 0, y: 0 }, lastSeq: 0, loadout: [0, 1, 2, 3], skillRanks: Array(12).fill(0), dodgeCd: 0, dodgeUntil: 0, potionCd: 0, manaPotionCd: 0, tutorial: { stage: 0, moved: 0, usedSkill: false, killStart: 0, completed: false }, damageSkins: [], damageSkinId: 0, notice: "\uD018\uC2A4\uD2B8 \uCE74\uB4DC \uD074\uB9AD\uC73C\uB85C \uC989\uC2DC \uC218\uB77D \xB7 \uBAA9\uD45C \uB2EC\uC131 \uD6C4 \uB2E4\uC2DC \uD074\uB9AD\uD558\uBA74 \uBCF4\uC0C1\uC744 \uBC1B\uC2B5\uB2C8\uB2E4." };
 }
-__name(newPlayer, "newPlayer");
 function createWorld(now) {
   const monsters = [];
   for (const z of ZONES) {
@@ -1346,13 +1342,11 @@ function createWorld(now) {
       monsters.push({ id: `m${z.id}-${i}`, type, zone: z.id, x, y, homeX: x, homeY: y, hp: Math.round(MONSTERS[type].hp * zoneScale(z.id)), maxHp: Math.round(MONSTERS[type].hp * zoneScale(z.id)), deadUntil: 0, lastHit: 0, lastAtk: 0 });
     }
   }
-  return { players: {}, monsters, loot: [], events: [], chat: [], tick: now, contentVersion: 4 };
+  return { players: {}, monsters, loot: [], events: [], chat: [], tick: now, contentVersion: 5 };
 }
-__name(createWorld, "createWorld");
 function notice(p, s) {
   p.notice = s;
 }
-__name(notice, "notice");
 function tickWorld(w, now) {
   const dt = Math.min(0.55, Math.max(0, (now - w.tick) / 1e3));
   w.tick = now;
@@ -1431,7 +1425,6 @@ function tickWorld(w, now) {
     }
   }
 }
-__name(tickWorld, "tickWorld");
 function applyInput(w, p, input, now) {
   const elapsed = Math.max(0, Math.min(2, (now - p.last) / 1e3));
   p.seen = now;
@@ -1642,7 +1635,7 @@ function applyInput(w, p, input, now) {
       } else notice(p, "\uACE8\uB4DC\uAC00 \uBD80\uC871\uD569\uB2C8\uB2E4.");
     } else {
       const item = ITEMS[value];
-      if (item && Number.isInteger(value) && p.level >= (item.minLevel || 1) && p.inventory.length < 60 && p.gold >= item.price) {
+      if (item && !item.gmOnly && Number.isInteger(value) && p.level >= (item.minLevel || 1) && p.inventory.length < 60 && p.gold >= item.price) {
         p.gold -= item.price;
         p.inventory.push(value);
         notice(p, item.name + " \uAD6C\uC785");
@@ -1668,7 +1661,8 @@ function applyInput(w, p, input, now) {
     const index = Number(input.value);
     if (NPCS.some((n) => n.service === "shop" && n.zone === p.zone && distance(p, n) < 180) && Number.isInteger(index) && index >= 0 && index < p.inventory.length) {
       const id = p.inventory[index];
-      if (Object.values(p.equipment).includes(id)) notice(p, "\uC7A5\uCC29 \uC911\uC778 \uC544\uC774\uD15C\uC740 \uD310\uB9E4\uD560 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4.");
+      if (ITEMS[id].gmOnly) notice(p, "GM \uC804\uC6A9 \uC7A5\uBE44\uB294 \uD310\uB9E4\uD560 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4.");
+      else if (Object.values(p.equipment).includes(id)) notice(p, "\uC7A5\uCC29 \uC911\uC778 \uC544\uC774\uD15C\uC740 \uD310\uB9E4\uD560 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4.");
       else {
         p.inventory.splice(index, 1);
         p.gold += Math.floor(ITEMS[id].price * 0.4);
@@ -1681,13 +1675,11 @@ function applyInput(w, p, input, now) {
     if (text) w.chat.push({ id: p.id + ":" + crypto.randomUUID(), name: p.name, text, time: now, zone: p.zone, playerId: p.id });
   }
 }
-__name(applyInput, "applyInput");
 function snapshot(w, p, now) {
   return { shopSettings: cashSettings(w), donations: (w.donations || []).filter((d) => d.playerId === p.id).slice(-20), trade: tradeFor(w, p.id), raid: w.raids?.find((b) => b.zone === p.zone), player: p, players: Object.values(w.players).filter((a) => a.zone === p.zone && now - a.seen < 1e4 && a.id !== p.id), monsters: w.monsters.filter((m) => m.zone === p.zone), loot: w.loot.filter((l) => l.zone === p.zone), events: w.events.filter((e) => e.zone === p.zone), chat: w.chat.slice(-30), now, online: Object.values(w.players).filter((a) => now - a.seen < 1e4).length, casts: (w.casts || []).filter((c) => c.zone === p.zone) };
 }
-__name(snapshot, "snapshot");
 function migrateWorld(w, now) {
-  if (w.contentVersion === 4) return;
+  if (w.contentVersion === 5) return;
   const template = createWorld(now), ids = new Set(w.monsters.map((m) => m.id));
   for (const m of template.monsters) if (!ids.has(m.id)) w.monsters.push(m);
   for (const z of ZONES) {
@@ -1704,35 +1696,40 @@ function migrateWorld(w, now) {
       w.monsters.push({ id: "v13-forest-mushroom", type: 2, zone: 2, x, y, homeX: x, homeY: y, hp: 85, maxHp: 85, deadUntil: 0, lastHit: 0, lastAtk: 0 });
     }
   }
-  w.contentVersion = 4;
+  for (const z of ZONES) {
+    if (z.safe || z.raid || z.id === 0) continue;
+    for (const type of z.types.filter((t) => t >= 13)) {
+      const id = `v14-${z.id}-${type}`;
+      if (w.monsters.some((m) => m.id === id)) continue;
+      const x = 550 + (type - 13) % 3 * 270, y = 510 + Math.floor((type - 13) / 3) * 190;
+      const hp = Math.round(MONSTERS[type].hp * zoneScale(z.id));
+      w.monsters.push({ id, type, zone: z.id, x, y, homeX: x, homeY: y, hp, maxHp: hp, deadUntil: 0, lastHit: 0, lastAtk: 0 });
+    }
+  }
+  w.contentVersion = 5;
 }
-__name(migrateWorld, "migrateWorld");
 
-// ../server/auth-crypto.ts
+// server/auth-crypto.ts
 async function digest(token) {
   return Array.from(new Uint8Array(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(token)))).map((b) => b.toString(16).padStart(2, "0")).join("");
 }
-__name(digest, "digest");
 
-// ../server/google-auth.ts
+// server/google-auth.ts
 import { env as env2 } from "cloudflare:workers";
 
-// ../shared/accounts.ts
+// shared/accounts.ts
 function accountFor(w, id) {
   w.accounts ??= {};
   return w.accounts[id] ??= w.players[id] ? { characters: [id], slots: 4, active: id } : { characters: [], slots: 4, active: null };
 }
-__name(accountFor, "accountFor");
 function roster(w, id) {
   const a = accountFor(w, id);
   return { characters: a.characters.map((k) => w.players[k]).filter(Boolean), slots: a.slots, active: a.active, slotPrice: 5e3 * (a.slots - 3) };
 }
-__name(roster, "roster");
 function ownedPlayer(w, accountId, characterId) {
   const a = accountFor(w, accountId), id = characterId || a.active;
   return id && a.characters.includes(id) ? w.players[id] : void 0;
 }
-__name(ownedPlayer, "ownedPlayer");
 function changeAccount(w, id, body, now) {
   const a = accountFor(w, id);
   if (body.action === "create") {
@@ -1761,20 +1758,18 @@ function changeAccount(w, id, body, now) {
   } else throw new Error("\uC798\uBABB\uB41C \uC694\uCCAD\uC785\uB2C8\uB2E4.");
   return roster(w, id);
 }
-__name(changeAccount, "changeAccount");
 
-// ../server/store.ts
+// server/store.ts
 import { env } from "cloudflare:workers";
 
-// ../server/google-auth.ts
+// server/google-auth.ts
 function cookie(request, name) {
   return request.headers.get("cookie")?.split(";").map((x) => x.trim()).find((x) => x.startsWith(name + "="))?.slice(name.length + 1) || null;
 }
-__name(cookie, "cookie");
-var DB = /* @__PURE__ */ __name(() => {
+var DB = () => {
   if (!env2.DB) throw new Error("Auth storage unavailable");
   return env2.DB;
-}, "DB");
+};
 var schema;
 function ensureAuthStorage() {
   return schema ??= (async () => {
@@ -1785,16 +1780,14 @@ function ensureAuthStorage() {
     throw e;
   });
 }
-__name(ensureAuthStorage, "ensureAuthStorage");
 async function readLoginSession(token) {
   if (!/^[A-Za-z0-9_-]{43}$/.test(token)) return null;
   await ensureAuthStorage();
   const record = await DB().prepare("SELECT account_id,name,email,expires FROM login_sessions WHERE hash=? AND expires>?").bind(await digest(token), Date.now()).first();
   return record || null;
 }
-__name(readLoginSession, "readLoginSession");
 
-// ../server/auth.ts
+// server/auth.ts
 async function guestIdentity(request) {
   const session = cookie(request, "__Host-aetheria_session");
   if (session) {
@@ -1804,10 +1797,9 @@ async function guestIdentity(request) {
   const token = request.headers.get("cookie")?.match(/(?:^|;\s*)aetheria_guest=([a-f0-9-]{36})/)?.[1];
   return token ? { token, id: await digest(token), provider: "guest" } : null;
 }
-__name(guestIdentity, "guestIdentity");
 
-// worker.ts
-var reply = /* @__PURE__ */ __name((value, status = 200, headers = {}) => Response.json(value, { status, headers: { "Cache-Control": "no-store", ...headers } }), "reply");
+// external/worker.ts
+var reply = (value, status = 200, headers = {}) => Response.json(value, { status, headers: { "Cache-Control": "no-store", ...headers } });
 var AetheriaRealm = class {
   constructor(state, env3) {
     this.state = state;
@@ -1835,9 +1827,6 @@ var AetheriaRealm = class {
       if (this.world.players[attachment.id]) this.sessions.set(ws, { id: attachment.id, last: 0 });
     }
     if (this.sessions.size) this.start();
-  }
-  static {
-    __name(this, "AetheriaRealm");
   }
   save() {
     this.state.storage.sql.exec("INSERT INTO realm (id,data) VALUES (1,?) ON CONFLICT(id) DO UPDATE SET data=excluded.data", JSON.stringify(this.world));
@@ -1960,7 +1949,7 @@ var AetheriaRealm = class {
     if (request.method === "GET" && url.pathname === "/api/gm/players") {
       const query = (url.searchParams.get("q") || "").toLocaleLowerCase();
       const players = Object.values(this.world.players).filter((p) => !query || p.name.toLocaleLowerCase().includes(query) || p.id.includes(query)).sort((a, b) => b.seen - a.seen).map((p) => gmSummary(p, now));
-      return reply({ players, now, online: players.filter((p) => p.online).length, items: ITEMS, classes: CLASSES.map((c) => ({ id: c.id, name: c.name })), zones: ZONES.map((z) => ({ id: z.id, name: z.name })) });
+      return reply({ players, now, online: players.filter((p) => p.online).length, items: ITEMS, gmSkins: GM_SKINS, gmTitles: GM_TITLES, classes: CLASSES.map((c) => ({ id: c.id, name: c.name })), zones: ZONES.map((z) => ({ id: z.id, name: z.name })) });
     }
     if (request.method === "GET" && url.pathname === "/api/gm/player") {
       const p = this.world.players[url.searchParams.get("id") || ""];
@@ -2063,4 +2052,3 @@ export {
   AetheriaRealm,
   worker_default as default
 };
-//# sourceMappingURL=worker.js.map

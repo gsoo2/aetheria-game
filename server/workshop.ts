@@ -18,6 +18,7 @@ export function workshopInput(w:World,p:Player,input:Input){
  }
  if(input.action==='craft'){const r=RECIPES[index];if(!r){p.notice='없는 제작법입니다.';return;}if(p.gold<r.gold||r.cost.some((n,i)=>materials[i]<n)||(r.kind==='weapon'&&(p.level<5||p.inventory.length>=60))){p.notice='골드·재료·가방 공간을 확인하세요. 희귀 무기는 LV5부터 제작합니다.';return;}p.gold-=r.gold;p.materials=materials.map((n,i)=>n-r.cost[i]);if(r.kind==='hp')p.potions+=5;else if(r.kind==='mp')p.manaPotions+=5;else if(r.kind==='ore')p.materials[0]+=3;else p.inventory.push(7+p.classId);p.notice=r.name+' 제작 완료';return;}
  const source=input.action==='withdraw'?p.storage||[]:p.inventory,id=source[index];if(index<0||index>=source.length){p.notice='아이템을 다시 선택하세요.';return;}
+ if(ITEMS[id]?.gmOnly&&input.action==='salvage'){p.notice='GM 전용 장비는 분해할 수 없습니다.';return;}
  if(input.action==='withdraw'){if(p.inventory.length>=60){p.notice='가방이 가득 찼습니다.';return;}p.inventory.push(id);p.storage!.splice(index,1);}
  else {if(Object.values(p.equipment).includes(id)){p.notice='장착 중인 장비는 벗은 후 이용하세요.';return;}if(input.action==='store'){if((p.storage?.length||0)>=60){p.notice='창고가 가득 찼습니다.';return;}(p.storage??=[]).push(id);}else{p.materials=[...materials];p.materials[0]+=2+ITEMS[id].rarity*2;p.materials[1]+=1+ITEMS[id].rarity;}p.inventory.splice(index,1);const s=stats(p);p.hp=Math.min(p.hp,s.hp);p.mp=Math.min(p.mp,s.mp);}
  p.notice=input.action==='salvage'?'장비를 분해해 재료를 얻었습니다.':'창고 이동 완료';

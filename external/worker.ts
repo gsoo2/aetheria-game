@@ -1,5 +1,6 @@
 import {approveDonation,configureCash,cashSettings} from '../server/cash';
 import {gmAuthorized,gmSummary,gmDetail,gmMutate} from '../server/gm';
+import {GM_SKINS,GM_TITLES} from '../shared/gm-content';
 import {ITEMS,CLASSES,ZONES} from '../shared/content';
 import {createWorld,migrateWorld,applyInput,newPlayer,snapshot,tickWorld} from '../server/engine';
 import {guestIdentity,digest} from '../server/auth';
@@ -29,7 +30,7 @@ export class AetheriaRealm {
  private async gmRequest(request:Request,url:URL){
   if(!await gmAuthorized(request.headers.get('Authorization'),this.gmToken))return reply({error:'관리자 인증이 필요합니다.'},401);
   const now=Date.now();
-  if(request.method==='GET'&&url.pathname==='/api/gm/players'){const query=(url.searchParams.get('q')||'').toLocaleLowerCase();const players=Object.values(this.world.players).filter(p=>!query||p.name.toLocaleLowerCase().includes(query)||p.id.includes(query)).sort((a,b)=>b.seen-a.seen).map(p=>gmSummary(p,now));return reply({players,now,online:players.filter(p=>p.online).length,items:ITEMS,classes:CLASSES.map(c=>({id:c.id,name:c.name})),zones:ZONES.map(z=>({id:z.id,name:z.name}))});}
+  if(request.method==='GET'&&url.pathname==='/api/gm/players'){const query=(url.searchParams.get('q')||'').toLocaleLowerCase();const players=Object.values(this.world.players).filter(p=>!query||p.name.toLocaleLowerCase().includes(query)||p.id.includes(query)).sort((a,b)=>b.seen-a.seen).map(p=>gmSummary(p,now));return reply({players,now,online:players.filter(p=>p.online).length,items:ITEMS,gmSkins:GM_SKINS,gmTitles:GM_TITLES,classes:CLASSES.map(c=>({id:c.id,name:c.name})),zones:ZONES.map(z=>({id:z.id,name:z.name}))});}
   if(request.method==='GET'&&url.pathname==='/api/gm/player'){const p=this.world.players[url.searchParams.get('id')||''];return p?reply(gmDetail(p,now)):reply({error:'수호자를 찾을 수 없습니다.'},404);}
   if(request.method==='GET'&&url.pathname==='/api/gm/donations')return reply({requests:(this.world.donations||[]).slice().reverse(),settings:cashSettings(this.world)});
   if(request.method==='POST'&&url.pathname==='/api/gm/settings'){const settings=configureCash(this.world,await this.body(request));this.save();this.broadcast();return reply({ok:true,settings});}

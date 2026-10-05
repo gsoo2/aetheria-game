@@ -21,6 +21,7 @@ export async function loadArt(){void loadDamageAtlas();const [forest,atlas,...np
    const w=cuts[i+1]-cuts[i];frame.getContext('2d')!.drawImage(monsterSheet,cuts[i],row*h,w,h,(512-w*scale)/2,492-h*scale,w*scale,h*scale);return frame;});
   const sprite=[11,22,23,24][row];monsterAnimations[sprite]=frames;sprites[sprite]=frames[0];
  }
+ const extra=await loadImage('/art/monster-motion-v14.svg');for(let row=0;row<6;row++){const frames=Array.from({length:4},(_,i)=>{const frame=document.createElement('canvas');frame.width=512;frame.height=512;frame.getContext('2d')!.drawImage(extra,i*256,row*256,256,256,0,0,512,512);return frame;});monsterAnimations[25+row]=frames;sprites[25+row]=frames[0];}
  const batFrames=monsterAnimations[11];const workshop=await loadImage('/art/npc-workshops.png');for(let n=0;n<6;n++)sprites[16+n]=fitSprite(workshop,{x:n%3*workshop.width/3,y:Math.floor(n/3)*workshop.height/2,w:workshop.width/3,h:workshop.height/2},false);const [snow,ember,...sheets]=await Promise.all(['/art/snow.png','/art/ember.png','/art/knight-motion.png','/art/ranger-motion.png','/art/mage-motion.png'].map(loadImage));
  // Generated poses have clear row gaps but imperfect equal-row baselines. Explicit gaps
  // preserve toes and weapons, and one scale per sheet avoids frame-to-frame size jitter.
