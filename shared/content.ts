@@ -63,14 +63,20 @@ export const MONSTERS=[
  {name:'눈구름 토끼',sprite:27,hp:135,atk:14,xp:68,gold:25,speed:110},
  {name:'용암 달팽이',sprite:28,hp:240,atk:23,xp:105,gold:42,speed:42},
  {name:'별빛 해파리',sprite:29,hp:180,atk:19,xp:90,gold:33,speed:78},
- {name:'가시 선인장',sprite:30,hp:210,atk:22,xp:98,gold:38,speed:48}
+ {name:'가시 선인장',sprite:30,hp:210,atk:22,xp:98,gold:38,speed:48},
+ {name:'보석 왕 슬라임',sprite:31,hp:125,atk:12,xp:68,gold:28,speed:62},
+ {name:'달빛 늑대',sprite:32,hp:210,atk:19,xp:112,gold:43,speed:100},
+ {name:'구름 그리핀',sprite:33,hp:225,atk:21,xp:125,gold:48,speed:90},
+ {name:'불씨 멧돼지',sprite:34,hp:260,atk:24,xp:145,gold:56,speed:78}
 ];
-export type Item={id:number;name:string;slot:'weapon'|'armor'|'ring';atk:number;def:number;hp:number;rarity:number;price:number;minLevel?:number;classId?:number;gmOnly?:boolean};
+export type Item={id:number;name:string;slot:'weapon'|'armor'|'ring';atk:number;def:number;hp:number;rarity:number;price:number;minLevel?:number;classId?:number;gmOnly?:boolean;cashOnly?:boolean};
 export const ITEMS:Item[]=Array.from({length:21},(_,i)=>({id:i,name:[['여행자의 검','바람의 활','새벽의 지팡이','가죽 갑옷','별조각 반지','은빛 장검','숲의 장궁'],['빛을 품은 검','질풍의 활','달빛 지팡이','수호자의 갑옷','이슬빛 반지','유적의 검','정령의 활'],['월식의 성검','별자리 활','심연의 지팡이','천상의 갑옷','영원의 반지','파수꾼의 검','달의 활']][Math.floor(i/7)][i%7],slot:i%7===3?'armor':i%7===4?'ring':'weapon',atk:i%7===3?0:3+Math.floor(i/7)*8,def:i%7===3?4+Math.floor(i/7)*5:i%7===4?2:0,hp:i%7===3?15+Math.floor(i/7)*20:0,rarity:Math.floor(i/7),price:40+Math.floor(i/7)*110}));
 // Appended IDs preserve all old inventories and stored equipment.
 for(let tier=0;tier<3;tier++){const level=[8,18,30][tier],prefix=['별철','오로라','불사조'][tier],rarity=tier+1;for(let kind=0;kind<6;kind++){const slot=kind<3?'weapon':kind===3?'armor':'ring';ITEMS.push({id:ITEMS.length,name:prefix+' '+['장검','장궁','마법봉','흉갑','수호 반지','집중 반지'][kind],slot,classId:kind<3?kind:undefined,minLevel:level,atk:kind<3?9+tier*9:kind===5?5+tier*5:0,def:kind===3?7+tier*6:kind===4?4+tier*3:0,hp:kind===3?35+tier*30:kind===4?20+tier*20:0,rarity,price:250+tier*650+(kind===3?100:0)});}}
 // GM-only IDs are appended; never included in normal drops, recipes or shop products.
 for(const [kind,name] of ['별빛 토끼 검','고양이 발바닥 활','구름 사탕 지팡이','말랑 구름 갑옷','꼬마 별 반지'].entries()) ITEMS.push({id:ITEMS.length,name,slot:kind<3?'weapon':kind===3?'armor':'ring',classId:kind<3?kind:undefined,atk:kind<3?35:0,def:kind===3?25:kind===4?8:0,hp:kind===3?120:kind===4?50:0,rarity:2,price:0,gmOnly:true});
+for(let classId=0;classId<3;classId++)ITEMS.push({id:ITEMS.length,name:['천공 수정 검','정령 깃털 활','은하 별 지팡이'][classId],slot:'weapon',classId,minLevel:15,atk:24,def:0,hp:15,rarity:2,price:0,cashOnly:true});
+for(const zone of ZONES){if(zone.id===0||zone.safe||zone.raid)continue;const types=zone.biome===1?[20,21]:zone.biome===2?[22]:zone.id===1?[19]:[19,20];for(const type of types)if(!zone.types.includes(type))zone.types.push(type);}
 export type Quest={id:number;name:string;description:string;monster:number;count:number;xp:number;gold:number;zone?:number;minLevel?:number;kind?:'main'|'side';story?:string;epilogue?:string;chapter?:string;previous?:number};
 export const QUESTS:Quest[]=[
  {id:0,name:'초원의 작은 소동',description:'이슬빛 초원에서 이슬 슬라임 5마리를 처치하세요.',monster:0,count:5,xp:90,gold:65},

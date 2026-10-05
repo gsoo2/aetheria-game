@@ -65,7 +65,7 @@ export function socialInput(w: World, p: Player, i: Input, now: number) {
         return;
     if (i.action === 'tradeOffer') {
         const indices = i.indices || [], gold = i.gold ?? 0;
-        if (!Array.isArray(indices) || indices.length > 12 || new Set(indices).size !== indices.length || !Number.isSafeInteger(gold) || gold < 0 || gold > p.gold || indices.some(n => !Number.isSafeInteger(n) || n < 0 || n >= p.inventory.length || Object.values(p.equipment).includes(p.inventory[n]) || ITEMS[p.inventory[n]]?.gmOnly)) {
+        if (!Array.isArray(indices) || indices.length > 12 || new Set(indices).size !== indices.length || !Number.isSafeInteger(gold) || gold < 0 || gold > p.gold || indices.some(n => !Number.isSafeInteger(n) || n < 0 || n >= p.inventory.length || Object.values(p.equipment).includes(p.inventory[n]) || (ITEMS[p.inventory[n]]?.gmOnly || ITEMS[p.inventory[n]]?.cashOnly))) {
             p.notice = '제안할 아이템과 골드를 확인하세요. 장착한 장비는 거래할 수 없습니다.';
             return;
         }

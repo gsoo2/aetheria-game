@@ -1,3 +1,27 @@
+// shared/animal-skins.ts
+var ANIMAL_SKINS = [
+  { id: 0, name: "\uBCC4\uBE5B \uD1A0\uB07C", atlas: 0, row: 0, price: 180, currency: "cash", gmOnly: false },
+  { id: 1, name: "\uC544\uAE30 \uACE0\uC591\uC774", atlas: 0, row: 1, price: 800, currency: "gold", gmOnly: false },
+  { id: 2, name: "\uAF2C\uB9C8 \uD3AD\uADC4", atlas: 0, row: 2, price: 220, currency: "cash", gmOnly: false },
+  { id: 3, name: "\uC232\uC18D \uC5EC\uC6B0", atlas: 0, row: 3, price: 240, currency: "cash", gmOnly: false },
+  { id: 4, name: "\uB9D0\uB791 \uD310\uB2E4", atlas: 1, row: 0, price: 260, currency: "cash", gmOnly: false },
+  { id: 5, name: "\uD587\uC0B4 \uBCD1\uC544\uB9AC", atlas: 1, row: 1, price: 500, currency: "gold", gmOnly: false },
+  { id: 6, name: "\uAF2C\uB9AC \uB108\uAD6C\uB9AC", atlas: 1, row: 2, price: 280, currency: "cash", gmOnly: false },
+  { id: 7, name: "\uD3EC\uADFC \uC218\uB2EC", atlas: 1, row: 3, price: 300, currency: "cash", gmOnly: false }
+];
+
+// shared/premium.ts
+var WINGS = [
+  { id: 0, name: "\uBB34\uC9C0\uAC1C \uAE43\uD138 \uB0A0\uAC1C", price: 250, color: "#ffcee8" },
+  { id: 1, name: "\uD558\uB298 \uAD6C\uB984 \uB0A0\uAC1C", price: 350, color: "#b6efff" },
+  { id: 2, name: "\uBCC4\uBE5B \uC740\uD558 \uB0A0\uAC1C", price: 450, color: "#ead0ff" }
+];
+var TITLE_BADGES = [
+  { id: 0, name: "\uBB34\uC9C0\uAC1C \uC0B0\uCC45\uAC00", price: 180 },
+  { id: 1, name: "\uD558\uB298\uC758 \uCE5C\uAD6C", price: 220 },
+  { id: 2, name: "\uBCC4\uBE5B \uD56D\uD574\uC0AC", price: 260 }
+];
+
 // shared/cash.ts
 var CASH_PRODUCTS = [
   { id: 0, name: "\uCC9C\uACF5\uC758 \uC57D\uC18D", description: "\uAE08\uBE5B \uBCC4 \uBB38\uC591\uC758 \uD6C4\uC6D0 \uC804\uC6A9 \uB9D0\uD48D\uC120", price: 200, kind: "bubble", value: 12, image: "/bubbles/12.svg" },
@@ -9,9 +33,23 @@ var CASH_PRODUCTS = [
   { id: 6, name: "\uC804\uC124 \uBB34\uAE30 \uC0C1\uC790", description: "\uD604\uC7AC \uC9C1\uC5C5\uC5D0 \uB9DE\uB294 \uC804\uC124 \uBB34\uAE30 1\uAC1C", price: 500, kind: "weapon", value: 0, image: "" },
   { id: 7, name: "\uBCC4\uAC00\uB8E8 \uC624\uB85C\uB77C", description: "\uBCF4\uB78F\uBE5B \uBCC4\uAC00\uB8E8 \uC22B\uC790 \uB370\uBBF8\uC9C0 \uC2A4\uD0A8 \xB7 \uB2A5\uB825\uCE58 \uBCC0\uD654 \uC5C6\uC74C", price: 200, kind: "damageSkin", value: 3, image: "" },
   { id: 8, name: "\uD0DC\uC591\uC758 \uBD88\uAF43", description: "\uBD89\uC740 \uBD88\uAF43 \uC22B\uC790 \uB370\uBBF8\uC9C0 \uC2A4\uD0A8 \xB7 \uB2A5\uB825\uCE58 \uBCC0\uD654 \uC5C6\uC74C", price: 250, kind: "damageSkin", value: 4, image: "" },
-  { id: 9, name: "\uCC9C\uC0C1\uC758 \uB9F9\uC138", description: "\uC740\uBE5B\uACFC \uAE08\uBE5B\uC758 \uC22B\uC790 \uB370\uBBF8\uC9C0 \uC2A4\uD0A8 \xB7 \uB2A5\uB825\uCE58 \uBCC0\uD654 \uC5C6\uC74C", price: 300, kind: "damageSkin", value: 5, image: "" }
+  { id: 9, name: "\uCC9C\uC0C1\uC758 \uB9F9\uC138", description: "\uC740\uBE5B\uACFC \uAE08\uBE5B\uC758 \uC22B\uC790 \uB370\uBBF8\uC9C0 \uC2A4\uD0A8 \xB7 \uB2A5\uB825\uCE58 \uBCC0\uD654 \uC5C6\uC74C", price: 300, kind: "damageSkin", value: 5, image: "" },
+  ...ANIMAL_SKINS.filter((s) => s.currency === "cash").map((s, i) => ({ id: 10 + i, name: s.name, description: "\uC601\uAD6C \uC18C\uC7A5 \xB7 \uB3D9\uBB3C \uC804\uC2E0 \uBCC0\uC2E0\uACFC \uAC77\uAE30\xB7\uACF5\uACA9\xB7\uC4F0\uB7EC\uC9D0 \uBAA8\uC158", price: s.price, kind: "animalSkin", value: s.id, image: "" })),
+  ...WINGS.map((w, i) => ({ id: 16 + i, name: w.name, description: "\uB4F1\uC5D0\uC11C \uBC18\uC9DD\uC774\uBA70 \uC6C0\uC9C1\uC774\uB294 \uC601\uAD6C \uB0A0\uAC1C \xB7 \uB2A5\uB825\uCE58 \uBCC0\uD654 \uC5C6\uC74C", price: w.price, kind: "wings", value: w.id, image: "" })),
+  ...TITLE_BADGES.map((t, i) => ({ id: 19 + i, name: t.name, description: "\uC774\uB984 \uC704\uC5D0 \uBC18\uC9DD\uC774\uB294 \uC774\uBBF8\uC9C0 \uBC30\uC9C0\uB97C \uD45C\uC2DC\uD558\uB294 \uC601\uAD6C \uCE6D\uD638", price: t.price, kind: "titleBadge", value: t.id, image: "" })),
+  { id: 22, name: "\uAFC0\uBE5B \uCF54\uAE30", description: "\uC601\uAD6C \uB3D9\uD589 \uD3AB \xB7 \uC804\uB9AC\uD488 \uC90D\uAE30\uC640 \uB9E1\uAE34 \uD3EC\uC158 \uC790\uB3D9 \uD68C\uBCF5", price: 180, kind: "pet", value: 3, image: "" },
+  { id: 23, name: "\uBCC4\uAD6C\uB984 \uC544\uAE30 \uC6A9", description: "\uC601\uAD6C \uB3D9\uD589 \uD3AB \xB7 \uC804\uB9AC\uD488 \uC90D\uAE30\uC640 \uB9E1\uAE34 \uD3EC\uC158 \uC790\uB3D9 \uD68C\uBCF5", price: 300, kind: "pet", value: 4, image: "" },
+  { id: 24, name: "\uCC9C\uACF5\uC758 \uC218\uD638 \uBB34\uAE30", description: "\uD604\uC7AC \uC9C1\uC5C5 \uBB34\uAE30 1\uAC1C \xB7 LV.15 \xB7 \uACF5\uACA9 +24, HP +15 \xB7 \uCE90\uB9AD\uD130 \uADC0\uC18D. \uAC00\uBC29\uC5D0\uC11C \uC7A5\uCC29\uD558\uC138\uC694.", price: 700, kind: "weapon", value: 44, image: "" },
+  { id: 25, name: "\uBAA8\uD5D8\uAC00 \uD3EC\uC158 \uBCF4\uAE09 \uC0C1\uC790", description: "\uACE0\uC815 \uAD6C\uC131: \uC0DD\uBA85 \uD3EC\uC158 60\uAC1C + \uB9C8\uB098 \uD3EC\uC158 40\uAC1C. \uD3AB\uC5D0\uAC8C \uB9E1\uACA8 \uC790\uB3D9 \uD68C\uBCF5\uC5D0 \uC0AC\uC6A9\uD558\uC138\uC694.", price: 100, kind: "provisions", value: 0, image: "" }
 ];
 var DONATION_PACKS = [{ id: 0, won: 3e3, cash: 300 }, { id: 1, won: 5e3, cash: 500 }, { id: 2, won: 1e4, cash: 1e3 }];
+function cashProductOwned(p, product) {
+  if (product.kind === "weapon" || product.kind === "provisions") return false;
+  if (product.kind === "animalSkin") return !!p.animalSkins?.includes(product.value);
+  if (product.kind === "wings") return !!p.wings?.includes(product.value);
+  if (product.kind === "pet") return !!p.pets?.includes(product.value);
+  return !!p.cashPurchases?.includes(product.id);
+}
 
 // server/cash.ts
 function cashSettings(w) {
@@ -49,7 +87,7 @@ function cashInput(w, p, i, now) {
     if (!product)
       return;
     p.cashPurchases ??= [];
-    if (product.kind !== "weapon" && p.cashPurchases.includes(product.id)) {
+    if (cashProductOwned(p, product)) {
       p.notice = "\uC774\uBBF8 \uBCF4\uC720\uD55C \uC0C1\uD488\uC785\uB2C8\uB2E4.";
       return;
     }
@@ -59,6 +97,14 @@ function cashInput(w, p, i, now) {
     }
     if (product.kind === "weapon" && p.inventory.length >= 60) {
       p.notice = "\uAC00\uBC29 \uACF5\uAC04\uC774 \uBD80\uC871\uD569\uB2C8\uB2E4.";
+      return;
+    }
+    if (product.kind === "weapon" && product.value === 44 && p.level < 15) {
+      p.notice = "\uB808\uBCA8 15\uBD80\uD130 \uAD6C\uB9E4\uD560 \uC218 \uC788\uC2B5\uB2C8\uB2E4.";
+      return;
+    }
+    if (product.kind === "provisions" && (p.potions + 60 > 1e4 || p.manaPotions + 40 > 1e4)) {
+      p.notice = "\uBCF4\uAE09 \uD3EC\uC158\uC744 \uBC1B\uC744 \uACF5\uAC04\uC774 \uBD80\uC871\uD569\uB2C8\uB2E4.";
       return;
     }
     p.cash = (p.cash || 0) - product.price;
@@ -75,18 +121,61 @@ function cashInput(w, p, i, now) {
       if (!p.damageSkins.includes(product.value)) p.damageSkins.push(product.value);
       p.damageSkinId = product.value;
     }
-    if (product.kind === "title")
+    if (product.kind === "title") {
       p.cashTitle = product.name;
+      p.titleBadgeId = product.value;
+      delete p.gmTitle;
+    }
+    if (product.kind === "titleBadge") {
+      p.cashTitle = product.name;
+      p.titleBadgeId = product.value;
+      delete p.gmTitle;
+    }
+    if (product.kind === "animalSkin") {
+      p.animalSkins ??= [];
+      p.animalSkins.push(product.value);
+      p.animalSkinId = product.value;
+      delete p.gmSkin;
+    }
+    if (product.kind === "wings") {
+      p.wings ??= [];
+      p.wings.push(product.value);
+      p.wingId = product.value;
+    }
+    if (product.kind === "pet") {
+      p.pets ??= [];
+      p.pets.push(product.value);
+      p.petId = product.value;
+      p.petAutoLoot = true;
+    }
+    if (product.kind === "provisions") {
+      p.potions += 60;
+      p.manaPotions += 40;
+    }
     if (product.kind === "weapon")
-      p.inventory.push(14 + p.classId);
+      p.inventory.push((product.value || 14) + p.classId);
     p.notice = product.name + " \uAD6C\uB9E4 \uC644\uB8CC";
+    return;
+  }
+  if (i.action === "wingUnequip") {
+    delete p.wingId;
+    p.notice = "\uB0A0\uAC1C\uB97C \uD574\uC81C\uD588\uC2B5\uB2C8\uB2E4.";
     return;
   }
   if (i.action === "cashEquip") {
     const product = CASH_PRODUCTS.find((product2) => product2.id === i.value);
-    if (product && p.cashPurchases?.includes(product.id)) {
-      if (product.kind === "title")
+    if (product && cashProductOwned(p, product)) {
+      if (product.kind === "title" || product.kind === "titleBadge") {
         p.cashTitle = product.name;
+        p.titleBadgeId = product.value;
+        delete p.gmTitle;
+      }
+      if (product.kind === "animalSkin") {
+        p.animalSkinId = product.value;
+        delete p.gmSkin;
+      }
+      if (product.kind === "wings") p.wingId = product.value;
+      if (product.kind === "pet") p.petId = product.value;
       if (product.kind === "damageSkin" && p.damageSkins?.includes(product.value)) p.damageSkinId = product.value;
       if (product.kind === "bubble")
         p.bubbleId = product.value;
@@ -94,6 +183,7 @@ function cashInput(w, p, i, now) {
     }
     if (i.value === -1) {
       delete p.cashTitle;
+      delete p.titleBadgeId;
       p.notice = "\uCE6D\uD638 \uD45C\uC2DC\uB97C \uD574\uC81C\uD588\uC2B5\uB2C8\uB2E4.";
     }
   }
@@ -138,18 +228,6 @@ function approveDonation(w, body, now) {
   w.gmAudit = w.gmAudit.slice(-500);
   return d;
 }
-
-// shared/animal-skins.ts
-var ANIMAL_SKINS = [
-  { id: 0, name: "\uBCC4\uBE5B \uD1A0\uB07C", atlas: 0, row: 0, price: 0, gmOnly: true },
-  { id: 1, name: "\uC544\uAE30 \uACE0\uC591\uC774", atlas: 0, row: 1, price: 0, gmOnly: true },
-  { id: 2, name: "\uAF2C\uB9C8 \uD3AD\uADC4", atlas: 0, row: 2, price: 0, gmOnly: true },
-  { id: 3, name: "\uC232\uC18D \uC5EC\uC6B0", atlas: 0, row: 3, price: 600, gmOnly: false },
-  { id: 4, name: "\uB9D0\uB791 \uD310\uB2E4", atlas: 1, row: 0, price: 800, gmOnly: false },
-  { id: 5, name: "\uD587\uC0B4 \uBCD1\uC544\uB9AC", atlas: 1, row: 1, price: 500, gmOnly: false },
-  { id: 6, name: "\uAF2C\uB9AC \uB108\uAD6C\uB9AC", atlas: 1, row: 2, price: 1e3, gmOnly: false },
-  { id: 7, name: "\uD3EC\uADFC \uC218\uB2EC", atlas: 1, row: 3, price: 1200, gmOnly: false }
-];
 
 // shared/gm-content.ts
 var GM_SKINS = ANIMAL_SKINS;
@@ -267,7 +345,11 @@ var MONSTERS = [
   { name: "\uB208\uAD6C\uB984 \uD1A0\uB07C", sprite: 27, hp: 135, atk: 14, xp: 68, gold: 25, speed: 110 },
   { name: "\uC6A9\uC554 \uB2EC\uD33D\uC774", sprite: 28, hp: 240, atk: 23, xp: 105, gold: 42, speed: 42 },
   { name: "\uBCC4\uBE5B \uD574\uD30C\uB9AC", sprite: 29, hp: 180, atk: 19, xp: 90, gold: 33, speed: 78 },
-  { name: "\uAC00\uC2DC \uC120\uC778\uC7A5", sprite: 30, hp: 210, atk: 22, xp: 98, gold: 38, speed: 48 }
+  { name: "\uAC00\uC2DC \uC120\uC778\uC7A5", sprite: 30, hp: 210, atk: 22, xp: 98, gold: 38, speed: 48 },
+  { name: "\uBCF4\uC11D \uC655 \uC2AC\uB77C\uC784", sprite: 31, hp: 125, atk: 12, xp: 68, gold: 28, speed: 62 },
+  { name: "\uB2EC\uBE5B \uB291\uB300", sprite: 32, hp: 210, atk: 19, xp: 112, gold: 43, speed: 100 },
+  { name: "\uAD6C\uB984 \uADF8\uB9AC\uD540", sprite: 33, hp: 225, atk: 21, xp: 125, gold: 48, speed: 90 },
+  { name: "\uBD88\uC528 \uBA67\uB3FC\uC9C0", sprite: 34, hp: 260, atk: 24, xp: 145, gold: 56, speed: 78 }
 ];
 var ITEMS = Array.from({ length: 21 }, (_, i) => ({ id: i, name: [["\uC5EC\uD589\uC790\uC758 \uAC80", "\uBC14\uB78C\uC758 \uD65C", "\uC0C8\uBCBD\uC758 \uC9C0\uD321\uC774", "\uAC00\uC8FD \uAC11\uC637", "\uBCC4\uC870\uAC01 \uBC18\uC9C0", "\uC740\uBE5B \uC7A5\uAC80", "\uC232\uC758 \uC7A5\uAD81"], ["\uBE5B\uC744 \uD488\uC740 \uAC80", "\uC9C8\uD48D\uC758 \uD65C", "\uB2EC\uBE5B \uC9C0\uD321\uC774", "\uC218\uD638\uC790\uC758 \uAC11\uC637", "\uC774\uC2AC\uBE5B \uBC18\uC9C0", "\uC720\uC801\uC758 \uAC80", "\uC815\uB839\uC758 \uD65C"], ["\uC6D4\uC2DD\uC758 \uC131\uAC80", "\uBCC4\uC790\uB9AC \uD65C", "\uC2EC\uC5F0\uC758 \uC9C0\uD321\uC774", "\uCC9C\uC0C1\uC758 \uAC11\uC637", "\uC601\uC6D0\uC758 \uBC18\uC9C0", "\uD30C\uC218\uAFBC\uC758 \uAC80", "\uB2EC\uC758 \uD65C"]][Math.floor(i / 7)][i % 7], slot: i % 7 === 3 ? "armor" : i % 7 === 4 ? "ring" : "weapon", atk: i % 7 === 3 ? 0 : 3 + Math.floor(i / 7) * 8, def: i % 7 === 3 ? 4 + Math.floor(i / 7) * 5 : i % 7 === 4 ? 2 : 0, hp: i % 7 === 3 ? 15 + Math.floor(i / 7) * 20 : 0, rarity: Math.floor(i / 7), price: 40 + Math.floor(i / 7) * 110 }));
 for (let tier = 0; tier < 3; tier++) {
@@ -278,6 +360,12 @@ for (let tier = 0; tier < 3; tier++) {
   }
 }
 for (const [kind, name] of ["\uBCC4\uBE5B \uD1A0\uB07C \uAC80", "\uACE0\uC591\uC774 \uBC1C\uBC14\uB2E5 \uD65C", "\uAD6C\uB984 \uC0AC\uD0D5 \uC9C0\uD321\uC774", "\uB9D0\uB791 \uAD6C\uB984 \uAC11\uC637", "\uAF2C\uB9C8 \uBCC4 \uBC18\uC9C0"].entries()) ITEMS.push({ id: ITEMS.length, name, slot: kind < 3 ? "weapon" : kind === 3 ? "armor" : "ring", classId: kind < 3 ? kind : void 0, atk: kind < 3 ? 35 : 0, def: kind === 3 ? 25 : kind === 4 ? 8 : 0, hp: kind === 3 ? 120 : kind === 4 ? 50 : 0, rarity: 2, price: 0, gmOnly: true });
+for (let classId = 0; classId < 3; classId++) ITEMS.push({ id: ITEMS.length, name: ["\uCC9C\uACF5 \uC218\uC815 \uAC80", "\uC815\uB839 \uAE43\uD138 \uD65C", "\uC740\uD558 \uBCC4 \uC9C0\uD321\uC774"][classId], slot: "weapon", classId, minLevel: 15, atk: 24, def: 0, hp: 15, rarity: 2, price: 0, cashOnly: true });
+for (const zone of ZONES) {
+  if (zone.id === 0 || zone.safe || zone.raid) continue;
+  const types = zone.biome === 1 ? [20, 21] : zone.biome === 2 ? [22] : zone.id === 1 ? [19] : [19, 20];
+  for (const type of types) if (!zone.types.includes(type)) zone.types.push(type);
+}
 var QUESTS = [
   { id: 0, name: "\uCD08\uC6D0\uC758 \uC791\uC740 \uC18C\uB3D9", description: "\uC774\uC2AC\uBE5B \uCD08\uC6D0\uC5D0\uC11C \uC774\uC2AC \uC2AC\uB77C\uC784 5\uB9C8\uB9AC\uB97C \uCC98\uCE58\uD558\uC138\uC694.", monster: 0, count: 5, xp: 90, gold: 65 },
   { id: 1, name: "\uBC84\uC12F\uC758 \uC232", description: "\uC232 \uBC84\uC12F 4\uB9C8\uB9AC\uB97C \uCC98\uCE58\uD558\uC138\uC694.", monster: 2, count: 4, xp: 130, gold: 90 },
@@ -477,7 +565,11 @@ function gmMutate(w, body, now) {
     case "setSkin": {
       const id = integer(body.cosmeticId, "\uC2A4\uD0A8", -1, GM_SKINS.length - 1);
       if (id === -1) delete next.gmSkin;
-      else next.gmSkin = id;
+      else {
+        next.gmSkin = id;
+        next.animalSkins ??= [];
+        if (!next.animalSkins.includes(id)) next.animalSkins.push(id);
+      }
       affected = id === -1 ? "GM \uC2A4\uD0A8 \uD574\uC81C" : GM_SKINS[id].name + " \uC801\uC6A9";
       break;
     }
@@ -606,497 +698,8 @@ async function gmAuthorized(header, secret) {
   return diff === 0;
 }
 
-// shared/quests.ts
-var questKind = (q) => q.kind || "main";
-function questAvailable(p, q) {
-  return !p.done.includes(q.id) && p.level >= (q.minLevel || 1) && (p.quests[q.id] !== void 0 || q.previous === void 0 || p.done.includes(q.previous));
-}
-function canAcceptQuest(p, q) {
-  if (!questAvailable(p, q)) return false;
-  if (p.quests[q.id] !== void 0) return true;
-  const kind = questKind(q), active = QUESTS.filter((x) => questKind(x) === kind && p.quests[x.id] !== void 0).length;
-  return active < (kind === "main" ? 1 : 2);
-}
-
-// shared/workshop.ts
-var RECIPES = [
-  { name: "\uC0DD\uBA85 \uBB3C\uC57D \xD75", gold: 25, cost: [0, 0, 3], kind: "hp" },
-  { name: "\uB9C8\uB098 \uBB3C\uC57D \xD75", gold: 25, cost: [0, 2, 2], kind: "mp" },
-  { name: "\uBCC4\uCCA0 \uC815\uB828 \xD73", gold: 35, cost: [0, 3, 0], kind: "ore" },
-  { name: "\uC9C1\uC5C5\uBCC4 \uD76C\uADC0 \uBB34\uAE30", gold: 180, cost: [12, 8, 0], kind: "weapon" }
-];
-
-// server/workshop.ts
-function workshopInput(w, p, input) {
-  const service = { enhance: "forge", salvage: "materials", craft: "alchemy", materialBuy: "materials", store: "storage", withdraw: "storage" }[input.action || ""];
-  if (!service) return;
-  if (!NPCS.some((n) => n.service === service && n.zone === p.zone && Math.hypot(n.x - p.x, n.y - p.y) < 180)) {
-    p.notice = "\uB2F4\uB2F9 NPC\uC5D0\uAC8C \uAC00\uAE4C\uC774 \uB2E4\uAC00\uAC00\uC138\uC694.";
-    return;
-  }
-  if (w.trades?.some((t) => t.a === p.id || t.b === p.id)) {
-    p.notice = "\uAC70\uB798\uB97C \uC885\uB8CC\uD55C \uB4A4 \uC774\uC6A9\uD558\uC138\uC694.";
-    return;
-  }
-  const index = Number(input.value);
-  if (!Number.isSafeInteger(index)) {
-    p.notice = "\uC62C\uBC14\uB978 \uD56D\uBAA9\uC744 \uC120\uD0DD\uD558\uC138\uC694.";
-    return;
-  }
-  const materials = p.materials || [0, 0, 0];
-  if (input.action === "materialBuy") {
-    if (index < 0 || index > 2 || p.gold < 50) {
-      p.notice = "\uC7AC\uB8CC \uAD6C\uB9E4\uC5D0\uB294 50 G\uAC00 \uD544\uC694\uD569\uB2C8\uB2E4.";
-      return;
-    }
-    p.gold -= 50;
-    p.materials = [...materials];
-    p.materials[index] += 3;
-    p.notice = "\uC7AC\uB8CC 3\uAC1C\uB97C \uAD6C\uC785\uD588\uC2B5\uB2C8\uB2E4.";
-    return;
-  }
-  if (input.action === "enhance") {
-    const id2 = p.equipment[["weapon", "armor", "ring"][index]];
-    if (index < 0 || index > 2 || id2 === null || id2 === void 0 || !p.inventory.includes(id2)) {
-      p.notice = "\uC7A5\uCC29\uD55C \uC7A5\uBE44\uB97C \uC120\uD0DD\uD558\uC138\uC694.";
-      return;
-    }
-    const rank = p.enhancements?.[id2] || 0, gold = 80 * (rank + 1), ore = 3 * (rank + 1), dust = 2 * (rank + 1);
-    if (rank >= 5 || p.level < (rank + 1) * 3) {
-      p.notice = rank >= 5 ? "\uCD5C\uB300 \uAC15\uD654 +5\uC785\uB2C8\uB2E4." : `\uB808\uBCA8 ${(rank + 1) * 3}\uBD80\uD130 \uAC15\uD654\uD560 \uC218 \uC788\uC2B5\uB2C8\uB2E4.`;
-      return;
-    }
-    if (p.gold < gold || materials[0] < ore || materials[1] < dust) {
-      p.notice = "\uACE8\uB4DC\uC640 \uAC15\uD654 \uC7AC\uB8CC\uAC00 \uBD80\uC871\uD569\uB2C8\uB2E4.";
-      return;
-    }
-    p.gold -= gold;
-    p.materials = [materials[0] - ore, materials[1] - dust, materials[2]];
-    p.enhancements = { ...p.enhancements, [id2]: rank + 1 };
-    p.notice = ITEMS[id2].name + ` \uC219\uB828 \uAC15\uD654 +${rank + 1} \uC644\uB8CC!`;
-    return;
-  }
-  if (input.action === "craft") {
-    const r = RECIPES[index];
-    if (!r) {
-      p.notice = "\uC5C6\uB294 \uC81C\uC791\uBC95\uC785\uB2C8\uB2E4.";
-      return;
-    }
-    if (p.gold < r.gold || r.cost.some((n, i) => materials[i] < n) || r.kind === "weapon" && (p.level < 5 || p.inventory.length >= 60)) {
-      p.notice = "\uACE8\uB4DC\xB7\uC7AC\uB8CC\xB7\uAC00\uBC29 \uACF5\uAC04\uC744 \uD655\uC778\uD558\uC138\uC694. \uD76C\uADC0 \uBB34\uAE30\uB294 LV5\uBD80\uD130 \uC81C\uC791\uD569\uB2C8\uB2E4.";
-      return;
-    }
-    p.gold -= r.gold;
-    p.materials = materials.map((n, i) => n - r.cost[i]);
-    if (r.kind === "hp") p.potions += 5;
-    else if (r.kind === "mp") p.manaPotions += 5;
-    else if (r.kind === "ore") p.materials[0] += 3;
-    else p.inventory.push(7 + p.classId);
-    p.notice = r.name + " \uC81C\uC791 \uC644\uB8CC";
-    return;
-  }
-  const source = input.action === "withdraw" ? p.storage || [] : p.inventory, id = source[index];
-  if (index < 0 || index >= source.length) {
-    p.notice = "\uC544\uC774\uD15C\uC744 \uB2E4\uC2DC \uC120\uD0DD\uD558\uC138\uC694.";
-    return;
-  }
-  if (ITEMS[id]?.gmOnly && input.action === "salvage") {
-    p.notice = "GM \uC804\uC6A9 \uC7A5\uBE44\uB294 \uBD84\uD574\uD560 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4.";
-    return;
-  }
-  if (input.action === "withdraw") {
-    if (p.inventory.length >= 60) {
-      p.notice = "\uAC00\uBC29\uC774 \uAC00\uB4DD \uCC3C\uC2B5\uB2C8\uB2E4.";
-      return;
-    }
-    p.inventory.push(id);
-    p.storage.splice(index, 1);
-  } else {
-    if (Object.values(p.equipment).includes(id)) {
-      p.notice = "\uC7A5\uCC29 \uC911\uC778 \uC7A5\uBE44\uB294 \uBC97\uC740 \uD6C4 \uC774\uC6A9\uD558\uC138\uC694.";
-      return;
-    }
-    if (input.action === "store") {
-      if ((p.storage?.length || 0) >= 60) {
-        p.notice = "\uCC3D\uACE0\uAC00 \uAC00\uB4DD \uCC3C\uC2B5\uB2C8\uB2E4.";
-        return;
-      }
-      (p.storage ??= []).push(id);
-    } else {
-      p.materials = [...materials];
-      p.materials[0] += 2 + ITEMS[id].rarity * 2;
-      p.materials[1] += 1 + ITEMS[id].rarity;
-    }
-    p.inventory.splice(index, 1);
-    const s = stats(p);
-    p.hp = Math.min(p.hp, s.hp);
-    p.mp = Math.min(p.mp, s.mp);
-  }
-  p.notice = input.action === "salvage" ? "\uC7A5\uBE44\uB97C \uBD84\uD574\uD574 \uC7AC\uB8CC\uB97C \uC5BB\uC5C8\uC2B5\uB2C8\uB2E4." : "\uCC3D\uACE0 \uC774\uB3D9 \uC644\uB8CC";
-}
-
 // shared/beginner.ts
 var beginnerProtected = (p) => p.level <= 20 && !(p.promotionTier || 0) && !ZONES[p.zone]?.raid;
-
-// shared/tutorial.ts
-var tutorialKills = (p) => Object.values(p.kills).reduce((n, k) => n + k, 0);
-var tutorialState = (p) => ({ stage: 0, moved: 0, usedSkill: false, killStart: tutorialKills(p), completed: false });
-function tutorialReady(p) {
-  const t = p.tutorial;
-  if (!t || t.completed) return false;
-  switch (t.stage) {
-    case 0:
-      return true;
-    case 1:
-      return t.moved >= 120;
-    case 2:
-      return t.usedSkill;
-    case 3:
-      return Object.keys(p.quests).length > 0 || p.done.length > 0;
-    case 4:
-      return tutorialKills(p) - t.killStart >= 3;
-    case 5:
-      return p.level >= 2;
-    case 6:
-      return true;
-    default:
-      return false;
-  }
-}
-
-// server/tutorial.ts
-function tutorialInput(w, p, i, now) {
-  if (i.action === "tutorialStart" && !p.tutorial) p.tutorial = tutorialState(p);
-  if (i.action !== "tutorialNext" || !tutorialReady(p)) return;
-  const t = p.tutorial;
-  if (t.stage === 6) {
-    p.pets ??= [];
-    if (!p.pets.includes(0)) p.pets.push(0);
-    p.petId = 0;
-    p.petAutoLoot = true;
-    t.completed = true;
-    p.notice = "\uD29C\uD1A0\uB9AC\uC5BC \uC644\uB8CC! \uBCC4\uBE5B \uC5EC\uC6B0\uAC00 \uD568\uAED8\uD569\uB2C8\uB2E4.";
-    return;
-  }
-  if (t.stage === 3) t.killStart = tutorialKills(p);
-  if (t.stage === 4 && addXp(p, 180)) w.events.push({ id: crypto.randomUUID(), time: now, zone: p.zone, x: p.x, y: p.y, kind: "level", value: p.level, color: "#ffe8a3", source: p.id });
-  t.stage++;
-}
-
-// server/animal-skins.ts
-function animalSkinInput(p, input) {
-  if (input.action === "animalEquip" && input.value === -1) {
-    delete p.animalSkinId;
-    delete p.gmSkin;
-    p.notice = "\uAE30\uBCF8 \uC218\uD638\uC790 \uBAA8\uC2B5\uC73C\uB85C \uB3CC\uC544\uC654\uC2B5\uB2C8\uB2E4.";
-    return;
-  }
-  const skin = ANIMAL_SKINS.find((s) => s.id === input.value);
-  if (!skin || skin.gmOnly) return;
-  if (input.action === "animalBuy") {
-    p.animalSkins ??= [];
-    if (p.animalSkins.includes(skin.id)) {
-      p.notice = "\uC774\uBBF8 \uBCF4\uC720\uD55C \uB3D9\uBB3C \uC2A4\uD0A8\uC785\uB2C8\uB2E4.";
-      return;
-    }
-    if (p.gold < skin.price) {
-      p.notice = "\uACE8\uB4DC\uAC00 \uBD80\uC871\uD569\uB2C8\uB2E4.";
-      return;
-    }
-    p.gold -= skin.price;
-    p.animalSkins.push(skin.id);
-    p.animalSkinId = skin.id;
-    delete p.gmSkin;
-    p.notice = skin.name + " \uAD6C\uB9E4 \xB7 \uC804\uC2E0 \uC2A4\uD0A8 \uC801\uC6A9 \uC644\uB8CC";
-  }
-  if (input.action === "animalEquip" && p.animalSkins?.includes(skin.id)) {
-    p.animalSkinId = skin.id;
-    delete p.gmSkin;
-    p.notice = skin.name + " \uC2A4\uD0A8\uC744 \uC801\uC6A9\uD588\uC2B5\uB2C8\uB2E4.";
-  }
-}
-
-// shared/damage-skins.ts
-var DAMAGE_SKINS = [
-  { id: 0, name: "\uAE30\uBCF8", currency: "free", price: 0 },
-  { id: 1, name: "\uD669\uAE08 \uBCC4\uBE5B", currency: "gold", price: 600 },
-  { id: 2, name: "\uBE59\uACB0 \uC218\uC815", currency: "gold", price: 1200 },
-  { id: 3, name: "\uBCC4\uAC00\uB8E8 \uC624\uB85C\uB77C", currency: "cash", price: 200 },
-  { id: 4, name: "\uD0DC\uC591\uC758 \uBD88\uAF43", currency: "cash", price: 250 },
-  { id: 5, name: "\uCC9C\uC0C1\uC758 \uB9F9\uC138", currency: "cash", price: 300 }
-];
-
-// server/damage-skins.ts
-function damageSkinInput(p, i) {
-  const skin = DAMAGE_SKINS.find((s) => s.id === i.value);
-  if (!skin) return;
-  if (i.action === "damageBuy" && skin.currency === "gold") {
-    p.damageSkins ??= [];
-    if (p.damageSkins.includes(skin.id)) return;
-    if (p.gold < skin.price) {
-      p.notice = "\uACE8\uB4DC\uAC00 \uBD80\uC871\uD569\uB2C8\uB2E4.";
-      return;
-    }
-    p.gold -= skin.price;
-    p.damageSkins.push(skin.id);
-    p.damageSkinId = skin.id;
-    p.notice = "\uB370\uBBF8\uC9C0 \uC2A4\uD0A8 \uAD6C\uB9E4 \uC644\uB8CC";
-  }
-  if (i.action === "damageEquip" && (skin.id === 0 || p.damageSkins?.includes(skin.id))) {
-    p.damageSkinId = skin.id;
-    p.notice = "\uB370\uBBF8\uC9C0 \uC2A4\uD0A8 \uC801\uC6A9";
-  }
-}
-
-// shared/physics.ts
-var distance = (a, b) => Math.hypot(a.x - b.x, a.y - b.y);
-function movable(x, y, zone = 0) {
-  return x > 180 && x < 1620 && y > 140 && y < 1020 && onGround(x, y, zone) && !blocksFor(zone).some((b) => x > b.x - 15 && x < b.x + b.w + 15 && y > b.y - 15 && y < b.y + b.h + 15);
-}
-function clearSight(a, b) {
-  const steps = Math.ceil(distance(a, b) / 12);
-  for (let i = 1; i <= steps; i++) {
-    const t = i / steps;
-    if (!movable(a.x + (b.x - a.x) * t, a.y + (b.y - a.y) * t, a.zone || 0)) return false;
-  }
-  return true;
-}
-function sweepMove(a, dx, dy) {
-  const steps = Math.max(1, Math.ceil(Math.hypot(dx, dy) / 10));
-  for (let i = 0; i < steps; i++) {
-    const x = a.x + dx / steps, y = a.y + dy / steps;
-    if (movable(x, a.y, a.zone || 0)) a.x = x;
-    if (movable(a.x, y, a.zone || 0)) a.y = y;
-  }
-}
-function aimDirection(p, aim) {
-  const d = distance(p, aim);
-  return d > 0.1 ? { x: (aim.x - p.x) / d, y: (aim.y - p.y) / d } : { x: p.face || 1, y: 0 };
-}
-function inCone(p, target, aim, cosine = -0.2) {
-  const dir = aimDirection(p, aim), d = distance(p, target);
-  return d < 1 || ((target.x - p.x) * dir.x + (target.y - p.y) * dir.y) / d >= cosine;
-}
-function lineDistance(p, target, aim) {
-  const dir = aimDirection(p, aim);
-  return { along: (target.x - p.x) * dir.x + (target.y - p.y) * dir.y, across: Math.abs((target.x - p.x) * dir.y - (target.y - p.y) * dir.x) };
-}
-function onGround(x, y, zone) {
-  const points = groundFor(zone);
-  let inside = false;
-  for (let i = 0, j = points.length - 1; i < points.length; j = i++) {
-    const a = points[i], b = points[j];
-    if (a.y > y !== b.y > y && x < (b.x - a.x) * (y - a.y) / (b.y - a.y) + a.x) inside = !inside;
-    const vx = b.x - a.x, vy = b.y - a.y, t = Math.max(0, Math.min(1, ((x - a.x) * vx + (y - a.y) * vy) / (vx * vx + vy * vy)));
-    if (Math.hypot(x - a.x - vx * t, y - a.y - vy * t) < 12) return false;
-  }
-  return inside;
-}
-
-// server/social.ts
-function tradeFor(w, id) {
-  return w.trades?.find((t) => t.a === id || t.b === id);
-}
-function expireTrades(w, now) {
-  w.trades = (w.trades || []).filter((t) => {
-    const a = w.players[t.a], b = w.players[t.b];
-    const valid = a && b && a.hp > 0 && b.hp > 0 && a.zone === b.zone && distance(a, b) <= 240 && now - a.seen < 15e3 && now - b.seen < 15e3 && t.expires > now;
-    if (!valid) {
-      if (a)
-        a.notice = "\uAC70\uB798\uAC00 \uC885\uB8CC\uB418\uC5C8\uC2B5\uB2C8\uB2E4. \uC544\uC774\uD15C\uACFC \uACE8\uB4DC\uB294 \uC774\uB3D9\uD558\uC9C0 \uC54A\uC558\uC2B5\uB2C8\uB2E4.";
-      if (b)
-        b.notice = "\uAC70\uB798\uAC00 \uC885\uB8CC\uB418\uC5C8\uC2B5\uB2C8\uB2E4. \uC544\uC774\uD15C\uACFC \uACE8\uB4DC\uB294 \uC774\uB3D9\uD558\uC9C0 \uC54A\uC558\uC2B5\uB2C8\uB2E4.";
-    }
-    return valid;
-  });
-}
-function socialInput(w, p, i, now) {
-  if (i.action === "bubbleBuy" || i.action === "bubbleEquip") {
-    const b2 = BUBBLES[Number(i.value)];
-    if (!b2)
-      return;
-    p.bubbles ??= [0];
-    if (i.action === "bubbleBuy" && b2.cashOnly) {
-      p.notice = "\uC774 \uC0C1\uD488\uC740 \uD6C4\uC6D0 \uCE90\uC2DC\uC0F5\uC5D0\uC11C \uAD6C\uB9E4\uD560 \uC218 \uC788\uC2B5\uB2C8\uB2E4.";
-      return;
-    }
-    if (i.action === "bubbleBuy" && !p.bubbles.includes(b2.id)) {
-      if (p.gold < b2.price) {
-        p.notice = "\uACE8\uB4DC\uAC00 \uBD80\uC871\uD569\uB2C8\uB2E4.";
-        return;
-      }
-      p.gold -= b2.price;
-      p.bubbles.push(b2.id);
-    }
-    if (p.bubbles.includes(b2.id)) {
-      p.bubbleId = b2.id;
-      p.notice = b2.name + " \uB9D0\uD48D\uC120 \uC801\uC6A9";
-    }
-    return;
-  }
-  if (!i.action?.startsWith("trade"))
-    return;
-  expireTrades(w, now);
-  if (i.action === "tradeRequest") {
-    const other = w.players[i.targetId || ""];
-    if (!other || other.id === p.id || other.zone !== p.zone || p.zone >= 25 || other.hp <= 0 || distance(p, other) > 220 || now - other.seen > 1e4) {
-      p.notice = "\uAC70\uB798\uD560 \uC218\uD638\uC790\uC5D0\uAC8C \uAC00\uAE4C\uC774 \uB2E4\uAC00\uAC00\uC138\uC694.";
-      return;
-    }
-    if (tradeFor(w, p.id) || tradeFor(w, other.id)) {
-      p.notice = "\uC774\uBBF8 \uC9C4\uD589 \uC911\uC778 \uAC70\uB798\uAC00 \uC788\uC2B5\uB2C8\uB2E4.";
-      return;
-    }
-    w.trades ??= [];
-    w.trades.push({ id: crypto.randomUUID(), a: p.id, b: other.id, phase: "request", revision: 0, expires: now + 12e4, offers: { [p.id]: { indices: [], items: [], gold: 0, confirmed: false }, [other.id]: { indices: [], items: [], gold: 0, confirmed: false } } });
-    other.notice = p.name + "\uB2D8\uC774 \uAC70\uB798\uB97C \uC694\uCCAD\uD588\uC2B5\uB2C8\uB2E4.";
-    return;
-  }
-  const t = tradeFor(w, p.id);
-  if (!t || t.id !== i.tradeId)
-    return;
-  const cancel = () => {
-    w.trades = w.trades.filter((a2) => a2.id !== t.id);
-  };
-  if (i.action === "tradeCancel") {
-    cancel();
-    return;
-  }
-  if (i.action === "tradeAccept" && t.phase === "request" && p.id === t.b) {
-    t.phase = "open";
-    t.revision++;
-    return;
-  }
-  if (t.phase !== "open")
-    return;
-  if (i.action === "tradeOffer") {
-    const indices = i.indices || [], gold = i.gold ?? 0;
-    if (!Array.isArray(indices) || indices.length > 12 || new Set(indices).size !== indices.length || !Number.isSafeInteger(gold) || gold < 0 || gold > p.gold || indices.some((n) => !Number.isSafeInteger(n) || n < 0 || n >= p.inventory.length || Object.values(p.equipment).includes(p.inventory[n]) || ITEMS[p.inventory[n]]?.gmOnly)) {
-      p.notice = "\uC81C\uC548\uD560 \uC544\uC774\uD15C\uACFC \uACE8\uB4DC\uB97C \uD655\uC778\uD558\uC138\uC694. \uC7A5\uCC29\uD55C \uC7A5\uBE44\uB294 \uAC70\uB798\uD560 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4.";
-      return;
-    }
-    t.offers[p.id] = { indices: [...indices], items: indices.map((n) => p.inventory[n]), gold, confirmed: false };
-    for (const o of Object.values(t.offers))
-      o.confirmed = false;
-    t.revision++;
-    t.expires = now + 12e4;
-    return;
-  }
-  if (i.action !== "tradeConfirm" || i.revision !== t.revision)
-    return;
-  const a = w.players[t.a], b = w.players[t.b], ao = t.offers[t.a], bo = t.offers[t.b];
-  const valid = (player, o) => player.gold >= o.gold && o.indices.every((index, n) => player.inventory[index] === o.items[n] && !Object.values(player.equipment).includes(o.items[n]));
-  if (!valid(a, ao) || !valid(b, bo) || a.inventory.length - ao.items.length + bo.items.length > 60 || b.inventory.length - bo.items.length + ao.items.length > 60) {
-    for (const o of Object.values(t.offers))
-      o.confirmed = false;
-    t.revision++;
-    p.notice = "\uACE8\uB4DC\xB7\uC544\uC774\uD15C\xB7\uAC00\uBC29 \uACF5\uAC04\uC774 \uBC14\uB00C\uC5C8\uC2B5\uB2C8\uB2E4. \uC81C\uC548\uC744 \uB2E4\uC2DC \uB4F1\uB85D\uD558\uC138\uC694.";
-    return;
-  }
-  t.offers[p.id].confirmed = true;
-  if (!ao.confirmed || !bo.confirmed)
-    return;
-  a.inventory = a.inventory.filter((_, n) => !ao.indices.includes(n)).concat(bo.items);
-  b.inventory = b.inventory.filter((_, n) => !bo.indices.includes(n)).concat(ao.items);
-  a.gold += bo.gold - ao.gold;
-  b.gold += ao.gold - bo.gold;
-  a.notice = b.notice = "\uAC70\uB798\uAC00 \uC644\uB8CC\uB418\uC5C8\uC2B5\uB2C8\uB2E4.";
-  cancel();
-}
-
-// server/raids.ts
-function enterRaid(w, p, value, now) {
-  const r = RAIDS[value];
-  if (!r || p.level < r.level) {
-    p.notice = "\uB808\uC774\uB4DC \uC785\uC7A5 \uB808\uBCA8\uC774 \uBD80\uC871\uD569\uB2C8\uB2E4.";
-    return;
-  }
-  if (p.hp <= 0)
-    return;
-  if (p.zone >= 25) {
-    p.notice = "\uC774\uBBF8 \uC131\uC18C\uC5D0 \uC785\uC7A5\uD588\uC2B5\uB2C8\uB2E4. \uB2E4\uB978 \uB808\uC774\uB4DC\uB294 \uD1F4\uC7A5 \uD6C4 \uC120\uD0DD\uD558\uC138\uC694.";
-    return;
-  }
-  w.raids ??= [];
-  let battle = w.raids.find((b) => b.zone === r.zone);
-  if (battle && battle.status !== "fight" && now < battle.ends) {
-    p.notice = "\uC131\uC18C\uAC00 \uD68C\uBCF5 \uC911\uC785\uB2C8\uB2E4. \uC7A0\uC2DC \uB4A4 \uB2E4\uC2DC \uC785\uC7A5\uD558\uC138\uC694.";
-    return;
-  }
-  if (!battle || battle.status !== "fight") {
-    w.raids = w.raids.filter((b) => b.zone !== r.zone);
-    w.monsters = w.monsters.filter((m) => m.zone !== r.zone);
-    battle = { zone: r.zone, started: now, ends: now + r.minutes * 6e4, participants: [], status: "fight", rewarded: false };
-    w.raids.push(battle);
-    w.monsters.push({ id: "raid-" + r.zone, type: 9, zone: r.zone, x: 900, y: 470, homeX: 900, homeY: 470, hp: r.hp, maxHp: r.hp, deadUntil: 0, lastHit: 0, lastAtk: 0, nextSpecial: now + 4e3 });
-  }
-  if (!battle.participants.includes(p.id)) {
-    if (battle.participants.length >= 4) {
-      p.notice = "\uB808\uC774\uB4DC\uB294 \uCD5C\uB300 4\uBA85\uC785\uB2C8\uB2E4.";
-      return;
-    }
-    battle.participants.push(p.id);
-  }
-  p.zone = r.zone;
-  p.x = 900;
-  p.y = 850;
-  const s = stats(p);
-  p.hp = s.hp;
-  p.mp = s.mp;
-  p.notice = r.name + " \uB808\uC774\uB4DC \uC2DC\uC791! \uBD89\uC740 \uACBD\uACE0 \uBC94\uC704\uB97C \uD53C\uD558\uC138\uC694.";
-}
-function tickRaids(w, now) {
-  for (const b of w.raids || []) {
-    if (b.status !== "fight")
-      continue;
-    const boss = w.monsters.find((m) => m.zone === b.zone);
-    if (!boss || boss.hp <= 0)
-      continue;
-    const present = b.participants.map((id) => w.players[id]).filter((p) => p && p.zone === b.zone && now - p.seen < 15e3);
-    if (now >= b.ends || now - b.started > 15e3 && (!present.length || present.every((p) => p.hp <= 0))) {
-      b.status = "failed";
-      b.ends = now + 3e4;
-      boss.hp = 0;
-      boss.deadUntil = Number.MAX_SAFE_INTEGER;
-      for (const p of present)
-        p.notice = "\uB808\uC774\uB4DC \uC2E4\uD328. \uBCC4\uC0D8 \uB9C8\uC744\uB85C \uB3CC\uC544\uAC00 \uB2E4\uC2DC \uB3C4\uC804\uD558\uC138\uC694.";
-    }
-  }
-}
-
-// shared/pets.ts
-var PETS = [{ id: 0, name: "\uBCC4\uBE5B \uC5EC\uC6B0", description: "\uC791\uC740 \uBC1C\uAC78\uC74C\uC73C\uB85C \uBAA8\uD5D8\uC744 \uD568\uAED8\uD558\uB294 \uC5EC\uC6B0", price: 500 }, { id: 1, name: "\uB2EC\uBE5B \uBD80\uC5C9\uC774", description: "\uBCC4\uAC00\uB8E8 \uB0A0\uAC1C\uB85C \uACC1\uC744 \uC9C0\uD0A4\uB294 \uBD80\uC5C9\uC774", price: 800 }, { id: 2, name: "\uAD6C\uB984 \uACE0\uC591\uC774", description: "\uBC18\uC9DD\uC774\uB294 \uBAA9\uAC78\uC774\uB97C \uB2E8 \uD638\uAE30\uC2EC \uB9CE\uC740 \uACE0\uC591\uC774", price: 1200 }];
-var PET_PICKUP_RADIUS = 180;
-
-// server/loot.ts
-function collectLoot(w, p, now, radius) {
-  let count = 0;
-  const picked = /* @__PURE__ */ new Set();
-  for (const l of w.loot) {
-    if (l.zone !== p.zone || distance(p, l) >= radius || l.expires <= now || l.owner !== p.id && now <= l.expires - 45e3 || !clearSight(p, l)) continue;
-    const fits = l.item === null || p.inventory.length < 60, changed = l.gold > 0 || l.potion || fits && l.item !== null;
-    if (l.gold > 0) {
-      p.materials ??= [0, 0, 0];
-      p.materials[2]++;
-      if (l.zone % 2 === 0) p.materials[0]++;
-      else p.materials[1]++;
-    }
-    p.gold += l.gold;
-    l.gold = 0;
-    if (l.potion) {
-      p.potions++;
-      l.potion = false;
-    }
-    if (fits && l.item !== null) {
-      p.inventory.push(l.item);
-      l.item = null;
-    }
-    if (l.item === null) picked.add(l.id);
-    if (changed) count++;
-  }
-  w.loot = w.loot.filter((l) => !picked.has(l.id));
-  return count;
-}
 
 // shared/promotion.ts
 var PROMOTION_NAMES = [["\uD0DC\uC591\uC758 \uC218\uD638\uAE30\uC0AC", "\uCC9C\uC0C1\uC758 \uC131\uAE30\uC0AC"], ["\uD3ED\uD48D\uC758 \uCD94\uC801\uC790", "\uCC9C\uAD81\uC758 \uC21C\uCC30\uC790"], ["\uB2EC\uC758 \uD604\uC790", "\uBCC4\uC790\uB9AC \uB300\uB9C8\uB3C4\uC0AC"]];
@@ -1149,6 +752,51 @@ SKILL_SPECS[0].push({ shape: "circle", effect: "\uD0DC\uC591 \uBC29\uBCBD \xB7 \
 SKILL_SPECS[1].push({ shape: "cone", effect: "\uD3ED\uD48D \xB7 \uD68C\uD53C", description: "\uD3ED\uD48D \uC0AC\uACA9\uACFC \uD568\uAED8 0.7\uCD08\uAC04 \uBB34\uC801\uC744 \uC5BB\uC2B5\uB2C8\uB2E4.", invulnerable: 700 }, { shape: "line", effect: "\uBD88\uC0AC\uC870 \xB7 \uD654\uC0C1", description: "\uBD88\uC0AC\uC870 \uD654\uC0B4\uC774 \uC9C1\uC120\uC0C1\uC758 \uC801\uC744 \uAD00\uD1B5\uD558\uACE0 4\uCD08\uAC04 \uBD88\uD0DC\uC6C1\uB2C8\uB2E4.", burn: 4e3 }, { shape: "cone", effect: "\uCC9C\uAD81 \xB7 \uB2E4\uC911 \uD45C\uC801", description: "\uC804\uBC29\uC5D0 \uAC15\uB825\uD55C \uCC9C\uC0C1\uC758 \uD654\uC0B4\uC744 \uD37C\uBD93\uC2B5\uB2C8\uB2E4." }, { shape: "meteor", effect: "\uBCC4\uBE5B \uC0AC\uB0E5 \xB7 \uBE59\uACB0", description: "\uBCC4\uBE5B \uD654\uC0B4\uBE44\uAC00 \uB113\uC740 \uBC94\uC704\uC5D0 \uB5A8\uC5B4\uC838 \uC801\uC744 \uC5BC\uB9BD\uB2C8\uB2E4.", radius: 215, freeze: 1800 });
 SKILL_SPECS[2].push({ shape: "circle", effect: "\uB2EC\uC758 \uAC00\uD638 \xB7 \uD761\uD608", description: "\uB2EC\uBE5B \uD30C\uB3D9\uC73C\uB85C \uC0DD\uBA85\uB825\uC744 \uD761\uC218\uD558\uACE0 0.6\uCD08\uAC04 \uBB34\uC801\uC744 \uC5BB\uC2B5\uB2C8\uB2E4.", lifeSteal: 0.3, invulnerable: 600 }, { shape: "meteor", effect: "\uC740\uD558 \uD61C\uC131 \xB7 \uD654\uC0C1", description: "\uC740\uD558\uC758 \uD61C\uC131\uC73C\uB85C \uB113\uC740 \uBC94\uC704\uB97C \uD0DC\uC6C1\uB2C8\uB2E4.", radius: 195, burn: 4e3 }, { shape: "circle", effect: "\uC2DC\uAC04\uC758 \uC11C\uB9AC \xB7 \uBE59\uACB0", description: "\uC8FC\uBCC0 \uC801\uC758 \uC2DC\uAC04\uC744 \uBA48\uCD94\uB4EF 2.5\uCD08\uAC04 \uC5BC\uB9BD\uB2C8\uB2E4.", freeze: 2500 }, { shape: "meteor", effect: "\uC6B0\uC8FC\uC758 \uD0C4\uC0DD", description: "\uAC70\uB300\uD55C \uBCC4\uC758 \uD3ED\uBC1C\uB85C \uB113\uC740 \uBC94\uC704\uC5D0 \uD53C\uD574\uC640 \uAE30\uC808\uC744 \uC90D\uB2C8\uB2E4.", radius: 245, stun: 1800 });
 
+// shared/physics.ts
+var distance = (a, b) => Math.hypot(a.x - b.x, a.y - b.y);
+function movable(x, y, zone = 0) {
+  return x > 180 && x < 1620 && y > 140 && y < 1020 && onGround(x, y, zone) && !blocksFor(zone).some((b) => x > b.x - 15 && x < b.x + b.w + 15 && y > b.y - 15 && y < b.y + b.h + 15);
+}
+function clearSight(a, b) {
+  const steps = Math.ceil(distance(a, b) / 12);
+  for (let i = 1; i <= steps; i++) {
+    const t = i / steps;
+    if (!movable(a.x + (b.x - a.x) * t, a.y + (b.y - a.y) * t, a.zone || 0)) return false;
+  }
+  return true;
+}
+function sweepMove(a, dx, dy) {
+  const steps = Math.max(1, Math.ceil(Math.hypot(dx, dy) / 10));
+  for (let i = 0; i < steps; i++) {
+    const x = a.x + dx / steps, y = a.y + dy / steps;
+    if (movable(x, a.y, a.zone || 0)) a.x = x;
+    if (movable(a.x, y, a.zone || 0)) a.y = y;
+  }
+}
+function aimDirection(p, aim) {
+  const d = distance(p, aim);
+  return d > 0.1 ? { x: (aim.x - p.x) / d, y: (aim.y - p.y) / d } : { x: p.face || 1, y: 0 };
+}
+function inCone(p, target, aim, cosine = -0.2) {
+  const dir = aimDirection(p, aim), d = distance(p, target);
+  return d < 1 || ((target.x - p.x) * dir.x + (target.y - p.y) * dir.y) / d >= cosine;
+}
+function lineDistance(p, target, aim) {
+  const dir = aimDirection(p, aim);
+  return { along: (target.x - p.x) * dir.x + (target.y - p.y) * dir.y, across: Math.abs((target.x - p.x) * dir.y - (target.y - p.y) * dir.x) };
+}
+function onGround(x, y, zone) {
+  const points = groundFor(zone);
+  let inside = false;
+  for (let i = 0, j = points.length - 1; i < points.length; j = i++) {
+    const a = points[i], b = points[j];
+    if (a.y > y !== b.y > y && x < (b.x - a.x) * (y - a.y) / (b.y - a.y) + a.x) inside = !inside;
+    const vx = b.x - a.x, vy = b.y - a.y, t = Math.max(0, Math.min(1, ((x - a.x) * vx + (y - a.y) * vy) / (vx * vx + vy * vy)));
+    if (Math.hypot(x - a.x - vx * t, y - a.y - vy * t) < 12) return false;
+  }
+  return inside;
+}
+
 // server/combat.ts
 function emit(w, p, now, kind, value, color, extra = {}) {
   w.events.push({ id: crypto.randomUUID(), time: now, zone: p.zone, x: p.x, y: p.y, kind, value, color, ...extra });
@@ -1194,7 +842,7 @@ function killMonster(w, m, p, now) {
     if (addXp(a, Math.round(md.xp * zoneScale(m.zone) * (beginnerProtected(a) ? 2 : 1)))) emit(w, a, now, "level", a.level, "#ffe8a3", { source: a.id });
   }
   const rarity = isBoss(m.type) ? 2 : m.zone >= 2 ? 1 : 0;
-  const pool = ITEMS.filter((i) => i.id >= 21 && (i.minLevel || 1) <= ZONES[m.zone].minLevel && i.rarity <= rarity + 1);
+  const pool = ITEMS.filter((i) => i.id >= 21 && !i.gmOnly && !i.cashOnly && (i.minLevel || 1) <= ZONES[m.zone].minLevel && i.rarity <= rarity + 1);
   const item = Math.random() < 0.48 || isBoss(m.type) ? pool.length && Math.random() < 0.5 ? pool[Math.floor(Math.random() * pool.length)].id : rarity * 7 + Math.floor(Math.random() * 7) : null;
   w.loot.push({ id: crypto.randomUUID(), owner: p.id, zone: m.zone, x: m.x, y: m.y, gold: Math.round(md.gold * zoneScale(m.zone)), item, potion: Math.random() < 0.35, expires: now + 6e4 });
   emit(w, m, now, "death", 0, "#b7ecd9");
@@ -1368,6 +1016,504 @@ function tickCombat(w, now) {
   }
 }
 
+// shared/pets.ts
+var PETS = [{ id: 0, name: "\uBCC4\uBE5B \uC5EC\uC6B0", description: "\uC791\uC740 \uBC1C\uAC78\uC74C\uC73C\uB85C \uBAA8\uD5D8\uC744 \uD568\uAED8\uD558\uB294 \uC5EC\uC6B0", price: 500, cashOnly: false }, { id: 1, name: "\uB2EC\uBE5B \uBD80\uC5C9\uC774", description: "\uBCC4\uAC00\uB8E8 \uB0A0\uAC1C\uB85C \uACC1\uC744 \uC9C0\uD0A4\uB294 \uBD80\uC5C9\uC774", price: 800, cashOnly: false }, { id: 2, name: "\uAD6C\uB984 \uACE0\uC591\uC774", description: "\uBC18\uC9DD\uC774\uB294 \uBAA9\uAC78\uC774\uB97C \uB2E8 \uD638\uAE30\uC2EC \uB9CE\uC740 \uACE0\uC591\uC774", price: 1200, cashOnly: false }, { id: 3, name: "\uAFC0\uBE5B \uCF54\uAE30", description: "\uC791\uC740 \uBC1C\uB85C \uB530\uB77C\uC624\uB294 \uCF54\uAE30 \xB7 \uD3EC\uC158 \uC790\uB3D9 \uD68C\uBCF5 \uC9C0\uC6D0", price: 180, cashOnly: true }, { id: 4, name: "\uBCC4\uAD6C\uB984 \uC544\uAE30 \uC6A9", description: "\uBC18\uC9DD\uC774\uB294 \uC544\uAE30 \uC6A9 \xB7 \uD3EC\uC158 \uC790\uB3D9 \uD68C\uBCF5 \uC9C0\uC6D0", price: 300, cashOnly: true }];
+var PET_PICKUP_RADIUS = 180;
+
+// server/pet-care.ts
+function petCareInput(p, i) {
+  if (i.action === "petAutoHeal") {
+    p.petAutoHeal = i.value === 1;
+    p.notice = p.petAutoHeal ? "\uD3AB \uC790\uB3D9 \uD68C\uBCF5 \uCF1C\uC9D0 \xB7 \uB9E1\uACA8\uB454 \uD3EC\uC158\uC744 \uC0AC\uC6A9\uD569\uB2C8\uB2E4." : "\uD3AB \uC790\uB3D9 \uD68C\uBCF5 \uAEBC\uC9D0";
+    return;
+  }
+  if (i.action === "petHealThreshold" && [30, 40, 50, 60].includes(i.value)) {
+    p.petHealThreshold = i.value;
+    p.notice = "\uC790\uB3D9 \uC0DD\uBA85 \uD68C\uBCF5 \uAE30\uC900 " + i.value + "%";
+    return;
+  }
+  if (i.action !== "petPotionLoad" && i.action !== "petPotionUnload") return;
+  const count = i.value, slot = i.slot;
+  if (!Number.isSafeInteger(count) || count < 1 || count > 999 || slot !== 0 && slot !== 1) return;
+  const stock = slot === 0 ? "potions" : "manaPotions", reserve = slot === 0 ? "petHpPotions" : "petMpPotions", stored = p[reserve] || 0;
+  if (i.action === "petPotionLoad") {
+    if (!p.pets?.some((id) => PETS.some((pet) => pet.id === id))) {
+      p.notice = "\uBA3C\uC800 \uD3AB\uC744 \uC18C\uC7A5\uD558\uC138\uC694.";
+      return;
+    }
+    if (p[stock] < count || stored + count > 999) {
+      p.notice = "\uBCF4\uC720 \uD3EC\uC158\uC774\uB098 \uD3AB \uBCF4\uAD00 \uACF5\uAC04\uC774 \uBD80\uC871\uD569\uB2C8\uB2E4.";
+      return;
+    }
+    p[stock] -= count;
+    p[reserve] = stored + count;
+    p.notice = "\uD3AB\uC5D0\uAC8C " + count + "\uAC1C \uD3EC\uC158\uC744 \uB9E1\uACBC\uC2B5\uB2C8\uB2E4.";
+  } else {
+    if (stored < count) return;
+    p[reserve] = stored - count;
+    p[stock] += count;
+    p.notice = "\uD3AB \uD3EC\uC158 " + count + "\uAC1C\uB97C \uB3CC\uB824\uBC1B\uC558\uC2B5\uB2C8\uB2E4.";
+  }
+}
+function tickPetCare(w, p, now) {
+  if (!p.petAutoHeal || p.hp <= 0 || now - p.seen > 15e3 || p.petId === void 0 || p.petId === null || !p.pets?.includes(p.petId) || !PETS.some((pet) => pet.id === p.petId)) return;
+  const s = stats(p), threshold = p.petHealThreshold || 40;
+  if (p.hp < s.hp * threshold / 100 && (p.petHpPotions || 0) > 0 && now >= (p.potionCd || 0)) {
+    const amount = Math.min(80, s.hp - p.hp);
+    p.petHpPotions = (p.petHpPotions || 0) - 1;
+    p.hp += amount;
+    p.potionCd = now + 2200;
+    emit(w, p, now, "heal", Math.ceil(amount), "#a0f4ae", { source: p.id, effect: "pet-heal" });
+  }
+  if (p.mp < s.mp * 0.35 && (p.petMpPotions || 0) > 0 && now >= (p.manaPotionCd || 0)) {
+    const amount = Math.min(70, s.mp - p.mp);
+    p.petMpPotions = (p.petMpPotions || 0) - 1;
+    p.mp += amount;
+    p.manaPotionCd = now + 2200;
+    emit(w, p, now, "heal", Math.ceil(amount), "#a1cbff", { source: p.id, effect: "pet-mana" });
+  }
+}
+
+// shared/quests.ts
+var questKind = (q) => q.kind || "main";
+function questAvailable(p, q) {
+  return !p.done.includes(q.id) && p.level >= (q.minLevel || 1) && (p.quests[q.id] !== void 0 || q.previous === void 0 || p.done.includes(q.previous));
+}
+function canAcceptQuest(p, q) {
+  if (!questAvailable(p, q)) return false;
+  if (p.quests[q.id] !== void 0) return true;
+  const kind = questKind(q), active = QUESTS.filter((x) => questKind(x) === kind && p.quests[x.id] !== void 0).length;
+  return active < (kind === "main" ? 1 : 2);
+}
+
+// shared/workshop.ts
+var RECIPES = [
+  { name: "\uC0DD\uBA85 \uBB3C\uC57D \xD75", gold: 25, cost: [0, 0, 3], kind: "hp" },
+  { name: "\uB9C8\uB098 \uBB3C\uC57D \xD75", gold: 25, cost: [0, 2, 2], kind: "mp" },
+  { name: "\uBCC4\uCCA0 \uC815\uB828 \xD73", gold: 35, cost: [0, 3, 0], kind: "ore" },
+  { name: "\uC9C1\uC5C5\uBCC4 \uD76C\uADC0 \uBB34\uAE30", gold: 180, cost: [12, 8, 0], kind: "weapon" }
+];
+
+// server/workshop.ts
+function workshopInput(w, p, input) {
+  const service = { enhance: "forge", salvage: "materials", craft: "alchemy", materialBuy: "materials", store: "storage", withdraw: "storage" }[input.action || ""];
+  if (!service) return;
+  if (!NPCS.some((n) => n.service === service && n.zone === p.zone && Math.hypot(n.x - p.x, n.y - p.y) < 180)) {
+    p.notice = "\uB2F4\uB2F9 NPC\uC5D0\uAC8C \uAC00\uAE4C\uC774 \uB2E4\uAC00\uAC00\uC138\uC694.";
+    return;
+  }
+  if (w.trades?.some((t) => t.a === p.id || t.b === p.id)) {
+    p.notice = "\uAC70\uB798\uB97C \uC885\uB8CC\uD55C \uB4A4 \uC774\uC6A9\uD558\uC138\uC694.";
+    return;
+  }
+  const index = Number(input.value);
+  if (!Number.isSafeInteger(index)) {
+    p.notice = "\uC62C\uBC14\uB978 \uD56D\uBAA9\uC744 \uC120\uD0DD\uD558\uC138\uC694.";
+    return;
+  }
+  const materials = p.materials || [0, 0, 0];
+  if (input.action === "materialBuy") {
+    if (index < 0 || index > 2 || p.gold < 50) {
+      p.notice = "\uC7AC\uB8CC \uAD6C\uB9E4\uC5D0\uB294 50 G\uAC00 \uD544\uC694\uD569\uB2C8\uB2E4.";
+      return;
+    }
+    p.gold -= 50;
+    p.materials = [...materials];
+    p.materials[index] += 3;
+    p.notice = "\uC7AC\uB8CC 3\uAC1C\uB97C \uAD6C\uC785\uD588\uC2B5\uB2C8\uB2E4.";
+    return;
+  }
+  if (input.action === "enhance") {
+    const id2 = p.equipment[["weapon", "armor", "ring"][index]];
+    if (index < 0 || index > 2 || id2 === null || id2 === void 0 || !p.inventory.includes(id2)) {
+      p.notice = "\uC7A5\uCC29\uD55C \uC7A5\uBE44\uB97C \uC120\uD0DD\uD558\uC138\uC694.";
+      return;
+    }
+    const rank = p.enhancements?.[id2] || 0, gold = 80 * (rank + 1), ore = 3 * (rank + 1), dust = 2 * (rank + 1);
+    if (rank >= 5 || p.level < (rank + 1) * 3) {
+      p.notice = rank >= 5 ? "\uCD5C\uB300 \uAC15\uD654 +5\uC785\uB2C8\uB2E4." : `\uB808\uBCA8 ${(rank + 1) * 3}\uBD80\uD130 \uAC15\uD654\uD560 \uC218 \uC788\uC2B5\uB2C8\uB2E4.`;
+      return;
+    }
+    if (p.gold < gold || materials[0] < ore || materials[1] < dust) {
+      p.notice = "\uACE8\uB4DC\uC640 \uAC15\uD654 \uC7AC\uB8CC\uAC00 \uBD80\uC871\uD569\uB2C8\uB2E4.";
+      return;
+    }
+    p.gold -= gold;
+    p.materials = [materials[0] - ore, materials[1] - dust, materials[2]];
+    p.enhancements = { ...p.enhancements, [id2]: rank + 1 };
+    p.notice = ITEMS[id2].name + ` \uC219\uB828 \uAC15\uD654 +${rank + 1} \uC644\uB8CC!`;
+    return;
+  }
+  if (input.action === "craft") {
+    const r = RECIPES[index];
+    if (!r) {
+      p.notice = "\uC5C6\uB294 \uC81C\uC791\uBC95\uC785\uB2C8\uB2E4.";
+      return;
+    }
+    if (p.gold < r.gold || r.cost.some((n, i) => materials[i] < n) || r.kind === "weapon" && (p.level < 5 || p.inventory.length >= 60)) {
+      p.notice = "\uACE8\uB4DC\xB7\uC7AC\uB8CC\xB7\uAC00\uBC29 \uACF5\uAC04\uC744 \uD655\uC778\uD558\uC138\uC694. \uD76C\uADC0 \uBB34\uAE30\uB294 LV5\uBD80\uD130 \uC81C\uC791\uD569\uB2C8\uB2E4.";
+      return;
+    }
+    p.gold -= r.gold;
+    p.materials = materials.map((n, i) => n - r.cost[i]);
+    if (r.kind === "hp") p.potions += 5;
+    else if (r.kind === "mp") p.manaPotions += 5;
+    else if (r.kind === "ore") p.materials[0] += 3;
+    else p.inventory.push(7 + p.classId);
+    p.notice = r.name + " \uC81C\uC791 \uC644\uB8CC";
+    return;
+  }
+  const source = input.action === "withdraw" ? p.storage || [] : p.inventory, id = source[index];
+  if (index < 0 || index >= source.length) {
+    p.notice = "\uC544\uC774\uD15C\uC744 \uB2E4\uC2DC \uC120\uD0DD\uD558\uC138\uC694.";
+    return;
+  }
+  if ((ITEMS[id]?.gmOnly || ITEMS[id]?.cashOnly) && input.action === "salvage") {
+    p.notice = "\uADC0\uC18D \uC804\uC6A9 \uC7A5\uBE44\uB294 \uBD84\uD574\uD560 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4.";
+    return;
+  }
+  if (input.action === "withdraw") {
+    if (p.inventory.length >= 60) {
+      p.notice = "\uAC00\uBC29\uC774 \uAC00\uB4DD \uCC3C\uC2B5\uB2C8\uB2E4.";
+      return;
+    }
+    p.inventory.push(id);
+    p.storage.splice(index, 1);
+  } else {
+    if (Object.values(p.equipment).includes(id)) {
+      p.notice = "\uC7A5\uCC29 \uC911\uC778 \uC7A5\uBE44\uB294 \uBC97\uC740 \uD6C4 \uC774\uC6A9\uD558\uC138\uC694.";
+      return;
+    }
+    if (input.action === "store") {
+      if ((p.storage?.length || 0) >= 60) {
+        p.notice = "\uCC3D\uACE0\uAC00 \uAC00\uB4DD \uCC3C\uC2B5\uB2C8\uB2E4.";
+        return;
+      }
+      (p.storage ??= []).push(id);
+    } else {
+      p.materials = [...materials];
+      p.materials[0] += 2 + ITEMS[id].rarity * 2;
+      p.materials[1] += 1 + ITEMS[id].rarity;
+    }
+    p.inventory.splice(index, 1);
+    const s = stats(p);
+    p.hp = Math.min(p.hp, s.hp);
+    p.mp = Math.min(p.mp, s.mp);
+  }
+  p.notice = input.action === "salvage" ? "\uC7A5\uBE44\uB97C \uBD84\uD574\uD574 \uC7AC\uB8CC\uB97C \uC5BB\uC5C8\uC2B5\uB2C8\uB2E4." : "\uCC3D\uACE0 \uC774\uB3D9 \uC644\uB8CC";
+}
+
+// shared/tutorial.ts
+var tutorialKills = (p) => Object.values(p.kills).reduce((n, k) => n + k, 0);
+var tutorialState = (p) => ({ stage: 0, moved: 0, usedSkill: false, killStart: tutorialKills(p), completed: false });
+function tutorialReady(p) {
+  const t = p.tutorial;
+  if (!t || t.completed) return false;
+  switch (t.stage) {
+    case 0:
+      return true;
+    case 1:
+      return t.moved >= 120;
+    case 2:
+      return t.usedSkill;
+    case 3:
+      return Object.keys(p.quests).length > 0 || p.done.length > 0;
+    case 4:
+      return tutorialKills(p) - t.killStart >= 3;
+    case 5:
+      return p.level >= 2;
+    case 6:
+      return true;
+    default:
+      return false;
+  }
+}
+
+// server/tutorial.ts
+function tutorialInput(w, p, i, now) {
+  if (i.action === "tutorialStart" && !p.tutorial) p.tutorial = tutorialState(p);
+  if (i.action !== "tutorialNext" || !tutorialReady(p)) return;
+  const t = p.tutorial;
+  if (t.stage === 6) {
+    p.pets ??= [];
+    if (!p.pets.includes(0)) p.pets.push(0);
+    p.petId = 0;
+    p.petAutoLoot = true;
+    t.completed = true;
+    p.notice = "\uD29C\uD1A0\uB9AC\uC5BC \uC644\uB8CC! \uBCC4\uBE5B \uC5EC\uC6B0\uAC00 \uD568\uAED8\uD569\uB2C8\uB2E4.";
+    return;
+  }
+  if (t.stage === 3) t.killStart = tutorialKills(p);
+  if (t.stage === 4 && addXp(p, 180)) w.events.push({ id: crypto.randomUUID(), time: now, zone: p.zone, x: p.x, y: p.y, kind: "level", value: p.level, color: "#ffe8a3", source: p.id });
+  t.stage++;
+}
+
+// server/animal-skins.ts
+function animalSkinInput(p, input) {
+  if (input.action === "animalEquip" && input.value === -1) {
+    delete p.animalSkinId;
+    delete p.gmSkin;
+    p.notice = "\uAE30\uBCF8 \uC218\uD638\uC790 \uBAA8\uC2B5\uC73C\uB85C \uB3CC\uC544\uC654\uC2B5\uB2C8\uB2E4.";
+    return;
+  }
+  const skin = ANIMAL_SKINS.find((s) => s.id === input.value);
+  if (!skin || skin.gmOnly) return;
+  if (input.action === "animalBuy" && skin.currency === "gold") {
+    p.animalSkins ??= [];
+    if (p.animalSkins.includes(skin.id)) {
+      p.notice = "\uC774\uBBF8 \uBCF4\uC720\uD55C \uB3D9\uBB3C \uC2A4\uD0A8\uC785\uB2C8\uB2E4.";
+      return;
+    }
+    if (p.gold < skin.price) {
+      p.notice = "\uACE8\uB4DC\uAC00 \uBD80\uC871\uD569\uB2C8\uB2E4.";
+      return;
+    }
+    p.gold -= skin.price;
+    p.animalSkins.push(skin.id);
+    p.animalSkinId = skin.id;
+    delete p.gmSkin;
+    p.notice = skin.name + " \uAD6C\uB9E4 \xB7 \uC804\uC2E0 \uC2A4\uD0A8 \uC801\uC6A9 \uC644\uB8CC";
+  }
+  if (input.action === "animalEquip" && p.animalSkins?.includes(skin.id)) {
+    p.animalSkinId = skin.id;
+    delete p.gmSkin;
+    p.notice = skin.name + " \uC2A4\uD0A8\uC744 \uC801\uC6A9\uD588\uC2B5\uB2C8\uB2E4.";
+  }
+}
+
+// shared/damage-skins.ts
+var DAMAGE_SKINS = [
+  { id: 0, name: "\uAE30\uBCF8", currency: "free", price: 0 },
+  { id: 1, name: "\uD669\uAE08 \uBCC4\uBE5B", currency: "gold", price: 600 },
+  { id: 2, name: "\uBE59\uACB0 \uC218\uC815", currency: "gold", price: 1200 },
+  { id: 3, name: "\uBCC4\uAC00\uB8E8 \uC624\uB85C\uB77C", currency: "cash", price: 200 },
+  { id: 4, name: "\uD0DC\uC591\uC758 \uBD88\uAF43", currency: "cash", price: 250 },
+  { id: 5, name: "\uCC9C\uC0C1\uC758 \uB9F9\uC138", currency: "cash", price: 300 }
+];
+
+// server/damage-skins.ts
+function damageSkinInput(p, i) {
+  const skin = DAMAGE_SKINS.find((s) => s.id === i.value);
+  if (!skin) return;
+  if (i.action === "damageBuy" && skin.currency === "gold") {
+    p.damageSkins ??= [];
+    if (p.damageSkins.includes(skin.id)) return;
+    if (p.gold < skin.price) {
+      p.notice = "\uACE8\uB4DC\uAC00 \uBD80\uC871\uD569\uB2C8\uB2E4.";
+      return;
+    }
+    p.gold -= skin.price;
+    p.damageSkins.push(skin.id);
+    p.damageSkinId = skin.id;
+    p.notice = "\uB370\uBBF8\uC9C0 \uC2A4\uD0A8 \uAD6C\uB9E4 \uC644\uB8CC";
+  }
+  if (i.action === "damageEquip" && (skin.id === 0 || p.damageSkins?.includes(skin.id))) {
+    p.damageSkinId = skin.id;
+    p.notice = "\uB370\uBBF8\uC9C0 \uC2A4\uD0A8 \uC801\uC6A9";
+  }
+}
+
+// server/social.ts
+function tradeFor(w, id) {
+  return w.trades?.find((t) => t.a === id || t.b === id);
+}
+function expireTrades(w, now) {
+  w.trades = (w.trades || []).filter((t) => {
+    const a = w.players[t.a], b = w.players[t.b];
+    const valid = a && b && a.hp > 0 && b.hp > 0 && a.zone === b.zone && distance(a, b) <= 240 && now - a.seen < 15e3 && now - b.seen < 15e3 && t.expires > now;
+    if (!valid) {
+      if (a)
+        a.notice = "\uAC70\uB798\uAC00 \uC885\uB8CC\uB418\uC5C8\uC2B5\uB2C8\uB2E4. \uC544\uC774\uD15C\uACFC \uACE8\uB4DC\uB294 \uC774\uB3D9\uD558\uC9C0 \uC54A\uC558\uC2B5\uB2C8\uB2E4.";
+      if (b)
+        b.notice = "\uAC70\uB798\uAC00 \uC885\uB8CC\uB418\uC5C8\uC2B5\uB2C8\uB2E4. \uC544\uC774\uD15C\uACFC \uACE8\uB4DC\uB294 \uC774\uB3D9\uD558\uC9C0 \uC54A\uC558\uC2B5\uB2C8\uB2E4.";
+    }
+    return valid;
+  });
+}
+function socialInput(w, p, i, now) {
+  if (i.action === "bubbleBuy" || i.action === "bubbleEquip") {
+    const b2 = BUBBLES[Number(i.value)];
+    if (!b2)
+      return;
+    p.bubbles ??= [0];
+    if (i.action === "bubbleBuy" && b2.cashOnly) {
+      p.notice = "\uC774 \uC0C1\uD488\uC740 \uD6C4\uC6D0 \uCE90\uC2DC\uC0F5\uC5D0\uC11C \uAD6C\uB9E4\uD560 \uC218 \uC788\uC2B5\uB2C8\uB2E4.";
+      return;
+    }
+    if (i.action === "bubbleBuy" && !p.bubbles.includes(b2.id)) {
+      if (p.gold < b2.price) {
+        p.notice = "\uACE8\uB4DC\uAC00 \uBD80\uC871\uD569\uB2C8\uB2E4.";
+        return;
+      }
+      p.gold -= b2.price;
+      p.bubbles.push(b2.id);
+    }
+    if (p.bubbles.includes(b2.id)) {
+      p.bubbleId = b2.id;
+      p.notice = b2.name + " \uB9D0\uD48D\uC120 \uC801\uC6A9";
+    }
+    return;
+  }
+  if (!i.action?.startsWith("trade"))
+    return;
+  expireTrades(w, now);
+  if (i.action === "tradeRequest") {
+    const other = w.players[i.targetId || ""];
+    if (!other || other.id === p.id || other.zone !== p.zone || p.zone >= 25 || other.hp <= 0 || distance(p, other) > 220 || now - other.seen > 1e4) {
+      p.notice = "\uAC70\uB798\uD560 \uC218\uD638\uC790\uC5D0\uAC8C \uAC00\uAE4C\uC774 \uB2E4\uAC00\uAC00\uC138\uC694.";
+      return;
+    }
+    if (tradeFor(w, p.id) || tradeFor(w, other.id)) {
+      p.notice = "\uC774\uBBF8 \uC9C4\uD589 \uC911\uC778 \uAC70\uB798\uAC00 \uC788\uC2B5\uB2C8\uB2E4.";
+      return;
+    }
+    w.trades ??= [];
+    w.trades.push({ id: crypto.randomUUID(), a: p.id, b: other.id, phase: "request", revision: 0, expires: now + 12e4, offers: { [p.id]: { indices: [], items: [], gold: 0, confirmed: false }, [other.id]: { indices: [], items: [], gold: 0, confirmed: false } } });
+    other.notice = p.name + "\uB2D8\uC774 \uAC70\uB798\uB97C \uC694\uCCAD\uD588\uC2B5\uB2C8\uB2E4.";
+    return;
+  }
+  const t = tradeFor(w, p.id);
+  if (!t || t.id !== i.tradeId)
+    return;
+  const cancel = () => {
+    w.trades = w.trades.filter((a2) => a2.id !== t.id);
+  };
+  if (i.action === "tradeCancel") {
+    cancel();
+    return;
+  }
+  if (i.action === "tradeAccept" && t.phase === "request" && p.id === t.b) {
+    t.phase = "open";
+    t.revision++;
+    return;
+  }
+  if (t.phase !== "open")
+    return;
+  if (i.action === "tradeOffer") {
+    const indices = i.indices || [], gold = i.gold ?? 0;
+    if (!Array.isArray(indices) || indices.length > 12 || new Set(indices).size !== indices.length || !Number.isSafeInteger(gold) || gold < 0 || gold > p.gold || indices.some((n) => !Number.isSafeInteger(n) || n < 0 || n >= p.inventory.length || Object.values(p.equipment).includes(p.inventory[n]) || (ITEMS[p.inventory[n]]?.gmOnly || ITEMS[p.inventory[n]]?.cashOnly))) {
+      p.notice = "\uC81C\uC548\uD560 \uC544\uC774\uD15C\uACFC \uACE8\uB4DC\uB97C \uD655\uC778\uD558\uC138\uC694. \uC7A5\uCC29\uD55C \uC7A5\uBE44\uB294 \uAC70\uB798\uD560 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4.";
+      return;
+    }
+    t.offers[p.id] = { indices: [...indices], items: indices.map((n) => p.inventory[n]), gold, confirmed: false };
+    for (const o of Object.values(t.offers))
+      o.confirmed = false;
+    t.revision++;
+    t.expires = now + 12e4;
+    return;
+  }
+  if (i.action !== "tradeConfirm" || i.revision !== t.revision)
+    return;
+  const a = w.players[t.a], b = w.players[t.b], ao = t.offers[t.a], bo = t.offers[t.b];
+  const valid = (player, o) => player.gold >= o.gold && o.indices.every((index, n) => player.inventory[index] === o.items[n] && !Object.values(player.equipment).includes(o.items[n]));
+  if (!valid(a, ao) || !valid(b, bo) || a.inventory.length - ao.items.length + bo.items.length > 60 || b.inventory.length - bo.items.length + ao.items.length > 60) {
+    for (const o of Object.values(t.offers))
+      o.confirmed = false;
+    t.revision++;
+    p.notice = "\uACE8\uB4DC\xB7\uC544\uC774\uD15C\xB7\uAC00\uBC29 \uACF5\uAC04\uC774 \uBC14\uB00C\uC5C8\uC2B5\uB2C8\uB2E4. \uC81C\uC548\uC744 \uB2E4\uC2DC \uB4F1\uB85D\uD558\uC138\uC694.";
+    return;
+  }
+  t.offers[p.id].confirmed = true;
+  if (!ao.confirmed || !bo.confirmed)
+    return;
+  a.inventory = a.inventory.filter((_, n) => !ao.indices.includes(n)).concat(bo.items);
+  b.inventory = b.inventory.filter((_, n) => !bo.indices.includes(n)).concat(ao.items);
+  a.gold += bo.gold - ao.gold;
+  b.gold += ao.gold - bo.gold;
+  a.notice = b.notice = "\uAC70\uB798\uAC00 \uC644\uB8CC\uB418\uC5C8\uC2B5\uB2C8\uB2E4.";
+  cancel();
+}
+
+// server/raids.ts
+function enterRaid(w, p, value, now) {
+  const r = RAIDS[value];
+  if (!r || p.level < r.level) {
+    p.notice = "\uB808\uC774\uB4DC \uC785\uC7A5 \uB808\uBCA8\uC774 \uBD80\uC871\uD569\uB2C8\uB2E4.";
+    return;
+  }
+  if (p.hp <= 0)
+    return;
+  if (p.zone >= 25) {
+    p.notice = "\uC774\uBBF8 \uC131\uC18C\uC5D0 \uC785\uC7A5\uD588\uC2B5\uB2C8\uB2E4. \uB2E4\uB978 \uB808\uC774\uB4DC\uB294 \uD1F4\uC7A5 \uD6C4 \uC120\uD0DD\uD558\uC138\uC694.";
+    return;
+  }
+  w.raids ??= [];
+  let battle = w.raids.find((b) => b.zone === r.zone);
+  if (battle && battle.status !== "fight" && now < battle.ends) {
+    p.notice = "\uC131\uC18C\uAC00 \uD68C\uBCF5 \uC911\uC785\uB2C8\uB2E4. \uC7A0\uC2DC \uB4A4 \uB2E4\uC2DC \uC785\uC7A5\uD558\uC138\uC694.";
+    return;
+  }
+  if (!battle || battle.status !== "fight") {
+    w.raids = w.raids.filter((b) => b.zone !== r.zone);
+    w.monsters = w.monsters.filter((m) => m.zone !== r.zone);
+    battle = { zone: r.zone, started: now, ends: now + r.minutes * 6e4, participants: [], status: "fight", rewarded: false };
+    w.raids.push(battle);
+    w.monsters.push({ id: "raid-" + r.zone, type: 9, zone: r.zone, x: 900, y: 470, homeX: 900, homeY: 470, hp: r.hp, maxHp: r.hp, deadUntil: 0, lastHit: 0, lastAtk: 0, nextSpecial: now + 4e3 });
+  }
+  if (!battle.participants.includes(p.id)) {
+    if (battle.participants.length >= 4) {
+      p.notice = "\uB808\uC774\uB4DC\uB294 \uCD5C\uB300 4\uBA85\uC785\uB2C8\uB2E4.";
+      return;
+    }
+    battle.participants.push(p.id);
+  }
+  p.zone = r.zone;
+  p.x = 900;
+  p.y = 850;
+  const s = stats(p);
+  p.hp = s.hp;
+  p.mp = s.mp;
+  p.notice = r.name + " \uB808\uC774\uB4DC \uC2DC\uC791! \uBD89\uC740 \uACBD\uACE0 \uBC94\uC704\uB97C \uD53C\uD558\uC138\uC694.";
+}
+function tickRaids(w, now) {
+  for (const b of w.raids || []) {
+    if (b.status !== "fight")
+      continue;
+    const boss = w.monsters.find((m) => m.zone === b.zone);
+    if (!boss || boss.hp <= 0)
+      continue;
+    const present = b.participants.map((id) => w.players[id]).filter((p) => p && p.zone === b.zone && now - p.seen < 15e3);
+    if (now >= b.ends || now - b.started > 15e3 && (!present.length || present.every((p) => p.hp <= 0))) {
+      b.status = "failed";
+      b.ends = now + 3e4;
+      boss.hp = 0;
+      boss.deadUntil = Number.MAX_SAFE_INTEGER;
+      for (const p of present)
+        p.notice = "\uB808\uC774\uB4DC \uC2E4\uD328. \uBCC4\uC0D8 \uB9C8\uC744\uB85C \uB3CC\uC544\uAC00 \uB2E4\uC2DC \uB3C4\uC804\uD558\uC138\uC694.";
+    }
+  }
+}
+
+// server/loot.ts
+function collectLoot(w, p, now, radius) {
+  let count = 0;
+  const picked = /* @__PURE__ */ new Set();
+  for (const l of w.loot) {
+    if (l.zone !== p.zone || distance(p, l) >= radius || l.expires <= now || l.owner !== p.id && now <= l.expires - 45e3 || !clearSight(p, l)) continue;
+    const fits = l.item === null || p.inventory.length < 60, changed = l.gold > 0 || l.potion || fits && l.item !== null;
+    if (l.gold > 0) {
+      p.materials ??= [0, 0, 0];
+      p.materials[2]++;
+      if (l.zone % 2 === 0) p.materials[0]++;
+      else p.materials[1]++;
+    }
+    p.gold += l.gold;
+    l.gold = 0;
+    if (l.potion) {
+      p.potions++;
+      l.potion = false;
+    }
+    if (fits && l.item !== null) {
+      p.inventory.push(l.item);
+      l.item = null;
+    }
+    if (l.item === null) picked.add(l.id);
+    if (changed) count++;
+  }
+  w.loot = w.loot.filter((l) => !picked.has(l.id));
+  return count;
+}
+
 // server/engine.ts
 function newPlayer(id, name, classId, now) {
   const c = CLASSES[classId];
@@ -1383,7 +1529,7 @@ function createWorld(now) {
       monsters.push({ id: `m${z.id}-${i}`, type, zone: z.id, x, y, homeX: x, homeY: y, hp: Math.round(MONSTERS[type].hp * zoneScale(z.id)), maxHp: Math.round(MONSTERS[type].hp * zoneScale(z.id)), deadUntil: 0, lastHit: 0, lastAtk: 0 });
     }
   }
-  return { players: {}, monsters, loot: [], events: [], chat: [], tick: now, contentVersion: 5 };
+  return { players: {}, monsters, loot: [], events: [], chat: [], tick: now, contentVersion: 6 };
 }
 function notice(p, s) {
   p.notice = s;
@@ -1406,6 +1552,7 @@ function tickWorld(w, now) {
   for (const p of Object.values(w.players)) {
     if (now - p.seen > 15e3 || p.hp <= 0) continue;
     autoTrain(p);
+    tickPetCare(w, p, now);
     const s = stats(p);
     p.mp = Math.min(s.mp, p.mp + dt * 2.8);
     if (ZONES[p.zone]?.safe) p.hp = Math.min(s.hp, p.hp + dt * 5);
@@ -1514,6 +1661,7 @@ function applyInput(w, p, input, now) {
   tutorialInput(w, p, input, now);
   damageSkinInput(p, input);
   animalSkinInput(p, input);
+  petCareInput(p, input);
   if (input.action === "dodge") dodge(w, p, input, now);
   castSkill(w, p, input, now);
   if (p.tutorial?.stage === 2 && p.attackAt === now && Number.isInteger(input.skill)) p.tutorial.usedSkill = true;
@@ -1638,7 +1786,7 @@ function applyInput(w, p, input, now) {
   }
   if (input.action === "buyPet" && NPCS.some((n) => (n.service === "pets" || n.service === "shop") && n.zone === p.zone && distance(p, n) < 180)) {
     const pet = PETS[Number(input.value)];
-    if (pet && Number.isInteger(input.value)) {
+    if (pet && !pet.cashOnly && Number.isInteger(input.value)) {
       p.pets ??= [];
       if (p.pets.includes(pet.id)) notice(p, "\uC774\uBBF8 \uD568\uAED8\uD558\uB294 \uD3AB\uC785\uB2C8\uB2E4.");
       else if (p.gold < pet.price) notice(p, "\uACE8\uB4DC\uAC00 \uBD80\uC871\uD569\uB2C8\uB2E4.");
@@ -1677,7 +1825,7 @@ function applyInput(w, p, input, now) {
       } else notice(p, "\uACE8\uB4DC\uAC00 \uBD80\uC871\uD569\uB2C8\uB2E4.");
     } else {
       const item = ITEMS[value];
-      if (item && !item.gmOnly && Number.isInteger(value) && p.level >= (item.minLevel || 1) && p.inventory.length < 60 && p.gold >= item.price) {
+      if (item && !item.gmOnly && !item.cashOnly && Number.isInteger(value) && p.level >= (item.minLevel || 1) && p.inventory.length < 60 && p.gold >= item.price) {
         p.gold -= item.price;
         p.inventory.push(value);
         notice(p, item.name + " \uAD6C\uC785");
@@ -1703,7 +1851,7 @@ function applyInput(w, p, input, now) {
     const index = Number(input.value);
     if (NPCS.some((n) => n.service === "shop" && n.zone === p.zone && distance(p, n) < 180) && Number.isInteger(index) && index >= 0 && index < p.inventory.length) {
       const id = p.inventory[index];
-      if (ITEMS[id].gmOnly) notice(p, "GM \uC804\uC6A9 \uC7A5\uBE44\uB294 \uD310\uB9E4\uD560 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4.");
+      if (ITEMS[id].gmOnly || ITEMS[id].cashOnly) notice(p, "\uC804\uC6A9 \uC7A5\uBE44\uB294 \uD310\uB9E4\uD560 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4.");
       else if (Object.values(p.equipment).includes(id)) notice(p, "\uC7A5\uCC29 \uC911\uC778 \uC544\uC774\uD15C\uC740 \uD310\uB9E4\uD560 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4.");
       else {
         p.inventory.splice(index, 1);
@@ -1721,7 +1869,7 @@ function snapshot(w, p, now) {
   return { shopSettings: cashSettings(w), donations: (w.donations || []).filter((d) => d.playerId === p.id).slice(-20), trade: tradeFor(w, p.id), raid: w.raids?.find((b) => b.zone === p.zone), player: p, players: Object.values(w.players).filter((a) => a.zone === p.zone && now - a.seen < 1e4 && a.id !== p.id), monsters: w.monsters.filter((m) => m.zone === p.zone), loot: w.loot.filter((l) => l.zone === p.zone), events: w.events.filter((e) => e.zone === p.zone), chat: w.chat.slice(-30), now, online: Object.values(w.players).filter((a) => now - a.seen < 1e4).length, casts: (w.casts || []).filter((c) => c.zone === p.zone) };
 }
 function migrateWorld(w, now) {
-  if (w.contentVersion === 5) return;
+  if (w.contentVersion === 6) return;
   const template = createWorld(now), ids = new Set(w.monsters.map((m) => m.id));
   for (const m of template.monsters) if (!ids.has(m.id)) w.monsters.push(m);
   for (const z of ZONES) {
@@ -1740,7 +1888,7 @@ function migrateWorld(w, now) {
   }
   for (const z of ZONES) {
     if (z.safe || z.raid || z.id === 0) continue;
-    for (const type of z.types.filter((t) => t >= 13)) {
+    for (const type of z.types.filter((t) => t >= 13 && t < 19)) {
       const id = `v14-${z.id}-${type}`;
       if (w.monsters.some((m) => m.id === id)) continue;
       const x = 550 + (type - 13) % 3 * 270, y = 510 + Math.floor((type - 13) / 3) * 190;
@@ -1748,7 +1896,23 @@ function migrateWorld(w, now) {
       w.monsters.push({ id, type, zone: z.id, x, y, homeX: x, homeY: y, hp, maxHp: hp, deadUntil: 0, lastHit: 0, lastAtk: 0 });
     }
   }
-  w.contentVersion = 5;
+  for (const z of ZONES) {
+    if (z.safe || z.raid || z.id === 0) continue;
+    for (const type of z.types.filter((t) => t >= 19)) {
+      const id = `v16-${z.id}-${type}`;
+      if (w.monsters.some((m) => m.id === id || m.zone === z.id && m.type === type)) continue;
+      const x = 520 + (type - 19) % 3 * 270, y = 720;
+      const hp = Math.round(MONSTERS[type].hp * zoneScale(z.id));
+      w.monsters.push({ id, type, zone: z.id, x, y, homeX: x, homeY: y, hp, maxHp: hp, deadUntil: 0, lastHit: 0, lastAtk: 0 });
+    }
+  }
+  for (const p of Object.values(w.players)) {
+    if (p.gmSkin !== void 0 && p.gmSkin >= 0 && p.gmSkin < 8) {
+      p.animalSkins ??= [];
+      if (!p.animalSkins.includes(p.gmSkin)) p.animalSkins.push(p.gmSkin);
+    }
+  }
+  w.contentVersion = 6;
 }
 
 // server/auth-crypto.ts

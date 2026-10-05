@@ -13,7 +13,7 @@
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next",
     "db:generate": "drizzle-kit generate",
     "typecheck": "tsc --noEmit",
-    "test": "tsc tests/animal-skins.test.ts tests/gm-v14.test.ts tests/beginner-tutorial-skins.test.ts tests/google-auth.test.ts tests/quests-v13.test.ts tests/engine.test.ts tests/convenience.test.ts tests/gm.test.ts tests/cash.test.ts tests/workshop.test.ts tests/plazas.test.ts --target es2022 --module commonjs --moduleResolution node --esModuleInterop --skipLibCheck --outDir .test && node scripts/test-engine.mjs",
+    "test": "tsc tests/premium-v16.test.ts tests/animal-skins.test.ts tests/gm-v14.test.ts tests/beginner-tutorial-skins.test.ts tests/google-auth.test.ts tests/quests-v13.test.ts tests/engine.test.ts tests/convenience.test.ts tests/gm.test.ts tests/cash.test.ts tests/workshop.test.ts tests/plazas.test.ts --target es2022 --module commonjs --moduleResolution node --esModuleInterop --skipLibCheck --outDir .test && node scripts/test-engine.mjs",
     "local": "node local/run.mjs",
     "build:external": "vite build --config external/vite.config.ts",
     "deploy:external": "npm run build:external && wrangler deploy --config external/wrangler.jsonc",

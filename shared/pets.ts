@@ -1,2 +1,2 @@
-export const PETS=[{id:0,name:'별빛 여우',description:'작은 발걸음으로 모험을 함께하는 여우',price:500},{id:1,name:'달빛 부엉이',description:'별가루 날개로 곁을 지키는 부엉이',price:800},{id:2,name:'구름 고양이',description:'반짝이는 목걸이를 단 호기심 많은 고양이',price:1200}];
+export const PETS=[{id:0,name:'별빛 여우',description:'작은 발걸음으로 모험을 함께하는 여우',price:500,cashOnly:false},{id:1,name:'달빛 부엉이',description:'별가루 날개로 곁을 지키는 부엉이',price:800,cashOnly:false},{id:2,name:'구름 고양이',description:'반짝이는 목걸이를 단 호기심 많은 고양이',price:1200,cashOnly:false},{id:3,name:'꿀빛 코기',description:'작은 발로 따라오는 코기 · 포션 자동 회복 지원',price:180,cashOnly:true},{id:4,name:'별구름 아기 용',description:'반짝이는 아기 용 · 포션 자동 회복 지원',price:300,cashOnly:true}];
 export const PET_PICKUP_RADIUS=180;

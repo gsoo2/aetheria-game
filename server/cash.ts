@@ -1,4 +1,4 @@
-import { CASH_PRODUCTS, DONATION_PACKS, type ShopSettings } from '../shared/cash';
+import { CASH_PRODUCTS, DONATION_PACKS, cashProductOwned, type ShopSettings } from '../shared/cash';
 import type { Input, Player, World } from '../shared/types';
 export function cashSettings(w: World): ShopSettings { return w.shopSettings || { donationGuide: '', donationUrl: '' }; }
 export function cashInput(w: World, p: Player, i: Input, now: number) {
@@ -33,7 +33,7 @@ export function cashInput(w: World, p: Player, i: Input, now: number) {
         if (!product)
             return;
         p.cashPurchases ??= [];
-        if (product.kind !== 'weapon' && p.cashPurchases.includes(product.id)) {
+        if (cashProductOwned(p,product)) {
             p.notice = '이미 보유한 상품입니다.';
             return;
         }
@@ -45,6 +45,8 @@ export function cashInput(w: World, p: Player, i: Input, now: number) {
             p.notice = '가방 공간이 부족합니다.';
             return;
         }
+        if(product.kind==='weapon'&&product.value===44&&p.level<15){p.notice='레벨 15부터 구매할 수 있습니다.';return;}
+        if(product.kind==='provisions'&&(p.potions+60>10000||p.manaPotions+40>10000)){p.notice='보급 포션을 받을 공간이 부족합니다.';return;}
         p.cash = (p.cash || 0) - product.price;
         if (!p.cashPurchases.includes(product.id))
             p.cashPurchases.push(product.id);
@@ -55,25 +57,32 @@ export function cashInput(w: World, p: Player, i: Input, now: number) {
             p.bubbleId = product.value;
         }
         if(product.kind==='damageSkin'){p.damageSkins??=[];if(!p.damageSkins.includes(product.value))p.damageSkins.push(product.value);p.damageSkinId=product.value;}
-        if (product.kind === 'title')
-            p.cashTitle = product.name;
+        if (product.kind === 'title'){p.cashTitle=product.name;p.titleBadgeId=product.value;delete p.gmTitle;}
+        if(product.kind==='titleBadge'){p.cashTitle=product.name;p.titleBadgeId=product.value;delete p.gmTitle;}
+        if(product.kind==='animalSkin'){p.animalSkins??=[];p.animalSkins.push(product.value);p.animalSkinId=product.value;delete p.gmSkin;}
+        if(product.kind==='wings'){p.wings??=[];p.wings.push(product.value);p.wingId=product.value;}
+        if(product.kind==='pet'){p.pets??=[];p.pets.push(product.value);p.petId=product.value;p.petAutoLoot=true;}
+        if(product.kind==='provisions'){p.potions+=60;p.manaPotions+=40;}
         if (product.kind === 'weapon')
-            p.inventory.push(14 + p.classId);
+            p.inventory.push((product.value||14) + p.classId);
         p.notice = product.name + ' 구매 완료';
         return;
     }
+    if(i.action==='wingUnequip'){delete p.wingId;p.notice='날개를 해제했습니다.';return;}
     if (i.action === 'cashEquip') {
         const product = CASH_PRODUCTS.find(product=>product.id===i.value);
-        if (product && p.cashPurchases?.includes(product.id)) {
-            if (product.kind === 'title')
-                p.cashTitle = product.name;
+        if (product && cashProductOwned(p,product)) {
+            if (product.kind === 'title'||product.kind==='titleBadge'){p.cashTitle=product.name;p.titleBadgeId=product.value;delete p.gmTitle;}
+            if(product.kind==='animalSkin'){p.animalSkinId=product.value;delete p.gmSkin;}
+            if(product.kind==='wings')p.wingId=product.value;
+            if(product.kind==='pet')p.petId=product.value;
             if(product.kind==='damageSkin'&&p.damageSkins?.includes(product.value))p.damageSkinId=product.value;
             if (product.kind === 'bubble')
                 p.bubbleId = product.value;
             p.notice = product.name + ' 적용';
         }
         if (i.value === -1) {
-            delete p.cashTitle;
+            delete p.cashTitle;delete p.titleBadgeId;
             p.notice = '칭호 표시를 해제했습니다.';
         }
     }
