@@ -21,7 +21,7 @@ try{
  await new Promise((resolve,reject)=>{socket.once('open',resolve);socket.once('error',reject);});
  let seq=0;const input=async(body)=>{await new Promise(r=>setTimeout(r,110));const n=++seq,pending=waitFor(d=>d.player?.lastSeq>=n);socket.send(JSON.stringify({...body,seq:n}));return pending;};
  await input({action:'quest',value:0});await new Promise(r=>setTimeout(r,100));await input({action:'tutorialNext'});await new Promise(r=>setTimeout(r,120));await input({moveX:20,moveY:0});
- const grant=await fetch(app.url+'/api/gm/action',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+options.token,Origin:app.url},body:JSON.stringify({playerId:id,revision:0,action:'set',gold:2000,cash:750,reason:'local purchase and restart test'})});assert.equal(grant.status,200);
+ const grant=await app.mf.dispatchFetch('http://localhost/api/gm/action',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+options.token,Origin:app.url},body:JSON.stringify({playerId:id,revision:0,action:'set',gold:2000,cash:750,reason:'local purchase and restart test'})});assert.equal(grant.status,200);
  await input({action:'damageBuy',value:1});const skin=await input({action:'cashBuy',value:7});assert.deepEqual(skin.player.damageSkins,[1,3]);assert.equal(skin.player.damageSkinId,3);await input({action:'travel',value:1});
  delay=1200;const times=[];const collect=raw=>{const d=JSON.parse(raw);if(d.now)times.push(d.now);};socket.on('message',collect);
  const chat=waitFor(d=>d.chat?.some(c=>c.text==='저장 지연 중 사냥 확인'));socket.send(JSON.stringify({kind:'chat',text:'저장 지연 중 사냥 확인'}));await chat;

@@ -10,7 +10,7 @@ try{
  assert.equal((await call('/gm/api/login',{body:{code:loginCode},origin:'https://foreign.example'})).status,403);assert.equal((await call('/gm/api/login',{body:{code:'wrong'}})).status,401);
  assert.equal((await call('/gm/api/login',{body:{code:token}})).status,401);
  const login=await call('/gm/api/login',{body:{code:loginCode}}),cookie=login.cookie;assert.equal(login.status,200);assert.ok(cookie);const setCookie=login.headers.get('set-cookie');for(const flag of ['HttpOnly','SameSite=Strict','Path=/gm'])assert.ok(setCookie.includes(flag));assert.ok(!login.text.includes(token));assert.equal((await call('/gm/api/session',{cookie})).data.authenticated,true);
- const created=await call('/api/account',{body:{action:'create',name:'GM포털검증',classId:0}}),id=created.data.active;assert.ok(id);assert.equal((await call('/api/gm/players',{cookie:created.cookie})).status,401);
+ const created=await call('/api/account',{body:{action:'create',name:'GM포털검증',classId:0}}),id=created.data.active;assert.ok(id);assert.equal((await call('/api/gm/players',{cookie:created.cookie})).status,404);
  const roster=await call('/gm/api/players',{cookie});assert.equal(roster.status,200);assert.ok(roster.data.players.some(p=>p.id===id));
  assert.equal((await call('/gm/api/action',{body:{playerId:id,revision:0,action:'set',gold:999},cookie,origin:'https://foreign.example'})).status,403);
  const changed=await call('/gm/api/action',{body:{playerId:id,revision:0,action:'set',gold:321,reason:'local GM portal integration test'},cookie});assert.equal(changed.status,200);assert.equal(saved.players[id].gold,321);

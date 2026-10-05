@@ -1,6 +1,58 @@
 var __defProp = Object.defineProperty;
 var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
 
+// ../server/request.ts
+function gameInput(body) {
+  if (!body || typeof body !== "object" || Array.isArray(body)) throw new Error("\uC798\uBABB\uB41C \uC694\uCCAD");
+  for (const key of ["seq", "dx", "dy", "tx", "ty", "moveX", "moveY", "skill", "value", "slot", "revision", "gold"]) {
+    const value = body[key];
+    if (value !== void 0 && (typeof value !== "number" || !Number.isFinite(value))) throw new Error("\uC798\uBABB\uB41C \uC22B\uC790");
+  }
+  for (const key of ["seq", "skill", "value", "slot", "revision", "gold"]) if (body[key] !== void 0 && !Number.isSafeInteger(body[key])) throw new Error("\uC798\uBABB\uB41C \uC815\uC218");
+  for (const key of ["action", "targetId", "tradeId", "reference", "chat"]) if (body[key] !== void 0 && (typeof body[key] !== "string" || body[key].length > 160)) throw new Error("\uC798\uBABB\uB41C \uBB38\uC790\uC5F4");
+  if (body.indices !== void 0 && (!Array.isArray(body.indices) || body.indices.length > 12 || body.indices.some((v) => !Number.isSafeInteger(v) || v < 0))) throw new Error("\uC798\uBABB\uB41C \uC544\uC774\uD15C");
+  const seq = Number(body.seq);
+  if (!Number.isSafeInteger(seq) || seq < 0) throw new Error("\uC798\uBABB\uB41C \uC785\uB825");
+  return {
+    seq,
+    dx: Number(body.dx) || 0,
+    dy: Number(body.dy) || 0,
+    skill: body.skill === void 0 ? void 0 : Number(body.skill),
+    tx: Number(body.tx) || 0,
+    ty: Number(body.ty) || 0,
+    action: typeof body.action === "string" ? body.action : void 0,
+    value: body.value === void 0 ? void 0 : Number(body.value),
+    slot: body.slot === void 0 ? void 0 : Number(body.slot),
+    moveX: body.moveX === void 0 ? void 0 : Number(body.moveX),
+    moveY: body.moveY === void 0 ? void 0 : Number(body.moveY),
+    reference: typeof body.reference === "string" ? body.reference : void 0,
+    chat: typeof body.chat === "string" ? body.chat : void 0,
+    targetId: typeof body.targetId === "string" ? body.targetId : void 0,
+    tradeId: typeof body.tradeId === "string" ? body.tradeId : void 0,
+    revision: body.revision === void 0 ? void 0 : Number(body.revision),
+    indices: Array.isArray(body.indices) ? body.indices.map(Number) : void 0,
+    gold: body.gold === void 0 ? void 0 : Number(body.gold)
+  };
+}
+__name(gameInput, "gameInput");
+async function requestBody(request) {
+  const raw = await request.text();
+  if (raw.length > 4096) throw new Error("\uC694\uCCAD\uC774 \uB108\uBB34 \uD07D\uB2C8\uB2E4.");
+  const body = JSON.parse(raw);
+  if (!body || typeof body !== "object" || Array.isArray(body)) throw new Error("\uC798\uBABB\uB41C \uC694\uCCAD");
+  return body;
+}
+__name(requestBody, "requestBody");
+function sameOrigin(request) {
+  const origin = request.headers.get("Origin");
+  try {
+    return origin ? origin === new URL(request.url).origin : request.method === "GET" || request.method === "HEAD";
+  } catch {
+    return false;
+  }
+}
+__name(sameOrigin, "sameOrigin");
+
 // ../shared/animal-skins.ts
 var ANIMAL_SKINS = [
   { id: 0, name: "\uBCC4\uBE5B \uD1A0\uB07C", atlas: 0, row: 0, price: 0, currency: "gm", gmOnly: true },
@@ -1922,7 +1974,7 @@ function applyInput(w, p, input, now) {
 }
 __name(applyInput, "applyInput");
 function snapshot(w, p, now) {
-  return { shopSettings: cashSettings(w), donations: (w.donations || []).filter((d) => d.playerId === p.id).slice(-20), trade: tradeFor(w, p.id), raid: w.raids?.find((b) => b.zone === p.zone), player: p, players: Object.values(w.players).filter((a) => a.zone === p.zone && now - a.seen < 1e4 && a.id !== p.id), monsters: w.monsters.filter((m) => m.zone === p.zone), loot: w.loot.filter((l) => l.zone === p.zone), events: w.events.filter((e) => e.zone === p.zone), chat: w.chat.slice(-30), now, online: Object.values(w.players).filter((a) => now - a.seen < 1e4).length, casts: (w.casts || []).filter((c) => c.zone === p.zone) };
+  return { shopSettings: cashSettings(w), donations: (w.donations || []).filter((d) => d.playerId === p.id).slice(-20), trade: tradeFor(w, p.id), raid: w.raids?.find((b) => b.zone === p.zone), player: p, players: Object.values(w.players).filter((a) => a.zone === p.zone && now - a.seen < 1e4 && a.id !== p.id).map((a) => ({ ...a, gold: 0, xp: 0, inventory: [], quests: {}, done: [], kills: {}, cd: [], potions: 0, manaPotions: 0, cash: void 0, cashPurchases: void 0, storage: void 0, materials: void 0, donations: void 0, gmRevision: void 0, gmBanned: void 0, gmBlockedUntil: void 0, animalSkins: void 0, wings: void 0, pets: void 0 })), monsters: w.monsters.filter((m) => m.zone === p.zone), loot: w.loot.filter((l) => l.zone === p.zone), events: w.events.filter((e) => e.zone === p.zone), chat: w.chat.slice(-30), now, online: Object.values(w.players).filter((a) => now - a.seen < 1e4).length, casts: (w.casts || []).filter((c) => c.zone === p.zone) };
 }
 __name(snapshot, "snapshot");
 function migrateWorld(w, now) {
@@ -1989,12 +2041,14 @@ function accountFor(w, id) {
 }
 __name(accountFor, "accountFor");
 function roster(w, id) {
-  const a = accountFor(w, id);
+  const a = w.accounts?.[id] || (w.players[id] ? accountFor(w, id) : { characters: [], slots: 4, active: null });
   return { characters: a.characters.map((k) => w.players[k]).filter(Boolean), slots: a.slots, active: a.active, slotPrice: 5e3 * (a.slots - 3) };
 }
 __name(roster, "roster");
 function ownedPlayer(w, accountId, characterId) {
-  const a = accountFor(w, accountId), id = characterId || a.active;
+  const a = w.accounts?.[accountId] || (w.players[accountId] ? accountFor(w, accountId) : void 0);
+  if (!a) return void 0;
+  const id = characterId || a.active;
   return id && a.characters.includes(id) ? w.players[id] : void 0;
 }
 __name(ownedPlayer, "ownedPlayer");
@@ -2066,7 +2120,7 @@ async function guestIdentity(request) {
     const record = await readLoginSession(session);
     return record ? { token: session, id: record.account_id, provider: "google", profile: { name: record.name, email: record.email } } : null;
   }
-  const token = request.headers.get("cookie")?.match(/(?:^|;\s*)aetheria_guest=([a-f0-9-]{36})/)?.[1];
+  const token = request.headers.get("cookie")?.match(/(?:^|;\s*)aetheria_guest=([a-f0-9-]{36})(?:;|$)/)?.[1];
   return token ? { token, id: await digest(token), provider: "guest" } : null;
 }
 __name(guestIdentity, "guestIdentity");
@@ -2152,7 +2206,7 @@ var AetheriaRealm = class {
   }
   async fetch(request) {
     const url = new URL(request.url), origin = request.headers.get("Origin");
-    if (origin && new URL(origin).host !== url.host) return reply({ error: "\uC798\uBABB\uB41C \uC694\uCCAD\uC785\uB2C8\uB2E4." }, 403);
+    if (!sameOrigin(request) && !url.pathname.startsWith("/api/gm/")) return reply({ error: "\uC798\uBABB\uB41C \uC694\uCCAD\uC785\uB2C8\uB2E4." }, 403);
     try {
       if (url.pathname === "/api/auth/session") return reply({ googleEnabled: false, provider: "guest", profile: null });
       if (url.pathname === "/api/auth/google") return Response.redirect(new URL("/?login=setup", request.url), 302);
@@ -2161,7 +2215,7 @@ var AetheriaRealm = class {
       const token = auth?.token || crypto.randomUUID();
       auth ??= { token, id: await digest(token) };
       const headers = { "Set-Cookie": `aetheria_guest=${token}; Path=/; HttpOnly; SameSite=Lax; Max-Age=31536000${url.protocol === "https:" ? "; Secure" : ""}` };
-      const account = accountFor(this.world, auth.id);
+      const account = this.world.accounts?.[auth.id];
       if (url.pathname === "/api/account") {
         if (request.method === "GET") return reply(roster(this.world, auth.id), 200, headers);
         if (request.method !== "POST") return reply({ error: "\uC798\uBABB\uB41C \uC694\uCCAD\uC785\uB2C8\uB2E4." }, 405);
@@ -2178,7 +2232,7 @@ var AetheriaRealm = class {
         this.save();
         return reply(result, 200, headers);
       }
-      const id = url.searchParams.get("characterId") || account.active;
+      const id = url.searchParams.get("characterId") || account?.active;
       let p = ownedPlayer(this.world, auth.id, id);
       if (p && (p.gmBanned || (p.gmBlockedUntil || 0) > Date.now())) return reply({ error: p.gmBanned ? "\uAD00\uB9AC\uC790\uAC00 \uC774 \uCE90\uB9AD\uD130\uC758 \uC811\uC18D\uC744 \uCC28\uB2E8\uD588\uC2B5\uB2C8\uB2E4." : "\uAD00\uB9AC\uC790\uAC00 \uC811\uC18D\uC744 \uC885\uB8CC\uD588\uC2B5\uB2C8\uB2E4. \uC7A0\uC2DC \uD6C4 \uB2E4\uC2DC \uC811\uC18D\uD558\uC138\uC694." }, 403);
       if (url.pathname === "/api/socket") {
@@ -2193,6 +2247,7 @@ var AetheriaRealm = class {
         return new Response(null, { status: 101, webSocket: client });
       }
       if (url.pathname === "/api/chat") {
+        if (request.method !== "POST") return reply({ error: "Method not allowed" }, 405);
         if (!p) return reply({ needsCharacter: true }, 401);
         const body = await this.body(request);
         this.chat(p.id, body.text);
@@ -2200,6 +2255,7 @@ var AetheriaRealm = class {
       }
       if (url.pathname === "/api/game") {
         if (request.method === "GET") return reply(p ? snapshot(this.world, p, Date.now()) : { needsCharacter: true });
+        if (request.method !== "POST") return reply({ error: "Method not allowed" }, 405);
         const body = await this.body(request);
         if (body.join) {
           changeAccount(this.world, auth.id, { action: "create", name: body.name, classId: body.classId }, Date.now());
@@ -2266,15 +2322,10 @@ var AetheriaRealm = class {
     return reply({ error: "\uC9C0\uC6D0\uD558\uC9C0 \uC54A\uB294 \uAD00\uB9AC \uACBD\uB85C\uC785\uB2C8\uB2E4." }, 404);
   }
   async body(request) {
-    const text = await request.text();
-    if (text.length > 4096) throw new Error("\uC694\uCCAD\uC774 \uB108\uBB34 \uD07D\uB2C8\uB2E4.");
-    return JSON.parse(text);
+    return requestBody(request);
   }
   input(body) {
-    if (!body || typeof body !== "object" || body.action !== void 0 && typeof body.action !== "string" || body.targetId !== void 0 && typeof body.targetId !== "string" || body.tradeId !== void 0 && typeof body.tradeId !== "string" || body.reference !== void 0 && (typeof body.reference !== "string" || body.reference.length > 160) || body.indices !== void 0 && (!Array.isArray(body.indices) || body.indices.length > 12 || body.indices.some((n) => !Number.isSafeInteger(n)))) throw new Error("\uC798\uBABB\uB41C \uC694\uCCAD\uC785\uB2C8\uB2E4.");
-    if (!Number.isSafeInteger(body.seq) || body.seq < 0) throw new Error("\uC798\uBABB\uB41C \uC785\uB825\uC785\uB2C8\uB2E4.");
-    for (const key of ["moveX", "moveY", "dx", "dy", "tx", "ty", "skill", "value", "slot", "gold", "revision"]) if (body[key] !== void 0 && !Number.isFinite(body[key])) throw new Error("\uC798\uBABB\uB41C \uC88C\uD45C\uC785\uB2C8\uB2E4.");
-    return body;
+    return gameInput(body);
   }
   webSocketMessage(ws, message) {
     const s = this.sessions.get(ws);
