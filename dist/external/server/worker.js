@@ -139,12 +139,20 @@ function approveDonation(w, body, now) {
   return d;
 }
 
-// shared/gm-content.ts
-var GM_SKINS = [
-  { id: 0, name: "\uBCC4\uBE5B \uD1A0\uB07C", color: "#f6c5ff", decoration: "rabbit" },
-  { id: 1, name: "\uC544\uAE30 \uACE0\uC591\uC774", color: "#ffe5b2", decoration: "cat" },
-  { id: 2, name: "\uAF2C\uB9C8 \uC655\uAD00", color: "#a6f4ec", decoration: "crown" }
+// shared/animal-skins.ts
+var ANIMAL_SKINS = [
+  { id: 0, name: "\uBCC4\uBE5B \uD1A0\uB07C", atlas: 0, row: 0, price: 0, gmOnly: true },
+  { id: 1, name: "\uC544\uAE30 \uACE0\uC591\uC774", atlas: 0, row: 1, price: 0, gmOnly: true },
+  { id: 2, name: "\uAF2C\uB9C8 \uD3AD\uADC4", atlas: 0, row: 2, price: 0, gmOnly: true },
+  { id: 3, name: "\uC232\uC18D \uC5EC\uC6B0", atlas: 0, row: 3, price: 600, gmOnly: false },
+  { id: 4, name: "\uB9D0\uB791 \uD310\uB2E4", atlas: 1, row: 0, price: 800, gmOnly: false },
+  { id: 5, name: "\uD587\uC0B4 \uBCD1\uC544\uB9AC", atlas: 1, row: 1, price: 500, gmOnly: false },
+  { id: 6, name: "\uAF2C\uB9AC \uB108\uAD6C\uB9AC", atlas: 1, row: 2, price: 1e3, gmOnly: false },
+  { id: 7, name: "\uD3EC\uADFC \uC218\uB2EC", atlas: 1, row: 3, price: 1200, gmOnly: false }
 ];
+
+// shared/gm-content.ts
+var GM_SKINS = ANIMAL_SKINS;
 var GM_TITLES = ["\uB9D0\uB791\uB9D0\uB791 \uC218\uD638\uC790", "\uBCC4\uC0D8\uC758 \uC544\uAE30 \uACE0\uC591\uC774", "\uD1A0\uB07C \uC655\uAD6D\uC758 \uCE5C\uAD6C", "\uAD6C\uB984 \uC704\uC758 \uB0AE\uC7A0", "\uBC18\uC9DD\uBC18\uC9DD \uC6B4\uC601\uC790", "\uC5D0\uD14C\uB9AC\uC544\uC758 \uC218\uD638 GM"];
 
 // shared/social.ts
@@ -773,6 +781,39 @@ function tutorialInput(w, p, i, now) {
   if (t.stage === 3) t.killStart = tutorialKills(p);
   if (t.stage === 4 && addXp(p, 180)) w.events.push({ id: crypto.randomUUID(), time: now, zone: p.zone, x: p.x, y: p.y, kind: "level", value: p.level, color: "#ffe8a3", source: p.id });
   t.stage++;
+}
+
+// server/animal-skins.ts
+function animalSkinInput(p, input) {
+  if (input.action === "animalEquip" && input.value === -1) {
+    delete p.animalSkinId;
+    delete p.gmSkin;
+    p.notice = "\uAE30\uBCF8 \uC218\uD638\uC790 \uBAA8\uC2B5\uC73C\uB85C \uB3CC\uC544\uC654\uC2B5\uB2C8\uB2E4.";
+    return;
+  }
+  const skin = ANIMAL_SKINS.find((s) => s.id === input.value);
+  if (!skin || skin.gmOnly) return;
+  if (input.action === "animalBuy") {
+    p.animalSkins ??= [];
+    if (p.animalSkins.includes(skin.id)) {
+      p.notice = "\uC774\uBBF8 \uBCF4\uC720\uD55C \uB3D9\uBB3C \uC2A4\uD0A8\uC785\uB2C8\uB2E4.";
+      return;
+    }
+    if (p.gold < skin.price) {
+      p.notice = "\uACE8\uB4DC\uAC00 \uBD80\uC871\uD569\uB2C8\uB2E4.";
+      return;
+    }
+    p.gold -= skin.price;
+    p.animalSkins.push(skin.id);
+    p.animalSkinId = skin.id;
+    delete p.gmSkin;
+    p.notice = skin.name + " \uAD6C\uB9E4 \xB7 \uC804\uC2E0 \uC2A4\uD0A8 \uC801\uC6A9 \uC644\uB8CC";
+  }
+  if (input.action === "animalEquip" && p.animalSkins?.includes(skin.id)) {
+    p.animalSkinId = skin.id;
+    delete p.gmSkin;
+    p.notice = skin.name + " \uC2A4\uD0A8\uC744 \uC801\uC6A9\uD588\uC2B5\uB2C8\uB2E4.";
+  }
 }
 
 // shared/damage-skins.ts
@@ -1472,6 +1513,7 @@ function applyInput(w, p, input, now) {
   if (p.tutorial?.stage === 1) p.tutorial.moved = Math.min(120, p.tutorial.moved + Math.hypot(p.x - beforeMove.x, p.y - beforeMove.y));
   tutorialInput(w, p, input, now);
   damageSkinInput(p, input);
+  animalSkinInput(p, input);
   if (input.action === "dodge") dodge(w, p, input, now);
   castSkill(w, p, input, now);
   if (p.tutorial?.stage === 2 && p.attackAt === now && Number.isInteger(input.skill)) p.tutorial.usedSkill = true;

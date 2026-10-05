@@ -1,0 +1,7 @@
+import {ANIMAL_ATLASES,ANIMAL_SKINS} from '../../shared/animal-skins';
+import type {Input,Player} from '../../shared/types';
+import {tr} from '../../shared/i18n';
+export default function AnimalShop({player:p,send}:{player:Player;send:(input:Input)=>void}){
+ const active=p.gmSkin??p.animalSkinId;
+ return <div className="animal-shop"><p className="subtle">{tr('동물로 변신해 걸으며 공격해요. 쓰러지는 모습도 달라집니다. 능력치는 그대로예요.')}</p><div className="shop-wallet">{p.gold.toLocaleString()} G</div><button className="outline-button" disabled={active===undefined} onClick={()=>send({action:'animalEquip',value:-1})}>{tr('기본 수호자 모습')}</button><div className="animal-skin-grid">{ANIMAL_SKINS.map(skin=>{const owned=p.animalSkins?.includes(skin.id),equipped=active===skin.id;return <article key={skin.id} className={'animal-skin-card '+(equipped?'equipped':'')}><div role="img" aria-label={tr(skin.name)} className="animal-skin-preview" style={{backgroundImage:`url(${ANIMAL_ATLASES[skin.atlas]})`,backgroundPosition:`0% ${skin.row/3*100}%`}}/><h3>{tr(skin.name)}</h3><small>{tr(skin.gmOnly?'GM 전용':'영구 소장 · 골드 스킨')}</small><button className={equipped?'outline-button':'gold-button'} disabled={equipped||skin.gmOnly||(!owned&&p.gold<skin.price)} onClick={()=>send({action:owned?'animalEquip':'animalBuy',value:skin.id})}>{tr(equipped?'적용 중':skin.gmOnly?'GM 지급 전용':owned?'갈아입기':`${skin.price} G · 구매`)}</button></article>;})}</div></div>;
+}

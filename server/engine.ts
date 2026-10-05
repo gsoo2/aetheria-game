@@ -3,6 +3,7 @@ import {workshopInput} from './workshop';
 import {cashInput,cashSettings} from './cash';
 import {beginnerProtected} from '../shared/beginner';
 import {tutorialInput} from './tutorial';
+import {animalSkinInput} from './animal-skins';
 import {damageSkinInput} from './damage-skins';
 import {socialInput,tradeFor,expireTrades} from './social';
 import {enterRaid,tickRaids} from './raids';
@@ -34,7 +35,7 @@ export function applyInput(w:Realm,p:Player,input:Input,now:number){const elapse
  if(!movable(p.x,p.y,p.zone)){let found=false;for(let radius=20;radius<=700&&!found;radius+=20)for(let angle=0;angle<24;angle++){const x=p.x+Math.cos(angle/24*Math.PI*2)*radius,y=p.y+Math.sin(angle/24*Math.PI*2)*radius;if(movable(x,y,p.zone)){p.x=x;p.y=y;found=true;break;}}if(!found){p.x=900;p.y=740;}}
  const beforeMove={x:p.x,y:p.y};const dx=Math.max(-1,Math.min(1,Number(input.dx)||0)),dy=Math.max(-1,Math.min(1,Number(input.dy)||0)),len=Math.max(1,Math.hypot(dx,dy));const nx=p.x+dx/len*WORLD.speed*Math.min(.5,elapsed),ny=p.y+dy/len*WORLD.speed*Math.min(.5,elapsed);if(Number.isFinite(input.moveX)&&Number.isFinite(input.moveY)){const mx=input.moveX!,my=input.moveY!,distance=Math.hypot(mx,my),limit=WORLD.speed*elapsed+2,scale=distance>limit?limit/distance:1;sweepMove(p,mx*scale,my*scale);}else sweepMove(p,nx-p.x,ny-p.y);if(dx)p.face=dx>0?1:-1;
  if(p.tutorial?.stage===1)p.tutorial.moved=Math.min(120,p.tutorial.moved+Math.hypot(p.x-beforeMove.x,p.y-beforeMove.y));
- tutorialInput(w,p,input,now);damageSkinInput(p,input);
+ tutorialInput(w,p,input,now);damageSkinInput(p,input);animalSkinInput(p,input);
  if(input.action==='dodge')dodge(w,p,input,now);
  castSkill(w,p,input,now);if(p.tutorial?.stage===2&&p.attackAt===now&&Number.isInteger(input.skill))p.tutorial.usedSkill=true;socialInput(w,p,input,now);cashInput(w,p,input,now);workshopInput(w,p,input);if(input.action==='raidClaim'){while(p.raidRewards?.length&&p.inventory.length<60)p.inventory.push(p.raidRewards.shift()!);p.notice=p.raidRewards?.length?'가방 공간을 확보하세요.':'보상 무기를 수령했습니다.';}if(input.action==='raidEnter')enterRaid(w,p,Number(input.value),now);if(input.action==='raidLeave'&&ZONES[p.zone]?.raid){p.zone=0;p.x=900;p.y=740;p.notice='별샘 마을로 돌아왔습니다.';}
  if(input.action==='autoTrain'||input.action==='autoSkillMode'){const mode=Number(input.value);if(Number.isInteger(mode)&&mode>=0&&mode<=3){if(input.action==='autoSkillMode')p.autoSkillMode=mode;const used=autoTrain(p,mode);notice(p,mode===0?'자동 배분을 껐습니다.':used?`숙련 포인트 ${used}개를 자동 배분했습니다.`:'자동 배분 설정을 저장했습니다. 다음 레벨부터 적용됩니다.');}}
