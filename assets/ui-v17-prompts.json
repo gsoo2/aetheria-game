@@ -1,0 +1,19 @@
+{
+  "tool": "built-in image_gen",
+  "icons": "Use case: stylized-concept. Asset type: production game UI icon sprite atlas, for a cute top-down fantasy RPG Aetheria. Create one square sheet with exactly 16 distinct isolated icons in a precise evenly spaced 4 by 4 grid, each icon fully centered in its own equal cell with generous transparent margin. Truly transparent background, no cell frames, no words, no labels, no watermark. Style: charming premium hand-painted chibi game item art, rounded silhouettes, warm cocoa brown outlines, soft pastel mint, cream, peach, lavender and honey yellow, crisp edges, simple details clearly recognizable at 40px. Same scale and lighting across icons. Cell order left to right top to bottom: row 1 a mint green adventure backpack with small golden star; a rolled parchment map with blue river; a quest scroll with red ribbon and a gold star seal; an open lilac magic spellbook with sparkles. Row 2 a little golden crown; a pink speech bubble with two little dots; a sparkling blue diamond; a round wooden settings gear. Row 3 a small friendly mint slime pet with eyes; a heart shaped red healing potion bottle; a blue mana potion bottle; a short silver sword with gold hilt. Row 4 a blue shield with star emblem; a gold ring with pale violet gem; a wooden treasure chest with gold clasp; a golden five-pointed smiling star mascot. Icons must stay inside their own cells without touching neighbouring icons. Do not draw extra icons or grid lines.",
+  "portraits": "Use case: stylized-concept. Asset type: transparent character-selection portrait sprite sheet for Aetheria fantasy RPG. Create a single wide landscape image with exactly THREE full-body cute chibi adventurers in ONE ROW and THREE equally wide columns; isolated transparent background with ample clear margin between characters. Left: a friendly brown-haired knight in rounded silver armor with mint cape, short silver sword and star shield. Middle: a friendly young archer in green ranger clothes with a small wooden bow and a leaf hat. Right: a friendly lilac-haired mage in a deep blue wizard outfit with rounded star hat, holding a little staff with a glowing golden star. Large expressive eyes, rounded cheeks, small bodies, welcoming poses. Match a premium hand-painted cute RPG UI: warm brown outlines, pastel cream, mint, lavender and honey details, simple readable silhouettes and polished soft shading. Keep every character completely inside its equal column including weapons and hats, same height, same baseline. No floor, no background, no text, no labels, no frames, no extra characters. These will be cut into three UI portraits only; front-facing welcoming pose, not an animation sheet.",
+  "assets": [
+    "public/art/ui-icons-v17.webp",
+    "public/art/ui-heroes-v17.webp"
+  ],
+  "grid": {
+    "icons": {
+      "columns": 4,
+      "rows": 4
+    },
+    "portraits": {
+      "columns": 3,
+      "rows": 1
+    }
+  }
+}

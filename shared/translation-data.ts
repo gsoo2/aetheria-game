@@ -3424,3 +3424,15 @@ Object.assign(TRANSLATIONS,{
  '채팅은 잠시 기다린 후 다시 보내세요.':['Please wait a moment before sending another message.','少し待ってから次のメッセージを送信してください。'],
  '채팅을 보내지 못했습니다.':['Could not send the message.','メッセージを送信できませんでした。']
 });
+
+Object.assign(TRANSLATIONS,{
+"별샘에서 시작하는 작은 모험":["A little adventure starts in Starwell","星の泉で始まる小さな冒険"],"모험":["Adventure","冒険"],"수호자 · 꾸미기":["Guardian & style","守護者・着せ替え"],"도움 · 설정":["Help & settings","ヘルプ・設定"],"전체 메뉴":["All menus","メニュー一覧"],"가방이 비어 있어요":["Your bag is empty","バッグは空です"],"몬스터를 처치하고 전리품을 주워 보세요.":["Defeat monsters and pick up loot.","モンスターを倒して戦利品を拾いましょう。"],"지역 선택":["Choose a region","地域を選択"],"조이스틱":["Joystick","ジョイスティック"],"공격 버튼":["Attack button","攻撃ボタン"],"가까운 몬스터 자동 조준":["Aim at a nearby monster","近くのモンスターを自動照準"],"스킬 아이콘":["Skill icons","スキルアイコン"],"스킬 사용":["Use a skill","スキルを使う"],"물약 아이콘":["Potion icons","ポーションアイコン"],"HP / MP 회복":["Restore HP / MP","HP・MP回復"],"가방 · 퀘스트 · 지도 · 설정":["Bag, quests, map & settings","バッグ・クエスト・マップ・設定"]
+});
+
+Object.assign(TRANSLATIONS,{"꽃잎 버섯":["Petal Mushroom","花びらキノコ"],"수정 게":["Crystal Crab","水晶ガニ"],"눈구름 토끼":["Snowcloud Bunny","雪雲ウサギ"],"용암 달팽이":["Lava Snail","溶岩カタツムリ"],"별빛 해파리":["Starlight Jellyfish","星光クラゲ"],"가시 선인장":["Prickly Cactus","トゲサボテン"],"보석 왕 슬라임":["Gem King Slime","宝石キングスライム"],"달빛 늑대":["Moonlight Wolf","月光オオカミ"],"구름 그리핀":["Cloud Griffin","雲グリフォン"],"불씨 멧돼지":["Ember Boar","残り火イノシシ"]});
+
+Object.assign(TRANSLATIONS,{"별빛 토끼 검":["Starlight Bunny Sword","星光ウサギの剣"],"고양이 발바닥 활":["Cat Paw Bow","猫の肉球弓"],"구름 사탕 지팡이":["Cloud Candy Staff","雲キャンディの杖"],"말랑 구름 갑옷":["Soft Cloud Armor","ふわふわ雲の鎧"],"꼬마 별 반지":["Little Star Ring","小さな星の指輪"],"천공 수정 검":["Sky Crystal Sword","天空水晶の剣"],"정령 깃털 활":["Spirit Feather Bow","精霊の羽弓"],"은하 별 지팡이":["Galaxy Star Staff","銀河星の杖"]});
+
+Object.assign(TRANSLATIONS,{"꿀빛 코기":["Honey Corgi","ハニーコーギー"],"별구름 아기 용":["Starcloud Baby Dragon","星雲ベビードラゴン"]});
+
+Object.assign(TRANSLATIONS,{"작은 발로 따라오는 코기 · 포션 자동 회복 지원":["A corgi follows on tiny paws · automatic potion healing","小さな足でついてくるコーギー・ポーション自動回復対応"],"반짝이는 아기 용 · 포션 자동 회복 지원":["A sparkling baby dragon · automatic potion healing","きらめくベビードラゴン・ポーション自動回復対応"]});

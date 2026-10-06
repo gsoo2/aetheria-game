@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import "./cute-ui.css";
 
 export const metadata: Metadata = {
   title: "에테리아 — 별빛의 수호자",
@@ -24,3 +25,4 @@ export default function RootLayout({
     </html>
   );
 }
+

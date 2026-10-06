@@ -1,0 +1,1 @@
+export default function CutePortrait({classId,className=''}:{classId:number;className?:string}){return <span aria-hidden="true" className={'sprite-portrait hero-ui '+className} style={{backgroundImage:"url('/art/ui-heroes-v17.webp')",backgroundPosition:`${Math.max(0,Math.min(2,classId))*50}% 50%`}}/>;}

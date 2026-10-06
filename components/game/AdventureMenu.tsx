@@ -1,0 +1,5 @@
+import CuteIcon,{PANEL_ICONS} from './CuteIcon';
+import {tr} from '../../shared/i18n';
+const GROUPS=[{label:'모험',items:[['map','월드맵'],['quests','퀘스트'],['inventory','가방'],['skills','스킬'],['raid','레이드']]},{label:'수호자 · 꾸미기',items:[['character','수호자'],['petcare','펫 자동 회복'],['animals','동물 스킨'],['damage','데미지 스킨'],['bubbles','말풍선 상점'],['cash','캐시샵']]},{label:'도움 · 설정',items:[['guide','튜토리얼'],['settings','게임 설정']]}] as const;
+export type MenuPanel=typeof GROUPS[number]['items'][number][0];
+export default function AdventureMenu({gold,cash,onOpen}:{gold:number;cash:number;onOpen:(panel:MenuPanel)=>void}){return <div className="adventure-menu"><div className="menu-wallet"><span><CuteIcon name="chest" size={28}/>{gold.toLocaleString()} G</span><span><CuteIcon name="cash" size={28}/>{cash.toLocaleString()} C</span></div>{GROUPS.map(group=><section key={group.label}><h3>{tr(group.label)}</h3><div className="adventure-menu-grid">{group.items.map(([panel,label])=><button type="button" key={panel} onClick={()=>onOpen(panel)}><CuteIcon name={PANEL_ICONS[panel]} size={42}/><span>{tr(label)}</span></button>)}</div></section>)}</div>;}

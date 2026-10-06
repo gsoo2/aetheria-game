@@ -1,7 +1,7 @@
 var __defProp = Object.defineProperty;
 var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
 
-// server/request.ts
+// aetheria-game/server/request.ts
 function gameInput(body) {
   if (!body || typeof body !== "object" || Array.isArray(body)) throw new Error("\uC798\uBABB\uB41C \uC694\uCCAD");
   for (const key of ["seq", "dx", "dy", "tx", "ty", "moveX", "moveY", "skill", "value", "slot", "revision", "gold"]) {
@@ -53,7 +53,7 @@ function sameOrigin(request) {
 }
 __name(sameOrigin, "sameOrigin");
 
-// shared/animal-skins.ts
+// aetheria-game/shared/animal-skins.ts
 var ANIMAL_SKINS = [
   { id: 0, name: "\uBCC4\uBE5B \uD1A0\uB07C", atlas: 0, row: 0, price: 0, currency: "gm", gmOnly: true },
   { id: 1, name: "\uC544\uAE30 \uACE0\uC591\uC774", atlas: 0, row: 1, price: 800, currency: "gold", gmOnly: false },
@@ -66,7 +66,7 @@ var ANIMAL_SKINS = [
   { id: 8, name: "GM \uC544\uAE30 \uACE0\uC591\uC774", atlas: 0, row: 1, price: 0, currency: "gm", gmOnly: true }
 ];
 
-// shared/premium.ts
+// aetheria-game/shared/premium.ts
 var WINGS = [
   { id: 0, name: "\uBB34\uC9C0\uAC1C \uAE43\uD138 \uB0A0\uAC1C", price: 250, color: "#ffcee8" },
   { id: 1, name: "\uD558\uB298 \uAD6C\uB984 \uB0A0\uAC1C", price: 350, color: "#b6efff" },
@@ -78,7 +78,7 @@ var TITLE_BADGES = [
   { id: 2, name: "\uBCC4\uBE5B \uD56D\uD574\uC0AC", price: 260 }
 ];
 
-// shared/cash.ts
+// aetheria-game/shared/cash.ts
 var CASH_PRODUCTS = [
   { id: 0, name: "\uCC9C\uACF5\uC758 \uC57D\uC18D", description: "\uAE08\uBE5B \uBCC4 \uBB38\uC591\uC758 \uD6C4\uC6D0 \uC804\uC6A9 \uB9D0\uD48D\uC120", price: 200, kind: "bubble", value: 12, image: "/bubbles/12.svg" },
   { id: 1, name: "\uBD89\uC740 \uC6D4\uC2DD", description: "\uBD89\uC740 \uBCF4\uC11D\uC744 \uD488\uC740 \uD6C4\uC6D0 \uC804\uC6A9 \uB9D0\uD48D\uC120", price: 250, kind: "bubble", value: 13, image: "/bubbles/13.svg" },
@@ -108,7 +108,7 @@ function cashProductOwned(p, product) {
 }
 __name(cashProductOwned, "cashProductOwned");
 
-// server/cash.ts
+// aetheria-game/server/cash.ts
 function cashSettings(w) {
   return w.shopSettings || { donationGuide: "", donationUrl: "" };
 }
@@ -291,11 +291,11 @@ function approveDonation(w, body, now) {
 }
 __name(approveDonation, "approveDonation");
 
-// shared/gm-content.ts
+// aetheria-game/shared/gm-content.ts
 var GM_SKINS = ANIMAL_SKINS.filter((s) => s.gmOnly);
 var GM_TITLES = ["\uB9D0\uB791\uB9D0\uB791 \uC218\uD638\uC790", "\uBCC4\uC0D8\uC758 \uC544\uAE30 \uACE0\uC591\uC774", "\uD1A0\uB07C \uC655\uAD6D\uC758 \uCE5C\uAD6C", "\uAD6C\uB984 \uC704\uC758 \uB0AE\uC7A0", "\uBC18\uC9DD\uBC18\uC9DD \uC6B4\uC601\uC790", "\uC5D0\uD14C\uB9AC\uC544\uC758 \uC218\uD638 GM"];
 
-// shared/social.ts
+// aetheria-game/shared/social.ts
 var BUBBLES = [
   ["\uBCC4\uC0D8", "\u2726", "#fff8e6", "#bfa578", 0],
   ["\uB2EC\uBE5B", "\u263E", "#eee9ff", "#a995dc", 120],
@@ -313,7 +313,7 @@ var BUBBLES = [
 var RAIDS = [{ zone: 25, name: "\uBCC4\uC758 \uD30C\uC218\uAFBC", level: 10, hp: 6500, atk: 18, xp: 500, gold: 350, sprite: 12, minutes: 8 }, { zone: 26, name: "\uC6D4\uC2DD\uC758 \uC2EC\uD310\uC790", level: 20, hp: 16e3, atk: 27, xp: 1400, gold: 800, sprite: 13, minutes: 10 }, { zone: 27, name: "\uCC9C\uACF5\uC758 \uAC70\uC2E0", level: 30, hp: 32e3, atk: 38, xp: 2600, gold: 1400, sprite: 10, minutes: 12 }];
 for (const [i, name, fill, border, glyph] of [[12, "\uCC9C\uACF5\uC758 \uC57D\uC18D", "#fff6de", "#b89655", "\u2726"], [13, "\uBD89\uC740 \uC6D4\uC2DD", "#391e31", "#e18a9d", "\u263E"], [14, "\uC624\uB85C\uB77C\uC758 \uD3B8\uC9C0", "#defafa", "#61b8b1", "\u2727"], [15, "\uC655\uC758 \uBCC4\uC790\uB9AC", "#2b2d48", "#e3c98b", "\u265B"]]) BUBBLES.push({ id: i, name, fill, border, glyph, price: 0, cashOnly: true });
 
-// shared/quest-story.ts
+// aetheria-game/shared/quest-story.ts
 var CHAPTER_STORIES = [
   ["\uAEBC\uC838 \uAC00\uB294 \uBCC4\uC0D8", "\uC138\uB77C\uB294 \uBC24\uB9C8\uB2E4 \uB0AE\uC544\uC9C0\uB294 \uBCC4\uC0D8\uC758 \uC218\uC704\uB97C \uBCF4\uC5EC \uC8FC\uC5C8\uB2E4. \uCD08\uC6D0\uC758 \uC2AC\uB77C\uC784\uC774 \uC0BC\uD0A8 \uBE5B\uC744 \uB418\uCC3E\uC544 \uCCAB \uBD09\uC778\uC744 \uBC1D\uD600\uC57C \uD55C\uB2E4.", "\uC2AC\uB77C\uC784\uC5D0\uAC8C\uC11C \uB098\uC628 \uBE5B\uC774 \uC0D8\uC73C\uB85C \uB3CC\uC544\uC654\uB2E4. \uBB3C \uC704\uC5D0 \uC624\uB798\uB41C \uC232\uC758 \uBB38\uC591\uC774 \uB5A0\uC62C\uB790\uB2E4."],
   ["\uC232\uC774 \uC804\uD558\uB294 \uAE30\uC5B5", "\uBB38\uC591\uC744 \uB530\uB77C \uC232\uC5D0 \uB4E4\uC5B4\uC11C\uC790 \uBC84\uC12F\uB4E4\uC774 \uD478\uB978 \uD3EC\uC790\uB97C \uBFDC\uC5C8\uB2E4. \uD3EC\uC790\uC5D0 \uAC07\uD78C \uC218\uD638\uC790\uC758 \uAE30\uC5B5\uC744 \uD574\uBC29\uD558\uBA74 \uBD09\uC778\uC758 \uD589\uBC29\uC744 \uC54C \uC218 \uC788\uB2E4.", "\uC232\uC740 \uCCAB \uBCC4\uC870\uAC01\uC774 \uC720\uC801\uC758 \uBD89\uC740 \uB3CC \uC544\uB798 \uC7A0\uB4E4\uC5C8\uB2E4\uACE0 \uC18D\uC0AD\uC600\uB2E4. \uADF8\uB7EC\uB098 \uADF8 \uAE38\uC744 \uACE0\uBE14\uB9B0\uB4E4\uC774 \uB9C9\uACE0 \uC788\uB2E4."],
@@ -342,7 +342,7 @@ var CHAPTER_STORIES = [
   ["\uC5D0\uD14C\uB9AC\uC544\uC758 \uC0C8\uBCBD", "\uC2EC\uC7A5\uC5D0 \uAE43\uB4E0 \uC6D4\uC2DD\uC758 \uAD70\uC8FC\uB97C \uC4F0\uB7EC\uB728\uB9AC\uC790. \uBCC4\uC758 \uD798\uC740 \uD640\uB85C \uC9C0\uD0A4\uB294 \uD798\uC774 \uC544\uB2C8\uB77C \uD568\uAED8 \uC0B4\uC544\uAC08 \uB0B4\uC77C\uC744 \uB418\uCC3E\uB294 \uD798\uC774\uB2E4.", "\uC138 \uBCC4\uC870\uAC01\uC774 \uC5D0\uD14C\uB9AC\uC544\uC758 \uC2EC\uC7A5\uC73C\uB85C \uB3CC\uC544\uAC14\uB2E4. \uC232\uC5D0\uB294 \uC0C8\uC78E\uC774, \uBD81\uBC29\uC5D0\uB294 \uB530\uB73B\uD55C \uD587\uC0B4\uC774, \uBD88\uC758 \uB300\uB959\uC5D0\uB294 \uB9D1\uC740 \uBC14\uB78C\uC774 \uCC3E\uC544\uC654\uB2E4. \uC138\uB77C\uB294 \uC0C8\uB85C\uC6B4 \uC0C8\uBCBD\uC758 \uC218\uD638\uC790\uC778 \uB2F9\uC2E0\uC744 \uB9DE\uC558\uB2E4."]
 ];
 
-// shared/content.ts
+// aetheria-game/shared/content.ts
 var WORLD = { w: 1800, h: 1200, speed: 210 };
 var CLASSES = [
   { id: 0, name: "\uBCC4\uBE5B \uAE30\uC0AC", en: "KNIGHT", role: "\uAC80\uACFC \uC218\uD638\uC758 \uD798", description: "\uB2E8\uB2E8\uD55C \uBC29\uC5B4\uC640 \uB113\uC740 \uAC80\uACA9\uC73C\uB85C \uC804\uC120\uC744 \uC9C0\uD0B5\uB2C8\uB2E4.", hp: 160, mp: 80, atk: 22, def: 7, color: "#92caff", skills: ["\uBE5B\uC758 \uAC80\uACA9", "\uD30C\uC1C4 \uC77C\uACA9", "\uBCC4\uBE5B \uD68C\uC624\uB9AC", "\uB3CC\uC9C4 \uBCA0\uAE30"], range: [135, 165, 220, 320], power: [1, 1.9, 1.5, 2.2], cost: [0, 12, 20, 25], cd: [650, 2500, 5e3, 6500] },
@@ -552,7 +552,7 @@ for (let level = 1; level <= 50; level++) {
   }
 }
 
-// shared/progression.ts
+// aetheria-game/shared/progression.ts
 var needXp = /* @__PURE__ */ __name((level) => Math.floor(180 * level ** 1.6), "needXp");
 function stats(p) {
   const c = CLASSES[p.classId], tier = p.promotionTier || 0;
@@ -605,7 +605,7 @@ function autoTrain(p, mode = p.autoSkillMode || 0) {
 }
 __name(autoTrain, "autoTrain");
 
-// server/gm.ts
+// aetheria-game/server/gm.ts
 function integer(value, label, min, max) {
   if (!Number.isSafeInteger(value) || Number(value) < min || Number(value) > max)
     throw new Error(label + " \uBC94\uC704: " + min + " ~ " + max);
@@ -771,17 +771,17 @@ async function gmAuthorized(header, secret) {
 }
 __name(gmAuthorized, "gmAuthorized");
 
-// shared/beginner.ts
+// aetheria-game/shared/beginner.ts
 var beginnerProtected = /* @__PURE__ */ __name((p) => p.level <= 20 && !(p.promotionTier || 0) && !ZONES[p.zone]?.raid, "beginnerProtected");
 
-// shared/promotion.ts
+// aetheria-game/shared/promotion.ts
 var PROMOTION_NAMES = [["\uD0DC\uC591\uC758 \uC218\uD638\uAE30\uC0AC", "\uCC9C\uC0C1\uC758 \uC131\uAE30\uC0AC"], ["\uD3ED\uD48D\uC758 \uCD94\uC801\uC790", "\uCC9C\uAD81\uC758 \uC21C\uCC30\uC790"], ["\uB2EC\uC758 \uD604\uC790", "\uBCC4\uC790\uB9AC \uB300\uB9C8\uB3C4\uC0AC"]];
 var PROMOTION_TRIALS = [
   { tier: 1, level: 20, name: "\uCCAB \uBC88\uC9F8 \uBCC4\uC758 \uB9F9\uC138", zone: 2, monster: 4, count: 10, bossZone: 3, boss: 8, bossCount: 1, story: "\uBCC4\uBE5B\uC740 \uD798\uB9CC\uC73C\uB85C \uAE68\uC5B4\uB098\uC9C0 \uC54A\uC544\uC694. \uC232\uAE38\uC758 \uACE0\uBE14\uB9B0\uC744 \uBB3C\uB9AC\uCE58\uACE0 \uC720\uC801\uC758 \uBD89\uC740 \uD30C\uC218\uAFBC\uC744 \uB118\uC5B4, \uC218\uD638\uC790\uC758 \uB9F9\uC138\uB97C \uC99D\uBA85\uD574 \uC8FC\uC138\uC694." },
   { tier: 2, level: 30, name: "\uCC9C\uC0C1\uC758 \uBCC4\uC744 \uACC4\uC2B9\uD558\uB2E4", zone: 16, monster: 6, count: 15, bossZone: 16, boss: 8, bossCount: 2, story: "\uBD88\uC528 \uD611\uACE1\uC758 \uACE0\uB300 \uACE8\uB818\uACFC \uBD89\uC740 \uD30C\uC218\uAFBC\uC744 \uB118\uC5B4\uC57C \uB9C8\uC9C0\uB9C9 \uBCC4\uC758 \uD798\uC744 \uC774\uC5B4\uBC1B\uC744 \uC218 \uC788\uC5B4\uC694. \uCC9C\uC0C1\uC758 \uAE38\uC740 \uC900\uBE44\uB41C \uC218\uD638\uC790\uC5D0\uAC8C\uB9CC \uC5F4\uB9AC\uC9C0\uC694." }
 ];
 
-// shared/skills.ts
+// aetheria-game/shared/skills.ts
 var SKILL_SPECS = [
   [
     { shape: "cone", description: "\uC804\uBC29\uC744 \uBCA0\uB294 3\uC5F0\uC18D \uAC80\uACA9. \uC138 \uBC88\uC9F8 \uAC80\uACA9\uC740 \uB354 \uAC15\uD55C \uD53C\uD574\uB97C \uC90D\uB2C8\uB2E4.", effect: "3\uD0C0 \uCF64\uBCF4 \xB7 \uC804\uBC29 \uAC80\uACA9" },
@@ -825,7 +825,7 @@ SKILL_SPECS[0].push({ shape: "circle", effect: "\uD0DC\uC591 \uBC29\uBCBD \xB7 \
 SKILL_SPECS[1].push({ shape: "cone", effect: "\uD3ED\uD48D \xB7 \uD68C\uD53C", description: "\uD3ED\uD48D \uC0AC\uACA9\uACFC \uD568\uAED8 0.7\uCD08\uAC04 \uBB34\uC801\uC744 \uC5BB\uC2B5\uB2C8\uB2E4.", invulnerable: 700 }, { shape: "line", effect: "\uBD88\uC0AC\uC870 \xB7 \uD654\uC0C1", description: "\uBD88\uC0AC\uC870 \uD654\uC0B4\uC774 \uC9C1\uC120\uC0C1\uC758 \uC801\uC744 \uAD00\uD1B5\uD558\uACE0 4\uCD08\uAC04 \uBD88\uD0DC\uC6C1\uB2C8\uB2E4.", burn: 4e3 }, { shape: "cone", effect: "\uCC9C\uAD81 \xB7 \uB2E4\uC911 \uD45C\uC801", description: "\uC804\uBC29\uC5D0 \uAC15\uB825\uD55C \uCC9C\uC0C1\uC758 \uD654\uC0B4\uC744 \uD37C\uBD93\uC2B5\uB2C8\uB2E4." }, { shape: "meteor", effect: "\uBCC4\uBE5B \uC0AC\uB0E5 \xB7 \uBE59\uACB0", description: "\uBCC4\uBE5B \uD654\uC0B4\uBE44\uAC00 \uB113\uC740 \uBC94\uC704\uC5D0 \uB5A8\uC5B4\uC838 \uC801\uC744 \uC5BC\uB9BD\uB2C8\uB2E4.", radius: 215, freeze: 1800 });
 SKILL_SPECS[2].push({ shape: "circle", effect: "\uB2EC\uC758 \uAC00\uD638 \xB7 \uD761\uD608", description: "\uB2EC\uBE5B \uD30C\uB3D9\uC73C\uB85C \uC0DD\uBA85\uB825\uC744 \uD761\uC218\uD558\uACE0 0.6\uCD08\uAC04 \uBB34\uC801\uC744 \uC5BB\uC2B5\uB2C8\uB2E4.", lifeSteal: 0.3, invulnerable: 600 }, { shape: "meteor", effect: "\uC740\uD558 \uD61C\uC131 \xB7 \uD654\uC0C1", description: "\uC740\uD558\uC758 \uD61C\uC131\uC73C\uB85C \uB113\uC740 \uBC94\uC704\uB97C \uD0DC\uC6C1\uB2C8\uB2E4.", radius: 195, burn: 4e3 }, { shape: "circle", effect: "\uC2DC\uAC04\uC758 \uC11C\uB9AC \xB7 \uBE59\uACB0", description: "\uC8FC\uBCC0 \uC801\uC758 \uC2DC\uAC04\uC744 \uBA48\uCD94\uB4EF 2.5\uCD08\uAC04 \uC5BC\uB9BD\uB2C8\uB2E4.", freeze: 2500 }, { shape: "meteor", effect: "\uC6B0\uC8FC\uC758 \uD0C4\uC0DD", description: "\uAC70\uB300\uD55C \uBCC4\uC758 \uD3ED\uBC1C\uB85C \uB113\uC740 \uBC94\uC704\uC5D0 \uD53C\uD574\uC640 \uAE30\uC808\uC744 \uC90D\uB2C8\uB2E4.", radius: 245, stun: 1800 });
 
-// shared/physics.ts
+// aetheria-game/shared/physics.ts
 var distance = /* @__PURE__ */ __name((a, b) => Math.hypot(a.x - b.x, a.y - b.y), "distance");
 function movable(x, y, zone = 0) {
   return x > 180 && x < 1620 && y > 140 && y < 1020 && onGround(x, y, zone) && !blocksFor(zone).some((b) => x > b.x - 15 && x < b.x + b.w + 15 && y > b.y - 15 && y < b.y + b.h + 15);
@@ -877,7 +877,7 @@ function onGround(x, y, zone) {
 }
 __name(onGround, "onGround");
 
-// server/combat.ts
+// aetheria-game/server/combat.ts
 function emit(w, p, now, kind, value, color, extra = {}) {
   w.events.push({ id: crypto.randomUUID(), time: now, zone: p.zone, x: p.x, y: p.y, kind, value, color, ...extra });
 }
@@ -1104,11 +1104,11 @@ function tickCombat(w, now) {
 }
 __name(tickCombat, "tickCombat");
 
-// shared/pets.ts
+// aetheria-game/shared/pets.ts
 var PETS = [{ id: 0, name: "\uBCC4\uBE5B \uC5EC\uC6B0", description: "\uC791\uC740 \uBC1C\uAC78\uC74C\uC73C\uB85C \uBAA8\uD5D8\uC744 \uD568\uAED8\uD558\uB294 \uC5EC\uC6B0", price: 500, cashOnly: false }, { id: 1, name: "\uB2EC\uBE5B \uBD80\uC5C9\uC774", description: "\uBCC4\uAC00\uB8E8 \uB0A0\uAC1C\uB85C \uACC1\uC744 \uC9C0\uD0A4\uB294 \uBD80\uC5C9\uC774", price: 800, cashOnly: false }, { id: 2, name: "\uAD6C\uB984 \uACE0\uC591\uC774", description: "\uBC18\uC9DD\uC774\uB294 \uBAA9\uAC78\uC774\uB97C \uB2E8 \uD638\uAE30\uC2EC \uB9CE\uC740 \uACE0\uC591\uC774", price: 1200, cashOnly: false }, { id: 3, name: "\uAFC0\uBE5B \uCF54\uAE30", description: "\uC791\uC740 \uBC1C\uB85C \uB530\uB77C\uC624\uB294 \uCF54\uAE30 \xB7 \uD3EC\uC158 \uC790\uB3D9 \uD68C\uBCF5 \uC9C0\uC6D0", price: 180, cashOnly: true }, { id: 4, name: "\uBCC4\uAD6C\uB984 \uC544\uAE30 \uC6A9", description: "\uBC18\uC9DD\uC774\uB294 \uC544\uAE30 \uC6A9 \xB7 \uD3EC\uC158 \uC790\uB3D9 \uD68C\uBCF5 \uC9C0\uC6D0", price: 300, cashOnly: true }];
 var PET_PICKUP_RADIUS = 180;
 
-// server/pet-care.ts
+// aetheria-game/server/pet-care.ts
 function petCareInput(p, i) {
   if (i.action === "petAutoHeal") {
     p.petAutoHeal = i.value === 1;
@@ -1164,7 +1164,7 @@ function tickPetCare(w, p, now) {
 }
 __name(tickPetCare, "tickPetCare");
 
-// shared/quests.ts
+// aetheria-game/shared/quests.ts
 var questKind = /* @__PURE__ */ __name((q) => q.kind || "main", "questKind");
 function questAvailable(p, q) {
   return !p.done.includes(q.id) && p.level >= (q.minLevel || 1) && (p.quests[q.id] !== void 0 || q.previous === void 0 || p.done.includes(q.previous));
@@ -1178,7 +1178,7 @@ function canAcceptQuest(p, q) {
 }
 __name(canAcceptQuest, "canAcceptQuest");
 
-// shared/workshop.ts
+// aetheria-game/shared/workshop.ts
 var RECIPES = [
   { name: "\uC0DD\uBA85 \uBB3C\uC57D \xD75", gold: 25, cost: [0, 0, 3], kind: "hp" },
   { name: "\uB9C8\uB098 \uBB3C\uC57D \xD75", gold: 25, cost: [0, 2, 2], kind: "mp" },
@@ -1186,7 +1186,7 @@ var RECIPES = [
   { name: "\uC9C1\uC5C5\uBCC4 \uD76C\uADC0 \uBB34\uAE30", gold: 180, cost: [12, 8, 0], kind: "weapon" }
 ];
 
-// server/workshop.ts
+// aetheria-game/server/workshop.ts
 function workshopInput(w, p, input) {
   const service = { enhance: "forge", salvage: "materials", craft: "alchemy", materialBuy: "materials", store: "storage", withdraw: "storage" }[input.action || ""];
   if (!service) return;
@@ -1296,7 +1296,7 @@ function workshopInput(w, p, input) {
 }
 __name(workshopInput, "workshopInput");
 
-// shared/tutorial.ts
+// aetheria-game/shared/tutorial.ts
 var tutorialKills = /* @__PURE__ */ __name((p) => Object.values(p.kills).reduce((n, k) => n + k, 0), "tutorialKills");
 var tutorialState = /* @__PURE__ */ __name((p) => ({ stage: 0, moved: 0, usedSkill: false, killStart: tutorialKills(p), completed: false }), "tutorialState");
 function tutorialReady(p) {
@@ -1323,7 +1323,7 @@ function tutorialReady(p) {
 }
 __name(tutorialReady, "tutorialReady");
 
-// server/tutorial.ts
+// aetheria-game/server/tutorial.ts
 function tutorialInput(w, p, i, now) {
   if (i.action === "tutorialStart" && !p.tutorial) p.tutorial = tutorialState(p);
   if (i.action !== "tutorialNext" || !tutorialReady(p)) return;
@@ -1343,7 +1343,7 @@ function tutorialInput(w, p, i, now) {
 }
 __name(tutorialInput, "tutorialInput");
 
-// server/animal-skins.ts
+// aetheria-game/server/animal-skins.ts
 function animalSkinInput(p, input) {
   if (input.action === "animalEquip" && input.value === -1) {
     delete p.animalSkinId;
@@ -1377,7 +1377,7 @@ function animalSkinInput(p, input) {
 }
 __name(animalSkinInput, "animalSkinInput");
 
-// shared/damage-skins.ts
+// aetheria-game/shared/damage-skins.ts
 var DAMAGE_SKINS = [
   { id: 0, name: "\uAE30\uBCF8", currency: "free", price: 0 },
   { id: 1, name: "\uD669\uAE08 \uBCC4\uBE5B", currency: "gold", price: 600 },
@@ -1387,7 +1387,7 @@ var DAMAGE_SKINS = [
   { id: 5, name: "\uCC9C\uC0C1\uC758 \uB9F9\uC138", currency: "cash", price: 300 }
 ];
 
-// server/damage-skins.ts
+// aetheria-game/server/damage-skins.ts
 function damageSkinInput(p, i) {
   const skin = DAMAGE_SKINS.find((s) => s.id === i.value);
   if (!skin) return;
@@ -1410,7 +1410,7 @@ function damageSkinInput(p, i) {
 }
 __name(damageSkinInput, "damageSkinInput");
 
-// server/social.ts
+// aetheria-game/server/social.ts
 function tradeFor(w, id) {
   return w.trades?.find((t) => t.a === id || t.b === id);
 }
@@ -1524,7 +1524,7 @@ function socialInput(w, p, i, now) {
 }
 __name(socialInput, "socialInput");
 
-// server/raids.ts
+// aetheria-game/server/raids.ts
 function enterRaid(w, p, value, now) {
   const r = RAIDS[value];
   if (!r || p.level < r.level) {
@@ -1586,7 +1586,7 @@ function tickRaids(w, now) {
 }
 __name(tickRaids, "tickRaids");
 
-// server/loot.ts
+// aetheria-game/server/loot.ts
 function collectLoot(w, p, now, radius) {
   let count = 0;
   const picked = /* @__PURE__ */ new Set();
@@ -1617,7 +1617,7 @@ function collectLoot(w, p, now, radius) {
 }
 __name(collectLoot, "collectLoot");
 
-// server/engine.ts
+// aetheria-game/server/engine.ts
 function newPlayer(id, name, classId, now) {
   const c = CLASSES[classId];
   return { id, name, classId, zone: 0, x: 900, y: 740, face: 1, hp: c.hp + 15, mp: c.mp, level: 1, xp: 0, gold: 80, inventory: [classId, 3], equipment: { weapon: classId, armor: 3, ring: null }, potions: 8, manaPotions: 5, quests: {}, done: [], kills: {}, cd: [0, 0, 0, 0], last: now, seen: now, attackAt: 0, attackSkill: 0, target: { x: 0, y: 0 }, lastSeq: 0, loadout: [0, 1, 2, 3], skillRanks: Array(12).fill(0), dodgeCd: 0, dodgeUntil: 0, potionCd: 0, manaPotionCd: 0, tutorial: { stage: 0, moved: 0, usedSkill: false, killStart: 0, completed: false }, damageSkins: [], damageSkinId: 0, notice: "\uD018\uC2A4\uD2B8 \uCE74\uB4DC \uD074\uB9AD\uC73C\uB85C \uC989\uC2DC \uC218\uB77D \xB7 \uBAA9\uD45C \uB2EC\uC131 \uD6C4 \uB2E4\uC2DC \uD074\uB9AD\uD558\uBA74 \uBCF4\uC0C1\uC744 \uBC1B\uC2B5\uB2C8\uB2E4." };
@@ -2029,16 +2029,16 @@ function serverPopulationStatus(online) {
 }
 __name(serverPopulationStatus, "serverPopulationStatus");
 
-// server/auth-crypto.ts
+// aetheria-game/server/auth-crypto.ts
 async function digest(token) {
   return Array.from(new Uint8Array(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(token)))).map((b) => b.toString(16).padStart(2, "0")).join("");
 }
 __name(digest, "digest");
 
-// server/google-auth.ts
+// aetheria-game/server/google-auth.ts
 import { env as env2 } from "cloudflare:workers";
 
-// shared/accounts.ts
+// aetheria-game/shared/accounts.ts
 function accountFor(w, id) {
   w.accounts ??= {};
   return w.accounts[id] ??= w.players[id] ? { characters: [id], slots: 4, active: id } : { characters: [], slots: 4, active: null };
@@ -2086,10 +2086,10 @@ function changeAccount(w, id, body, now) {
 }
 __name(changeAccount, "changeAccount");
 
-// server/store.ts
+// aetheria-game/server/store.ts
 import { env } from "cloudflare:workers";
 
-// server/google-auth.ts
+// aetheria-game/server/google-auth.ts
 function cookie(request, name) {
   return request.headers.get("cookie")?.split(";").map((x) => x.trim()).find((x) => x.startsWith(name + "="))?.slice(name.length + 1) || null;
 }
@@ -2117,7 +2117,7 @@ async function readLoginSession(token) {
 }
 __name(readLoginSession, "readLoginSession");
 
-// server/auth.ts
+// aetheria-game/server/auth.ts
 async function guestIdentity(request) {
   const session = cookie(request, "__Host-aetheria_session");
   if (session) {
@@ -2129,7 +2129,7 @@ async function guestIdentity(request) {
 }
 __name(guestIdentity, "guestIdentity");
 
-// external/worker.ts
+// aetheria-game/external/worker.ts
 var reply = /* @__PURE__ */ __name((value, status = 200, headers = {}) => Response.json(value, { status, headers: { "Cache-Control": "no-store", ...headers } }), "reply");
 var AetheriaRealm = class {
   constructor(state, env3) {
