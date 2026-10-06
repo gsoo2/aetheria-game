@@ -63,6 +63,13 @@ html[data-ui-mode=mobile] .story-speaker-portrait{display:none}html[data-ui-mode
 .game-shell .class-card.selected .class-card-top>span{color:#4b684f}
 .game-dialog .dialog-description{color:#576962!important}
 .game-dialog .subtle,.game-dialog .cash-wallet>span{color:#576962!important}
+.game-dialog .account-login{margin:12px 0;padding:16px;width:100%;background:#edf3e7;border:1px solid #bfd0b5;border-radius:14px;color:#354844}
+.game-dialog .account-login :is(strong,p,small){color:#4e6557}
+.game-dialog .interface-mode-switch,.game-dialog .language-picker{background:#fff8ec;border:1px solid #b8c9aa;border-radius:13px;color:#455f4c}
+.game-dialog .interface-mode-switch button{color:#4f6456;min-height:44px}
+.game-dialog .interface-mode-switch button[aria-pressed=true]{background:#d9eacf;color:#31583e;border-color:#a2bd98}
+.game-dialog .language-picker select{background:#fff8ec;color:#3c5746}
+.game-dialog .volume-row>span{color:#4c6657}
 html[data-ui-mode=pc] .game-dialog.mobile-menu-dialog{width:min(760px,calc(100vw - 40px))!important;max-width:760px!important}
 html[data-ui-mode=pc] .game-dialog.mobile-menu-dialog .dialog-title{font-size:23px!important}
 .game-shell .quest-tracker :is(.window-drag-handle,.window-center-button){color:#48654f}
