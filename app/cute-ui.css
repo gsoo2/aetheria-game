@@ -57,3 +57,17 @@ html[data-ui-mode=mobile] .story-speaker-portrait{display:none}html[data-ui-mode
 .ui-mobile .skill-button small{font-size:10px!important}.game-shell .chat-panel form input{color:#354844;background:#fffdf6;border:1px solid #b5c9b7}.game-shell .chat-panel form button{color:#3d5846;background:#d7e9cf}.game-shell .chat-heading,.game-shell .system-chat{color:#526b4e}
 
 .game-shell .sprite-portrait.hero-ui,.game-dialog .sprite-portrait.hero-ui{background-size:300% 100%!important;background-repeat:no-repeat;mix-blend-mode:normal;aspect-ratio:400/463}.game-shell .guardian-slot>.hero-ui{width:140px;height:162px;margin:12px 0 0}.game-shell .avatar-frame .hero-ui{height:66px;width:58px;margin:-3px 0 0 1px}.game-shell .entry-portrait.hero-ui{height:220px;width:190px}.game-dialog .character-panel>.hero-ui{height:232px;width:200px}.ui-mobile .guardian-slot>.hero-ui{width:85px;height:100px}.ui-mobile .avatar-frame .hero-ui{height:43px;width:37px;margin:0 0 0 -2px}.ui-mobile .entry-portrait.hero-ui{height:115px!important;width:100px!important}
+
+/* Final live-page checks: readable creation copy and distinct mobile HUD rows. */
+.game-shell .creation-card{background:linear-gradient(135deg,#fffaf1f5,#eaf3e5f5);border:2px solid #b9cba9;color:#354844;box-shadow:var(--ui-shadow)}
+.game-shell .class-card.selected .class-card-top>span{color:#4b684f}
+.game-dialog .dialog-description{color:#576962!important}
+.game-dialog .subtle,.game-dialog .cash-wallet>span{color:#576962!important}
+html[data-ui-mode=pc] .game-dialog.mobile-menu-dialog{width:min(760px,calc(100vw - 40px))!important;max-width:760px!important}
+html[data-ui-mode=pc] .game-dialog.mobile-menu-dialog .dialog-title{font-size:23px!important}
+.game-shell .quest-tracker :is(.window-drag-handle,.window-center-button){color:#48654f}
+html[data-ui-mode=mobile] .game-shell .zone-heading{top:91px!important;left:10px!important;transform:none!important;width:min(200px,calc(100vw - 160px))!important;text-align:left!important;background:#fff8edf2!important;padding:5px 9px;border:1px solid #c8b48f;border-radius:10px}
+html[data-ui-mode=mobile] .game-shell .zone-heading h1{color:#3b5946!important;font-size:13px!important;line-height:20px!important;margin:0!important;text-shadow:none!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+html[data-ui-mode=mobile] .game-shell .tutorial-launcher{top:130px!important}
+html[data-ui-mode=mobile] .game-shell .quest-tracker.floating-window{top:179px!important}
+html[data-ui-mode=mobile] .game-shell .mobile-top-actions .server-load{top:120px!important;right:0!important;white-space:nowrap}
