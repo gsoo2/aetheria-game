@@ -5,10 +5,10 @@ import {WebSocketServer,WebSocket} from 'ws';
 import {writeResponse,writeFailure} from './http-response.mjs';
 // Keep the existing Render start command while switching to the real game server.
 if(process.env.REALTIME_STORE_URL){await import('./server.mjs').then(async({launch})=>{const {remoteStore}=await import('./remote-store.mjs');const app=await launch({store:remoteStore(process.env.REALTIME_STORE_URL,process.env.REALTIME_STORE_TOKEN),token:process.env.GM_TOKEN});console.log('Aetheria realtime server ready');let stopped=false;const stop=async()=>{if(stopped)return;stopped=true;try{await app.close();process.exit(0);}catch{console.error('Final checkpoint failed');process.exit(1);}};process.on('SIGTERM',stop);process.on('SIGINT',stop);});}
-const upstream=new URL('https://aetheria-rpg.lemainwang.chatgpt.site');
 const root=resolve('dist/external/client');
 const types={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.png':'image/png','.jpg':'image/jpeg','.jpeg':'image/jpeg','.svg':'image/svg+xml','.webp':'image/webp','.mp3':'audio/mpeg','.wav':'audio/wav','.ogg':'audio/ogg','.json':'application/json'};
-export function start(port=Number(process.env.PORT||10000),host='0.0.0.0'){
+export function start(port=Number(process.env.PORT||10000),host='0.0.0.0',{origin='https://aetheria-rpg.lemainwang.chatgpt.site',listen=true}={}){
+ const upstream=new URL(origin);
  const server=createServer(async(req,res)=>{try{
   const url=new URL(req.url,'http://localhost');
   if(url.pathname==='/health'){res.writeHead(200,{'Content-Type':'application/json'});res.end('{"ok":true}');return;}
@@ -37,6 +37,6 @@ export function start(port=Number(process.env.PORT||10000),host='0.0.0.0'){
   remote.once('open',()=>sockets.handleUpgrade(req,socket,head,ws=>{client=ws;for(const [data,binary] of pending)ws.send(data,{binary});ws.on('message',(data,binary)=>{if(binary){ws.close(1003);return;}if(remote.readyState===WebSocket.OPEN)remote.send(data.toString());});ws.on('close',()=>remote.close());ws.on('error',()=>remote.terminate());}));
   remote.on('close',(code,reason)=>{if(client?.readyState===WebSocket.OPEN)client.close(code===1006?1011:code,reason.toString().slice(0,120));else if(!client)socket.destroy();});remote.on('error',()=>{if(client)client.close(1011,'Connection unavailable');else socket.destroy();});socket.on('error',()=>remote.terminate());socket.on('close',()=>remote.close());
  });
- server.listen(port,host,()=>console.log('Aetheria gateway ready'));return {server,sockets};
+ if(listen)server.listen(port,host,()=>console.log('Aetheria gateway ready'));return {server,sockets};
 }
 if(!process.env.REALTIME_STORE_URL&&process.argv[1]&&resolve(process.argv[1])===resolve(new URL(import.meta.url).pathname)){const app=start();process.on('SIGTERM',()=>{for(const client of app.sockets.clients)client.close(1001);app.server.close(()=>process.exit(0));});}

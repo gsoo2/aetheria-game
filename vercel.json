@@ -1,0 +1,28 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "installCommand": "npm ci --prefix hosting --omit=dev",
+  "buildCommand": "node hosting/build-vercel.mjs",
+  "outputDirectory": "dist/external/client",
+  "functions": {
+    "api/bridge.mjs": { "maxDuration": 300 }
+  },
+  "rewrites": [
+    { "source": "/api/:path*", "destination": "/api/bridge?route=:path*" },
+    { "source": "/:path*", "destination": "/index.html" }
+  ],
+  "headers": [
+    {
+      "source": "/:path*",
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "X-Frame-Options", "value": "DENY" },
+        { "key": "Referrer-Policy", "value": "same-origin" }
+      ]
+    },
+    {
+      "source": "/api/:path*",
+      "headers": [{ "key": "Cache-Control", "value": "no-store" }]
+    }
+  ]
+}
