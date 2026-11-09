@@ -1,0 +1,127 @@
+// 게임 데이터: 군주, 아이템, 난이도, 목표
+"use strict";
+
+// look: skin(0~4) hair(색) hairStyle(short|long|bald|bun|topknot) hat(종류) beard(none|mustache|goatee|full|long) robe(색) trim(색) eyes(normal|fierce|soft)
+const RULERS = [
+  { id: "sejong", name: "세종대왕", title: "조선의 성군", country: "South Korea", home: [37.56, 126.97], color: "#3f6fd6", era: "1418년",
+    trait: "훈민정음: 수입 +20%, 개발 비용 -30%", mods: { income: 0.2, devCost: -0.3 },
+    look: { skin: 1, hair: "#1d1a1f", hairStyle: "topknot", hat: "ikseon", beard: "goatee", robe: "#b8242c", trim: "#e3b23c", eyes: "soft" },
+    quote: "백성은 나라의 근본이니, 근본이 튼튼해야 나라가 평안하다.", locked: false },
+  { id: "genghis", name: "칭기즈 칸", title: "초원의 대칸", country: "Mongolia", home: [47.9, 106.9], color: "#d19a1e", era: "1206년",
+    trait: "기마 군단: 공격 +25%, 징병 비용 -15%", mods: { atk: 0.25, recruitCost: -0.15 },
+    look: { skin: 2, hair: "#2a1d14", hairStyle: "short", hat: "mongol", beard: "long", robe: "#3c5a8a", trim: "#d9a441", eyes: "fierce" },
+    quote: "하늘 아래 모든 초원은 하나의 깃발 아래 모인다.", locked: false },
+  { id: "napoleon", name: "나폴레옹", title: "프랑스의 황제", country: "France", home: [48.85, 2.35], color: "#2f4fbf", era: "1804년",
+    trait: "대육군: 공격 +15%, 병력 회복 +15%", mods: { atk: 0.15, manpower: 0.15 },
+    look: { skin: 0, hair: "#3b2a1e", hairStyle: "short", hat: "bicorne", beard: "none", robe: "#25336b", trim: "#e8c25a", eyes: "fierce" },
+    quote: "불가능이란 말은 나의 사전에 없다.", locked: false },
+  { id: "caesar", name: "율리우스 카이사르", title: "로마의 독재관", country: "Italy", home: [41.9, 12.5], color: "#b8323a", era: "기원전 49년",
+    trait: "군단의 규율: 공격 +10%, 방어 +10%", mods: { atk: 0.1, def: 0.1 },
+    look: { skin: 1, hair: "#4a3a2a", hairStyle: "short", hat: "laurel", beard: "none", robe: "#efe6d2", trim: "#8e1b2a", eyes: "normal" },
+    quote: "왔노라, 보았노라, 이겼노라.", locked: false },
+  { id: "cleopatra", name: "클레오파트라", title: "나일의 여왕", country: "Egypt", home: [30.0, 31.2], color: "#1fa59a", era: "기원전 51년",
+    trait: "나일의 풍요: 수입 +25%, 평화 제안 성공률 상승", mods: { income: 0.25, diplo: 0.3 },
+    look: { skin: 2, hair: "#120f14", hairStyle: "long", hat: "nemes", beard: "none", robe: "#f2ead8", trim: "#2b9fb0", eyes: "soft" },
+    quote: "나의 나라는 강물처럼 흐르며 모든 것을 적신다.", locked: false },
+  { id: "qin", name: "진시황", title: "최초의 황제", country: "China", home: [34.3, 108.9], color: "#2a2a2a", era: "기원전 221년",
+    trait: "천하통일: 병력 회복 +25%, 요새 비용 -30%", mods: { manpower: 0.25, fortCost: -0.3 },
+    look: { skin: 1, hair: "#16131a", hairStyle: "bun", hat: "mian", beard: "mustache", robe: "#1b1b24", trim: "#c8452c", eyes: "fierce" },
+    quote: "여섯 나라를 하나로, 천하에 하나의 법을.", locked: false },
+  { id: "elizabeth", name: "엘리자베스 1세", title: "처녀 여왕", country: "United Kingdom", home: [51.5, -0.12], color: "#9b2fae", era: "1558년",
+    trait: "무적의 해군: 바다 건너 공격 패널티 없음, 수입 +10%", mods: { sea: 1, income: 0.1 },
+    look: { skin: 0, hair: "#c4542a", hairStyle: "bun", hat: "tiara", beard: "none", robe: "#2a1e3f", trim: "#f2f2f2", eyes: "soft", ruff: 1 },
+    quote: "나는 연약한 여인의 몸이지만, 왕의 심장을 가졌다.", locked: false },
+  { id: "nobunaga", name: "오다 노부나가", title: "천하포무", country: "Japan", home: [35.0, 136.9], color: "#d14b2a", era: "1560년",
+    trait: "철포대: 공격 +20%, 요새 공격 시 효과 감소", mods: { atk: 0.2, siege: 0.25 },
+    look: { skin: 1, hair: "#18151a", hairStyle: "topknot", hat: "kabuto", beard: "mustache", robe: "#2b2b2b", trim: "#c23a2b", eyes: "fierce" },
+    quote: "울지 않는 두견새라면, 울게 만들 뿐.", locked: false },
+  { id: "alexander", name: "알렉산드로스", title: "마케도니아의 정복자", country: "Greece", home: [40.6, 22.9], color: "#2e86de", era: "기원전 336년",
+    trait: "팔랑크스: 공격 +30%", mods: { atk: 0.3 },
+    look: { skin: 0, hair: "#c99a4a", hairStyle: "short", hat: "corinth", beard: "none", robe: "#7a1f2b", trim: "#e0c068", eyes: "fierce" },
+    quote: "세상의 끝까지, 두려움 없이 나아가라.", locked: true, cost: 600 },
+  { id: "peter", name: "표트르 대제", title: "러시아의 개혁 황제", country: "Russia", home: [59.9, 30.3], color: "#2f7a4a", era: "1682년",
+    trait: "근대화: 개발 비용 -25%, 병력 회복 +20%", mods: { devCost: -0.25, manpower: 0.2 },
+    look: { skin: 0, hair: "#3a2a1e", hairStyle: "long", hat: "tricorn", beard: "mustache", robe: "#1f5a3a", trim: "#e3c26a", eyes: "normal" },
+    quote: "바다로 향하는 창을 열어라.", locked: true, cost: 500 },
+  { id: "washington", name: "조지 워싱턴", title: "건국의 아버지", country: "United States of America", home: [38.9, -77.0], color: "#3a5fa0", era: "1789년",
+    trait: "민병대: 방어 +25%, 수입 +10%", mods: { def: 0.25, income: 0.1 },
+    look: { skin: 0, hair: "#e9e4dc", hairStyle: "short", hat: "tricorn", beard: "none", robe: "#22355e", trim: "#d8b24a", eyes: "normal" },
+    quote: "자유가 뿌리내리면 그것은 빠르게 자라는 나무가 된다.", locked: true, cost: 500 },
+  { id: "saladin", name: "살라딘", title: "아이유브의 술탄", country: "Syria", home: [33.5, 36.3], color: "#e0b12b", era: "1174년",
+    trait: "기사도: 방어 +15%, 공격 +10%, 평화 성공률 상승", mods: { def: 0.15, atk: 0.1, diplo: 0.2 },
+    look: { skin: 2, hair: "#1f1712", hairStyle: "short", hat: "turban", beard: "full", robe: "#2c6b4f", trim: "#e6c35c", eyes: "normal" },
+    quote: "자비는 칼보다 많은 성을 연다.", locked: true, cost: 600 },
+  { id: "mansa", name: "만사 무사", title: "황금의 왕", country: "Mali", home: [12.6, -8.0], color: "#b0761b", era: "1312년",
+    trait: "황금의 바다: 수입 +45%", mods: { income: 0.45 },
+    look: { skin: 4, hair: "#120d0b", hairStyle: "short", hat: "goldcrown", beard: "goatee", robe: "#e2a91f", trim: "#7a2a12", eyes: "soft" },
+    quote: "황금은 길 위에 뿌릴 때 빛난다.", locked: true, cost: 700 },
+  { id: "pachacuti", name: "파차쿠티", title: "세상을 뒤집는 자", country: "Peru", home: [-13.5, -72.0], color: "#cf5d2a", era: "1438년",
+    trait: "안데스의 성채: 방어 +30%, 요새 비용 -20%", mods: { def: 0.3, fortCost: -0.2 },
+    look: { skin: 3, hair: "#141012", hairStyle: "long", hat: "llautu", beard: "none", robe: "#c0392b", trim: "#f1c40f", eyes: "fierce" },
+    quote: "산은 움직이지 않는다. 우리도 그러하리라.", locked: true, cost: 600 },
+  { id: "suleiman", name: "쉴레이만 대제", title: "입법자", country: "Turkey", home: [41.0, 28.97], color: "#b71c3a", era: "1520년",
+    trait: "예니체리: 공격 +15%, 방어 +10%, 수입 +10%", mods: { atk: 0.15, def: 0.1, income: 0.1 },
+    look: { skin: 1, hair: "#2a1e16", hairStyle: "short", hat: "bigturban", beard: "full", robe: "#2e7d5b", trim: "#e7c35a", eyes: "normal" },
+    quote: "정의는 제국의 기둥이다.", locked: true, cost: 800 },
+  { id: "ashoka", name: "아소카", title: "법의 대왕", country: "India", home: [25.6, 85.1], color: "#e67e22", era: "기원전 268년",
+    trait: "다르마: 병력 회복 +30%, 수입 +15%", mods: { manpower: 0.3, income: 0.15 },
+    look: { skin: 3, hair: "#17110d", hairStyle: "long", hat: "crown", beard: "mustache", robe: "#e9a03b", trim: "#7b2a8a", eyes: "soft" },
+    quote: "정복 가운데 가장 큰 정복은 마음의 정복이다.", locked: true, cost: 600 },
+  { id: "isabella", name: "이사벨 1세", title: "가톨릭 여왕", country: "Spain", home: [40.4, -3.7], color: "#d4a017", era: "1474년",
+    trait: "대항해: 바다 건너 공격 패널티 없음, 공격 +10%", mods: { sea: 1, atk: 0.1 },
+    look: { skin: 0, hair: "#b5651d", hairStyle: "long", hat: "crown", beard: "none", robe: "#7a1e2c", trim: "#e6c35c", eyes: "soft" },
+    quote: "바다 너머에도 세상이 있다.", locked: true, cost: 600 },
+  { id: "charlemagne", name: "샤를마뉴", title: "유럽의 아버지", country: "Germany", home: [50.8, 6.1], color: "#5b4a9e", era: "800년",
+    trait: "기사단: 방어 +15%, 공격 +15%", mods: { atk: 0.15, def: 0.15 },
+    look: { skin: 0, hair: "#d9d2c5", hairStyle: "long", hat: "crown", beard: "long", robe: "#3e2f7a", trim: "#e6c35c", eyes: "normal" },
+    quote: "칼과 책으로 하나의 유럽을 세우리라.", locked: true, cost: 700 },
+];
+
+// 새 군주 창조용 선택지
+const CUSTOM = {
+  titles: ["왕", "여왕", "황제", "여제", "칸", "술탄", "대공", "파라오"],
+  hats: [["crown", "왕관"], ["goldcrown", "황금관"], ["tiara", "티아라"], ["laurel", "월계관"], ["bicorne", "이각모"], ["tricorn", "삼각모"], ["turban", "터번"], ["mongol", "털모자"], ["kabuto", "투구"], ["corinth", "청동 투구"], ["ikseon", "익선관"], ["mian", "면류관"], ["nemes", "네메스"], ["llautu", "머리띠"], ["none", "없음"]],
+  hairStyles: [["short", "짧은 머리"], ["long", "긴 머리"], ["bun", "올림머리"], ["topknot", "상투"], ["bald", "민머리"]],
+  beards: [["none", "없음"], ["mustache", "콧수염"], ["goatee", "염소수염"], ["full", "턱수염"], ["long", "긴 수염"]],
+  hairColors: ["#1d1a1f", "#3b2a1e", "#7a4a26", "#c4542a", "#d9b25a", "#e9e4dc", "#5a6fa8"],
+  robeColors: ["#b8242c", "#25336b", "#2e7d5b", "#7a1e2c", "#3e2f7a", "#e2a91f", "#1b1b24", "#efe6d2"],
+  traits: [
+    { id: "conqueror", name: "정복자", desc: "공격 +20%", mods: { atk: 0.2 } },
+    { id: "guardian", name: "수호자", desc: "방어 +25%", mods: { def: 0.25 } },
+    { id: "merchant", name: "상인왕", desc: "수입 +25%", mods: { income: 0.25 } },
+    { id: "marshal", name: "대원수", desc: "병력 회복 +25%, 징병 비용 -10%", mods: { manpower: 0.25, recruitCost: -0.1 } },
+    { id: "admiral", name: "제독", desc: "바다 패널티 없음, 공격 +10%", mods: { sea: 1, atk: 0.1 } },
+  ],
+};
+
+// 나라 색 팔레트 (색칠 단계)
+const NATION_COLORS = ["#d9433b", "#3f6fd6", "#2f9e57", "#e6b422", "#8e44ad", "#e67e22", "#1fa59a", "#d14c8d", "#5d6d7e", "#8b5a2b", "#f0f0f0", "#202020"];
+
+// 상점 아이템. kind: use(캠페인 중 1회 사용) / relic(장착 시 상시 효과)
+const ITEMS = {
+  horn:     { name: "전쟁의 뿔피리", kind: "use", price: 120, icon: "horn", desc: "이번 턴 동안 모든 공격력 +50%" },
+  chest:    { name: "황금 상자", kind: "use", price: 100, icon: "chest", desc: "즉시 국고에 금 +400" },
+  decree:   { name: "징병 칙서", kind: "use", price: 140, icon: "scroll", desc: "선택한 내 영토에 병력 +2,500" },
+  dove:     { name: "평화의 비둘기", kind: "use", price: 160, icon: "dove", desc: "선택한 나라와 즉시 평화 (휴전 10턴)" },
+  dagger:   { name: "첩자의 단검", kind: "use", price: 150, icon: "dagger", desc: "선택한 적 영토의 병력 -60%" },
+  catapult: { name: "공성 투석기", kind: "use", price: 130, icon: "catapult", desc: "이번 턴 공격 시 적 요새 무시" },
+  banner:   { name: "군신의 깃발", kind: "relic", price: 500, icon: "banner", desc: "공격 +10%", mods: { atk: 0.1 } },
+  shield:   { name: "거인의 방패", kind: "relic", price: 450, icon: "shield", desc: "방어 +15%", mods: { def: 0.15 } },
+  scales:   { name: "상인의 저울", kind: "relic", price: 550, icon: "scales", desc: "수입 +15%", mods: { income: 0.15 } },
+  crown:    { name: "선왕의 왕관", kind: "relic", price: 400, icon: "crown", desc: "시작 금 +300", mods: { startGold: 300 } },
+  warmap:   { name: "장군의 지도", kind: "relic", price: 600, icon: "map", desc: "시작 병력 +50%", mods: { startTroops: 0.5 } },
+  compass:  { name: "바람의 나침반", kind: "relic", price: 350, icon: "compass", desc: "바다 건너 공격 패널티 없음", mods: { sea: 1 } },
+  hourglass:{ name: "시간의 모래시계", kind: "relic", price: 900, icon: "hourglass", desc: "병력 회복 +20%, 수입 +10%", mods: { manpower: 0.2, income: 0.1 } },
+};
+const MAX_RELICS = 3;
+
+const DIFFICULTY = [
+  { id: "easy", name: "쉬움", ai: -0.15, aggr: 0.5, reward: 0.7 },
+  { id: "normal", name: "보통", ai: 0.0, aggr: 1.0, reward: 1.0 },
+  { id: "hard", name: "어려움", ai: 0.2, aggr: 1.6, reward: 1.5 },
+];
+const GOALS = [
+  { id: "hegemony", name: "패권", frac: 0.12, reward: 350, desc: "세계 영토의 12% 차지" },
+  { id: "empire", name: "대제국", frac: 0.3, reward: 800, desc: "세계 영토의 30% 차지" },
+  { id: "world", name: "세계 정복", frac: 1.0, reward: 1800, desc: "모든 영토 정복" },
+];
